@@ -27,12 +27,12 @@ Route::get('/', function() {
 Route::get('/login', LoginIndex::class)->name('login.index');
 Route::get('/register', RegisterIndex::class)->name('register.index');
 Route::get('/logout', function() {
-    Auth::logout();
+    session()->forget('user');
 
     return redirect()->route('login.index');
 })->name('logout');
 
-Route::middleware('auth')->group(function() {   
+Route::middleware('user.session')->group(function() {   
     Route::get('/home', HomeIndex::class)->name('home.index');
     Route::get('/about', AboutIndex::class)->name('about.index');
 

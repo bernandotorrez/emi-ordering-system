@@ -1,23 +1,34 @@
 <?php
 
 namespace App\Http\Livewire\Page\Login;
+
+use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Illuminate\Support\Facades\Http;
 
 class LoginIndex extends Component
 {
 
+    use WithWrsApi;
+
     protected $pageTitle = 'Login Into DMS';
-    public $email, $password;
+    public $username, $password, $loginAs;
 
     protected $rules = [
-        'email'     =>  'required|email',
-        'password'  =>  'required|min:6'
+        'username'  => 'required|min:3|max:50',
+        'password'  => 'required|min:3|max:50',
+        'loginAs'   => 'required'
     ];
 
     protected $messages = [
-        'email.email'   => 'Please enter with Valid Email Address',
-        'password.min'  => 'Please fill password minimal 6 Characters'
+        'username.required' => 'Please fill the Username Field',
+        'username.min'      => 'Please fill the Username Field with Minimal 3 Characters',
+        'username.max'      => 'Please fill the Username Field with Maximal 50 Characters',
+        'password.required' => 'Please fill the Password Field',
+        'password.min'      => 'Please fill the Password Field with Minimal 3 Characters',
+        'username.max'      => 'Please fill the Username Field with Maximal 50 Characters',
+        'loginAs.required'  => 'Please choose the Login As Field',
     ];
 
     public function render()
@@ -37,7 +48,7 @@ class LoginIndex extends Component
 
     public function resetForm()
     {
-        $this->reset(['email', 'password']);
+        $this->reset(['username', 'password', 'loginAs']);
     }
 
     public function updated($propertyName)
@@ -49,10 +60,24 @@ class LoginIndex extends Component
     {
         $this->validate();
 
-        if(Auth::attempt(['email' => $this->email, 'password' => $this->password, 'status' => '1'])) {
-            return redirect()->route('home.index');
+        if($this->loginAs == 'atpm') {
+            $response = Http::post($this->wrsApi.'/atpm-user/login', [
+                'username' => $this->username,
+                'password' => $this->password
+            ]);
         } else {
-            session()->flash('login_failed', 'Email or Password is Wrong!');
+            $response = Http::post($this->wrsApi.'/dealer-user/login', [
+                'username' => $this->username,
+                'password' => $this->password
+            ]);
         }
+
+        if($response['message'] != 'success') {
+            session()->flash('login_failed', 'Username or Password is wrong!');
+        } else {
+            session(['user' => $response['data']]);
+            return redirect()->route('home.index');
+        }
+
     }
 }
