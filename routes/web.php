@@ -40,8 +40,4 @@ Route::middleware('user.session')->group(function() {
     
     Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
-    Route::prefix('admin')->group(function() {
-        Route::get('user-group', UserGroupIndex::class)->name('admin.user-group.index');
-        Route::get('user-account', UserAccountIndex::class)->name('admin.user-account.index');
-    });
 });

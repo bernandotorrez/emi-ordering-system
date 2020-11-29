@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\UserGroup;
 
-class CreateUserGroupsTable extends Migration
+class CreateTblUserGroup extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +13,14 @@ class CreateUserGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_user_group', function (Blueprint $table) {
-            $table->bigIncrements('id_user_group');
-            $table->string('user_group', 25);
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
-        UserGroup::create(['user_group' => 'admin']);
+        if(!Schema::hasTable('tbl_user_group')) {
+            Schema::create('tbl_user_group', function (Blueprint $table) {
+                $table->id('id_user_group');
+                $table->string('nama_group', 100);
+                $table->enum('status', ['0', '1']);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

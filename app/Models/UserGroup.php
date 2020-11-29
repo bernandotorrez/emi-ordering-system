@@ -10,12 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class UserGroup extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $table = 'tbl_user_group';
     protected $primaryKey = 'id_user_group';
-    protected $fillable = ['user_group'];
-    protected $visible = ['id_user_group', 'user_group'];
+    protected $fillable = ['nama_group'];
+    protected $visible = ['id_user_group', 'nama_group', 'status'];
     protected $searchableColumn = ['user_group'];
 
     public function getSearchableColumn()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Page\Login;
 
+use App\Models\User;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -60,24 +61,44 @@ class LoginIndex extends Component
     {
         $this->validate();
 
-        if($this->loginAs == 'atpm') {
-            $response = Http::post($this->wrsApi.'/atpm-user/login', [
-                'username' => $this->username,
-                'password' => $this->password
-            ]);
+        $admin = User::where('level_access', '1')->get(['username']);
+        $listAdmin = array();
+
+        foreach($admin as $data) {
+            array_push($listAdmin, $data->username);
+        }
+        
+        if(in_array($this->username, $listAdmin)) {
+            $login = User::where(['username' => $this->username, 'password' => md5($this->password)])->first();
+
+            if(!$login) {
+                session()->flash('login_failed', 'Username or Password is wrong!');
+            } else {
+                session(['user' => $login, 'level_access' => $login->level_access]);
+                return redirect()->route('home.index');
+            }
         } else {
-            $response = Http::post($this->wrsApi.'/dealer-user/login', [
-                'username' => $this->username,
-                'password' => $this->password
-            ]);
+            if($this->loginAs == 'atpm') {
+                $response = Http::post($this->wrsApi.'/atpm-user/login', [
+                    'username' => $this->username,
+                    'password' => $this->password
+                ]);
+            } else {
+                $response = Http::post($this->wrsApi.'/dealer-user/login', [
+                    'username' => $this->username,
+                    'password' => $this->password
+                ]);
+            }
+    
+            if($response['message'] != 'success') {
+                session()->flash('login_failed', 'Username or Password is wrong!');
+            } else {
+                session(['user' => $response['data'], 'level_access' => 4]);
+                return redirect()->route('home.index');
+            }
         }
 
-        if($response['message'] != 'success') {
-            session()->flash('login_failed', 'Username or Password is wrong!');
-        } else {
-            session(['user' => $response['data']]);
-            return redirect()->route('home.index');
-        }
+        
 
     }
 }

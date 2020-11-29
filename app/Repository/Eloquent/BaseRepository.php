@@ -29,6 +29,11 @@ class BaseRepository implements BaseInterface
         return $this->model->all($this->visibleColumn);
     }
 
+    public function allActive()
+    {
+        return $this->model->where('status', '1')->get($this->visibleColumn);
+    }
+
     /**
      * Insert Data
      * @param array $data

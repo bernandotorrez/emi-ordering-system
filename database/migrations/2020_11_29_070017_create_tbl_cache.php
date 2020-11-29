@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCachesTable extends Migration
+class CreateTblCache extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,7 @@ class CreateCachesTable extends Migration
         Schema::create('tbl_cache', function (Blueprint $table) {
             $table->id();
             $table->text('cache_name');
-            $table->foreignId('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('id_user');
             $table->timestamps();
         });
     }

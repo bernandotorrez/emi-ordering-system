@@ -12,33 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-    use SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'no_hp'
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $primaryKey = 'id';
-    protected $visible = ['id', 'name', 'email', 'no_hp', 'status'];
-    protected $searchableColumn = ['id', 'name', 'email', 'no_hp', 'user_group'];
+    protected $table = 'tbl_user';
+    protected $fillable = ['id_user', 'nama_user', 'username', 'password', 'email', 'id_group', 'level_access', 'status_atpm'];
+    protected $primaryKey = 'id_user';
+    protected $visible = ['id_user', 'nama_user', 'username', 'email', 'id_group', 'status_atpm', 'level_access'];
+    protected $searchableColumn = ['nama_user', 'username', 'email', 'status_atpm'];
+    public $incrementing = 'false';
+    protected $keyType = 'string';
 
     public function getSearchableColumn()
     {
