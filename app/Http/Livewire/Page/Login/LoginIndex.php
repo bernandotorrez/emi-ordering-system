@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Page\Login;
 
 use App\Models\User;
+use App\Repository\Eloquent\UserRepository;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -40,10 +41,6 @@ class LoginIndex extends Component
 
     public function mount()
     {
-        if(Auth::check()) {
-            return redirect()->route('home.index');
-        }
-
         $this->resetForm();
     }
 
@@ -83,16 +80,44 @@ class LoginIndex extends Component
                     'username' => $this->username,
                     'password' => $this->password
                 ]);
+
+                $status_atpm = 'atpm';
             } else {
                 $response = Http::post($this->wrsApi.'/dealer-user/login', [
                     'username' => $this->username,
                     'password' => $this->password
                 ]);
+
+                $status_atpm = 'dealer';
             }
     
             if($response['message'] != 'success') {
                 session()->flash('login_failed', 'Username or Password is wrong!');
             } else {
+                $login = User::where(['username' => $this->username])->count();
+
+                if($login == 0) {
+                    if($status_atpm == 'atpm') {
+                        User::create([
+                            'id_user' => $response['data']['kd_atpm_user'],
+                            'nama_user' => $response['data']['nm_atpm_user'],
+                            'username' => $response['data']['username'],
+                            'email' => $response['data']['email'],
+                            'id_group' => 1,
+                            'status_atpm' => $status_atpm,
+                        ]);
+                    } else {
+                        User::create([
+                            'id_user' => $response['data']['kd_dealer_user'],
+                            'nama_user' => $response['data']['nm_dealer_user'],
+                            'username' => $response['data']['username'],
+                            'email' => $response['data']['email'],
+                            'id_group' => 1,
+                            'status_atpm' => $status_atpm,
+                        ]);
+                    }
+                }
+
                 session(['user' => $response['data'], 'level_access' => 4]);
                 return redirect()->route('home.index');
             }

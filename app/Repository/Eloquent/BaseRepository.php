@@ -40,7 +40,7 @@ class BaseRepository implements BaseInterface
      */
     public function create(array $data)
     {
-        return $this->model->create($data);
+        return $this->model->firstOrCreate($data);
     }
 
     /**
@@ -146,6 +146,7 @@ class BaseRepository implements BaseInterface
                 }
             }
         });
+        $data = $data->where('status', '1');
         $data = $data->orderBy($sortBy, $sortDirection);
         $data = $data->paginate($perPage);
 
@@ -183,6 +184,7 @@ class BaseRepository implements BaseInterface
                 }
             }
         });
+        $data = $data->where('status', '1');
         $data = $data->orderBy($sortBy, $sortDirection);
         $data = $data->paginate($perPage);
 
@@ -221,6 +223,7 @@ class BaseRepository implements BaseInterface
                 }
             }
         });
+        $data = $data->where('status', '1');
         $data = $data->orderBy($sortBy, $sortDirection);
         $data = $data->paginate($perPage);
 
@@ -260,6 +263,7 @@ class BaseRepository implements BaseInterface
                 }
             }
         });
+        $data = $data->where('status', '1');
         $data = $data->orderBy($sortBy, $sortDirection);
         $data = $data->paginate($perPage);
 

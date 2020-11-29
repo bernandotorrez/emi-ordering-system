@@ -17,7 +17,7 @@ class CreateTblUserGroup extends Migration
             Schema::create('tbl_user_group', function (Blueprint $table) {
                 $table->id('id_user_group');
                 $table->string('nama_group', 100);
-                $table->enum('status', ['0', '1']);
+                $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
         }

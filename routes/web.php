@@ -5,9 +5,7 @@ use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
-use App\Http\Livewire\Page\Admin\UserGroup\UserGroupIndex;
-use App\Http\Livewire\Page\Admin\UserAccount\UserAccountIndex;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\Page\UserGroup\UserGroupIndex;
 use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +22,10 @@ Route::get('/', function() {
     return redirect(route('login.index'));
 });
 
-Route::get('/login', LoginIndex::class)->name('login.index');
+Route::get('/login', LoginIndex::class)->middleware('guest')->name('login.index');
 Route::get('/register', RegisterIndex::class)->name('register.index');
 Route::get('/logout', function() {
-    session()->forget('user');
+    session()->forget(['user', 'level_access']);
 
     return redirect()->route('login.index');
 })->name('logout');
@@ -40,4 +38,8 @@ Route::middleware('user.session')->group(function() {
     
     Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
+});
+
+Route::middleware('admin.session')->prefix('admin')->group(function() {
+    Route::get('/user-group', UserGroupIndex::class)->name('user-group.index');
 });

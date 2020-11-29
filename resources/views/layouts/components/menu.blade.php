@@ -65,7 +65,7 @@
                 <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#topAccordion">
 
                     <li class="">
-                        <a href="#"> User Group </a>
+                        <a href="{{ route('user-group.index') }}"> User Group </a>
                     </li>
                 </ul>
             </li>

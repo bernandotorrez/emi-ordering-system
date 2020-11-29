@@ -2,24 +2,25 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAuthenticated
+class CheckAdminSession
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  ...$guards
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->session()->exists('user')) {
+        if(!$request->session()->exists('user')) {
+            return redirect('/');
+        }
+
+        if($request->session()->get('level_access') != '1') {
             return redirect('/home');
         }
 

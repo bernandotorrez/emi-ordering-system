@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
                 $table->bigInteger('id_group');
                 $table->integer('level_access')->default(4);
                 $table->enum('status_atpm', ['atpm', 'dealer'])->default('dealer');
+                $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
         }

@@ -16,7 +16,7 @@ class CreateTblCache extends Migration
         Schema::create('tbl_cache', function (Blueprint $table) {
             $table->id();
             $table->text('cache_name');
-            $table->foreignId('id_user');
+            $table->string('id_user', 100);
             $table->timestamps();
         });
     }

@@ -24,7 +24,7 @@ class CreateTblMenuUserGroup extends Migration
                 $table->enum('can_add', ['0', '1']);
                 $table->enum('can_edit', ['0', '1']);
                 $table->enum('can_delete', ['0', '1']);
-                $table->enum('status', ['0', '1']);
+                $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
         }

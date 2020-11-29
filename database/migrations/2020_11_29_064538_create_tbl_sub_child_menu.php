@@ -20,7 +20,7 @@ class CreateTblSubChildMenu extends Migration
                 $table->string('nama_sub_child_menu', 100);
                 $table->text('url');
                 $table->string('icon', 100);
-                $table->enum('status', ['0', '1']);
+                $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
         }

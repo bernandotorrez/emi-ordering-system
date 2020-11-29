@@ -4,24 +4,6 @@
         <div class="widget-content-area br-4">
             <div class="widget-one">
 
-                <!-- @if($delete_status == 'success')
-                <div class="alert alert-success"> Delete Success! </div>
-                @elseif($delete_status == 'fail')
-                <div class="alert alert-danger"> Delete Failed! </div>
-                @endif -->
-
-                @if($insert_status == 'success')
-                <div class="alert alert-success"> Insert Success! </div>
-                @elseif($insert_status == 'fail')
-                <div class="alert alert-danger"> Insert Failed! </div>
-                @endif
-
-                @if($update_status == 'success')
-                <div class="alert alert-success"> Update Success! </div>
-                @elseif($update_status == 'fail')
-                <div class="alert alert-danger"> Update Failed! </div>
-                @endif
-
                 <button type="button" 
                 class="btn btn-primary mr-4" 
                 id="addButton"

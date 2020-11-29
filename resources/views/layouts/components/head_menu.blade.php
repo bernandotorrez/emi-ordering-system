@@ -13,7 +13,7 @@
 
         <div class="nav-logo align-self-center">
             <a class="navbar-brand" href="/home"><img alt="logo" src="{{ asset('assets/img/90x90.jpg') }}"> <span
-                    class="navbar-brand-name">Eurokars DMS</span></a>
+                    class="navbar-brand-name">EMI Ordering System</span></a>
         </div>
 
         <ul class="navbar-item flex-row nav-dropdowns ml-auto">
