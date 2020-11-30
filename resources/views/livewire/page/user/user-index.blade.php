@@ -81,12 +81,16 @@
                                             @enderror
                                         </div>
                                         <div class="col">
-                                            <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password" maxlength="100"
-                                                autocomplete="off" placeholder="Password" wire:model.lazy="bind.password">
-                                            @error('bind.password') <span class="error">{{ $message }}</span>
+                                            <label for="status_atpm">Status ATPM</label>
+                                            <select class="form-control" id="status_atpm"
+                                                placeholder="Status ATPM" wire:model.lazy="bind.status_atpm">
+                                                <option value="">- Choose Status ATPM -</option>
+                                                <option value="atpm">ATPM</option>
+                                                <option value="dealer">Dealer</option>
+                                            </select>
+                                            @error('bind.status_atpm') <span class="error">{{ $message }}</span>
                                             @enderror
-                                        </div>    
+                                        </div>   
                                     </div>
 
                                     <div class="row mb-4">
@@ -113,32 +117,6 @@
                                             @error('bind.id_user_group') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                    </div>
-
-                                    <div class="row mb-4">
-                                        <div class="col">
-                                            <label for="status_atpm">Status ATPM</label>
-                                            <select class="form-control" id="status_atpm"
-                                                placeholder="Status ATPM" wire:model.lazy="bind.status_atpm">
-                                                <option value="">- Choose Status ATPM -</option>
-                                                <option value="atpm">ATPM</option>
-                                                <option value="dealer">Dealer</option>
-                                            </select>
-                                            @error('bind.status_atpm') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <!-- <div class="col">
-                                            <label for="id_user_group">User Group</label>
-                                            <select class="form-control" id="id_user_group"
-                                                wire:model.lazy="bind.id_user_group">
-                                                <option value="">- Choose Level -</option>
-                                                @foreach($dataUserGroup as $data)
-                                                    <option value="{{ $data->id_user_group }}">{{ $data->nama_group }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('bind.id_user_group') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div> -->
                                     </div>
 
                                 </form>
