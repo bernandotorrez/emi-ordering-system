@@ -87,7 +87,7 @@ class BaseRepository implements BaseInterface
      */
     public function massDelete(array $id)
     {
-        return $this->model->whereIn($this->primaryKey, $id)->delete();
+        return $this->model->whereIn($this->primaryKey, $id)->update(['status' => '0']);
     }
 
     /**

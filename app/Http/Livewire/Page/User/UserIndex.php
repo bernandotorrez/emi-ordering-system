@@ -141,7 +141,6 @@ class UserIndex extends Component
         }
     }
 
-
     public function addForm()
     {
         $this->isEdit = false;

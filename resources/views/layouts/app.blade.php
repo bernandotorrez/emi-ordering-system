@@ -38,6 +38,10 @@
             font-size: 13px;
             letter-spacing: 1px;
         }
+
+        .icon-active {
+            color: #25d5e4;
+        }
     </style>
 
     @livewireStyles

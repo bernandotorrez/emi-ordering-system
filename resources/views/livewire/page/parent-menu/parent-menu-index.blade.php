@@ -56,10 +56,34 @@
                                     @endif
 
                                     <div class="form-group mb-4">
-                                        <label for="model_name">Group Name</label>
-                                        <input type="text" class="form-control" id="nama_group" maxlength="50"
-                                            placeholder="Example : dealer001" wire:model.lazy="bind.nama_group">
-                                        @error('bind.nama_group') <span class="error">{{ $message }}</span>
+                                        <label for="parent_position">Parent Position</label>
+                                        <input type="text" class="form-control" id="parent_position" maxlength="10"
+                                            placeholder="Example : 1" wire:model.lazy="bind.parent_position">
+                                        @error('bind.parent_position') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="nama_parent_menu">Nama Parent Menu</label>
+                                        <input type="text" class="form-control" id="nama_parent_menu" maxlength="100"
+                                            placeholder="Example : Sales Order" wire:model.lazy="bind.nama_parent_menu">
+                                        @error('bind.nama_parent_menu') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="url">URL</label>
+                                        <input type="text" class="form-control" id="url" maxlength="250"
+                                            placeholder="Example : /admin/parent-menu" wire:model.lazy="bind.url">
+                                        @error('bind.url') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="icon">Icon</label>
+                                        <input type="text" class="form-control" id="icon" maxlength="250"
+                                            placeholder="Example : fa fa-example" wire:model.lazy="bind.icon">
+                                        @error('bind.icon') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -110,30 +134,48 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
-                            <th wire:click="sortBy('nama_group')">
-                                <a href="javascript:void(0);">Group Name
-                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
+                            <th wire:click="sortBy('parent_position')">
+                                <a href="javascript:void(0);">Parent Position
+                                    @include('livewire.datatable-icon', ['field' => 'parent_position'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('nama_parent_menu')">
+                                <a href="javascript:void(0);">Nama Parent Menu
+                                    @include('livewire.datatable-icon', ['field' => 'nama_parent_menu'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('url')">
+                                <a href="javascript:void(0);">URL
+                                    @include('livewire.datatable-icon', ['field' => 'url'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('icon')">
+                                <a href="javascript:void(0);">Icon
+                                    @include('livewire.datatable-icon', ['field' => 'icon'])
                                 </a>
                             </th>
                         </thead>
                         <tbody>
-                            @foreach($dataUserGroup as $data)
+                            @foreach($dataParentMenu as $data)
                             <tr>
                                 <td>
                                     <input type="checkbox" 
-                                    value="{{ $data->id_user_group }}" 
+                                    value="{{ $data->id_parent_menu }}" 
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->nama_group }}</td>
+                                <td>{{ $data->parent_position }}</td>
+                                <td>{{ $data->nama_parent_menu  }}</td>
+                                <td>{{ $data->url  }}</td>
+                                <td>{{ $data->icon  }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $dataUserGroup->links('livewire.pagination-links') }}
+                        {{ $dataParentMenu->links('livewire.pagination-links') }}
                     </div>
 
                 </div>

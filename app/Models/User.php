@@ -19,7 +19,10 @@ class User extends Authenticatable
         'id_dealer', 'id_dealer_level', 'level_access', 'status_atpm', 'is_from_wrs'
     ];
     protected $primaryKey = 'id_user';
-    protected $visible = ['id_user', 'kd_user_wrs', 'nama_user', 'username', 'email', 'id_user_group', 'status_atpm', 'level_access'];
+    protected $visible = [
+        'kd_user_wrs', 'nama_user', 'username', 'password', 'email', 'id_user_group', 
+        'id_dealer', 'id_dealer_level', 'level_access', 'status_atpm', 'is_from_wrs'
+    ];
     protected $searchableColumn = ['kd_user_wrs', 'nama_user', 'username', 'email', 'id_user_group', 'status_atpm'];
     protected $keyType = 'string';
 
