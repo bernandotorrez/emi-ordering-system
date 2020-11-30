@@ -8,19 +8,15 @@ use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cache as CacheModel;
+use App\Traits\WithDeleteCache;
+use App\Traits\WithPaginationAttribute;
 
 class UserGroupIndex extends Component
 {
     use WithPagination;
+    use WithPaginationAttribute;
     use WithSorting;
-
-    /**
-     * Pagination Attributes
-     */
-    protected $paginationTheme = 'bootstrap';
-    public array $perPage = [10, 15, 20, 25, 50];
-    public int $perPageSelected = 10;
-    public string $search = '';
+    use WithDeleteCache;
 
     /**
      * Page Attributes
@@ -201,17 +197,5 @@ class UserGroupIndex extends Component
         }
 
         $this->emit('deleted', $deleteStatus);
-    }
-
-    private function deleteCache()
-    {
-        $dataCache = CacheModel::where('id_user', session()->get('user')['id_user'])->get();
-
-        foreach($dataCache as $cache)
-        {
-            Cache::forget($cache->cache_name);
-        }
-
-        CacheModel::where('id_user', session()->get('user')['id_user'])->delete();
     }
 }
