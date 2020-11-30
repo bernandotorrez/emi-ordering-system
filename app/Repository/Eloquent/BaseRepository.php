@@ -55,9 +55,9 @@ class BaseRepository implements BaseInterface
     /**
      * Check Duplicated Data in Edit Process
      * @param array $where
-     * @param int $id
+     * @param int|string $id
      */
-    public function findDuplicateEdit(array $where, int $id)
+    public function findDuplicateEdit(array $where, $id)
     {
         return $this->model->where($where)->where($this->primaryKey, '!=', $id)->count();
     }

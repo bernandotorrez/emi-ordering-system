@@ -36,7 +36,6 @@ class UserIndex extends Component
         'id_user' => '',
         'username' => '',
         'nama_user' => '',
-        'password' => '',
         'email' => '',
         'id_user_group' => '',
         'level_access' => '',
@@ -49,9 +48,8 @@ class UserIndex extends Component
     protected $rules = [
         'bind.username' => 'required|min:3|max:100',
         'bind.nama_user' => 'required|min:3|max:100',
-        'bind.password' => 'required|min:3|max:100',
         'bind.email' => 'required|email|min:3|max:100',
-        'bind.id_group' => 'required',
+        'bind.id_user_group' => 'required',
         'bind.level_access' => 'required',
         'bind.status_atpm' => 'required|in:atpm,dealer',
     ];
@@ -63,9 +61,6 @@ class UserIndex extends Component
         'bind.nama_user.required' => 'The Nama User Cant be Empty!',
         'bind.nama_user.min' => 'The Nama User must be at least 3 Characters',
         'bind.nama_user.max' => 'The Nama User Cant be maximal 100 Characters',
-        'bind.password.required' => 'The Password Cant be Empty!',
-        'bind.password.min' => 'The Password must be at least 3 Characters',
-        'bind.password.max' => 'The Password Cant be maximal 100 Characters',
         'bind.email.required' => 'The Email Cant be Empty!',
         'bind.email.email' => 'The Email not Valid!',
         'bind.email.min' => 'The Email must be at least 3 Characters',
@@ -164,6 +159,8 @@ class UserIndex extends Component
             'password' => md5($this->bind['username']),
             'email' => $this->bind['email'],
             'id_user_group' => $this->bind['id_user_group'],
+            'level_access' => $this->bind['level_access'],
+            'status_atpm' => $this->bind['status_atpm'],
         );
 
         $where = array('username' => $this->bind['username']);
@@ -183,7 +180,76 @@ class UserIndex extends Component
                 session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
             }
         } else {
-            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_group'].'</strong> Already Exists!</div>');
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['username'].'</strong> Already Exists!</div>');
         }
+    }
+
+    public function editForm(UserRepository $userRepository)
+    {
+        $this->isEdit = true;
+
+        $data = $userRepository->getByID($this->checked[0]);
+        $this->bind['id_user'] = $data->id_user;
+        $this->bind['id_user_group'] = $data->id_user_group;
+        $this->bind['username'] = $data->username;
+        $this->bind['nama_user'] = $data->nama_user;
+        $this->bind['email'] = $data->email;
+        $this->bind['id_user_group'] = $data->id_user_group;
+        $this->bind['level_access'] = $data->level_access;
+        $this->bind['status_atpm'] = $data->status_atpm;
+        $this->bind['password'] = '';
+
+        $this->emit('openModal');
+    }
+
+    public function editProcess(UserRepository $userRepository)
+    {
+        $this->validate();
+
+        $data = array(
+            'username' => $this->bind['username'],
+            'nama_user' => $this->bind['nama_user'],
+            'email' => $this->bind['email'],
+            'id_user_group' => $this->bind['id_user_group'],
+            'level_access' => $this->bind['level_access'],
+            'status_atpm' => $this->bind['status_atpm'],
+        );
+
+        $where = array('id_user' => $this->bind['id_user']);
+
+        $count = $userRepository->findDuplicateEdit($where, $this->bind['id_user']);
+
+        if($count >= 1) {
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['username'].'</strong> Already Exists!</div>');
+        } else {
+            $update = $userRepository->update($this->bind['id_user'], $data);
+
+            if($update) {
+                $this->isEdit = false;
+                $this->resetForm();
+                $this->deleteCache();
+                $this->emit('closeModal');
+                
+                session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
+            } else {
+                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+            }
+        }
+    }
+
+    public function deleteProcess(UserRepository $userRepository)
+    {
+        $delete = $userRepository->massDeleteUser($this->checked);
+        
+        if($delete) {
+            $this->resetForm();
+            $this->deleteCache();
+
+            $deleteStatus = 'success';
+        } else {
+            $deleteStatus = 'failed';
+        }
+
+        $this->emit('deleted', $deleteStatus);
     }
 }

@@ -99,21 +99,25 @@ class LoginIndex extends Component
                 if($login == 0) {
                     if($status_atpm == 'atpm') {
                         User::create([
-                            'id_user' => $response['data']['kd_atpm_user'],
+                            'kd_user_wrs' => $response['data']['kd_atpm_user'],
                             'nama_user' => $response['data']['nm_atpm_user'],
                             'username' => $response['data']['username'],
                             'email' => $response['data']['email'],
-                            'id_group' => 1,
-                            'status_atpm' => $status_atpm,
+                            'id_user_group' => 2,
+                            'status_atpm' => 'atpm',
+                            'is_from_wrs' => '1'
                         ]);
                     } else {
                         User::create([
-                            'id_user' => $response['data']['kd_dealer_user'],
+                            'kd_user_wrs' => $response['data']['kd_dealer_user'],
                             'nama_user' => $response['data']['nm_dealer_user'],
                             'username' => $response['data']['username'],
                             'email' => $response['data']['email'],
-                            'id_group' => 1,
-                            'status_atpm' => $status_atpm,
+                            'id_user_group' => 3,
+                            'id_dealer' => $response['data']['fk_dealer'],
+                            'id_dealer_level' => $response['data']['fk_dealer_level'],
+                            'status_atpm' => 'dealer',
+                            'is_from_wrs' => '1'
                         ]);
                     }
                 }

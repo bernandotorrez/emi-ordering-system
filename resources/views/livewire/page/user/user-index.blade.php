@@ -59,14 +59,14 @@
                                         <div class="col">
                                             <label for="username">Username</label>
                                             <input type="text" class="form-control" id="username" maxlength="100"
-                                                placeholder="Username" wire:model.debounce.500ms="bind.username">
+                                                placeholder="Username" wire:model.lazy="bind.username">
                                             @error('bind.username') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
                                             <label for="email">Email</label>
                                             <input type="text" class="form-control" id="email" maxlength="100" autocomplete="off"
-                                                placeholder="Example : tes@gmail.com" wire:model.debounce.500ms="bind.email">
+                                                placeholder="Example : tes@gmail.com" wire:model.lazy="bind.email">
                                             @error('bind.email') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -76,14 +76,14 @@
                                         <div class="col">
                                             <label for="nama_user">Nama User</label>
                                             <input type="text" class="form-control" id="nama_user" maxlength="100"
-                                                placeholder="Nama User" wire:model.debounce.500ms="bind.nama_user">
+                                                placeholder="Nama User" wire:model.lazy="bind.nama_user">
                                             @error('bind.nama_user') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
                                             <label for="password">Password</label>
                                             <input type="password" class="form-control" id="password" maxlength="100"
-                                                autocomplete="off" placeholder="Password" wire:model.debounce.500ms="bind.password">
+                                                autocomplete="off" placeholder="Password" wire:model.lazy="bind.password">
                                             @error('bind.password') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>    
@@ -96,7 +96,7 @@
                                                 placeholder="Level Access" wire:model.lazy="bind.level_access">
                                                 <option value="">- Choose Level Access -</option>
                                                 <option value="1">Admin</option>
-                                                <option value="2">User</option>
+                                                <option value="4">User</option>
                                             </select>
                                             @error('bind.level_access') <span class="error">{{ $message }}</span>
                                             @enderror
@@ -121,8 +121,8 @@
                                             <select class="form-control" id="status_atpm"
                                                 placeholder="Status ATPM" wire:model.lazy="bind.status_atpm">
                                                 <option value="">- Choose Status ATPM -</option>
-                                                <option value="1">Admin</option>
-                                                <option value="2">User</option>
+                                                <option value="atpm">ATPM</option>
+                                                <option value="dealer">Dealer</option>
                                             </select>
                                             @error('bind.status_atpm') <span class="error">{{ $message }}</span>
                                             @enderror

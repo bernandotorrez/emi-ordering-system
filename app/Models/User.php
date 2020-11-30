@@ -14,11 +14,13 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'tbl_user';
-    protected $fillable = ['id_user', 'nama_user', 'username', 'password', 'email', 'id_user_group', 'level_access', 'status_atpm'];
+    protected $fillable = [
+        'kd_user_wrs', 'nama_user', 'username', 'password', 'email', 'id_user_group', 
+        'id_dealer', 'id_dealer_level', 'level_access', 'status_atpm', 'is_from_wrs'
+    ];
     protected $primaryKey = 'id_user';
-    protected $visible = ['id_user', 'nama_user', 'username', 'email', 'id_user_group', 'status_atpm', 'level_access'];
-    protected $searchableColumn = ['nama_user', 'username', 'email', 'status_atpm'];
-    public $incrementing = 'false';
+    protected $visible = ['id_user', 'kd_user_wrs', 'nama_user', 'username', 'email', 'id_user_group', 'status_atpm', 'level_access'];
+    protected $searchableColumn = ['kd_user_wrs', 'nama_user', 'username', 'email', 'id_user_group', 'status_atpm'];
     protected $keyType = 'string';
 
     public function getSearchableColumn()

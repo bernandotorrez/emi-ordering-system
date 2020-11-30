@@ -10,4 +10,12 @@ class UserRepository extends BaseRepository
     {
         parent::__construct($model);
     }
+
+    /**
+     * @param array $id
+     */
+    public function massDeleteUser(array $id)
+    {
+        return $this->model->where('is_from_wrs', '!=', '1')->whereIn($this->primaryKey, $id)->delete();
+    }
 }
