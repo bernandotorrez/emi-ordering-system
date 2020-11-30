@@ -33,7 +33,7 @@
                 </a>
             </li>
 
-            
+            @livewire('dynamic-menu')
 
             @if(session()->get('level_access') == 1)
             <li class="menu single-menu {{ (request()->segment(1) == 'admin') ? 'active' : '' }}">

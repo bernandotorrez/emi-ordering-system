@@ -10,4 +10,9 @@ class ParentMenuRepository extends BaseRepository
     {
         parent::__construct($model);
     }
+
+    public function orderByPosition()
+    {
+        return $this->model->where('status', '1')->orderBy('parent_position', 'asc')->get();
+    }
 }
