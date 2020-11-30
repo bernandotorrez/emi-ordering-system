@@ -7,10 +7,11 @@ use Livewire\Component;
 
 class DynamicMenu extends Component
 {
-    
+    protected $relation = ['childsMenu'];
+
     public function render(ParentMenuRepository $parentMenuRepository)
     {
-        $dataParentMenu = $parentMenuRepository->orderByPosition();
+        $dataParentMenu = $parentMenuRepository->allActiveWithRelation($this->relation);
         return view('livewire.dynamic-menu', ['dataParentMenu' => $dataParentMenu]);
     }
 }

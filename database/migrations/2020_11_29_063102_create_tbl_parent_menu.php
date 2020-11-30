@@ -19,7 +19,7 @@ class CreateTblParentMenu extends Migration
                 $table->integer('parent_position');
                 $table->string('nama_parent_menu', 100);
                 $table->text('url');
-                $table->string('icon', 100);
+                $table->string('icon', 100)->default('fas fa-bars');
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });

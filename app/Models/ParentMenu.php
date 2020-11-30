@@ -19,4 +19,9 @@ class ParentMenu extends Model
     {
         return $this->searchableColumn;
     }
+
+    public function childsMenu()
+    {
+        return $this->hasMany(ChildMenu::class, 'id_parent_menu');
+    }
 }

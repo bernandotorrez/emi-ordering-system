@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
+use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
@@ -47,4 +48,5 @@ Route::middleware('admin.session')->prefix('admin')->group(function() {
     Route::get('/user', UserIndex::class)->name('user.index');
     Route::get('/user-group', UserGroupIndex::class)->name('user-group.index');
     Route::get('/parent-menu', ParentMenuIndex::class)->name('parent-menu.index');
+    Route::get('/child-menu', ChildMenuIndex::class)->name('child-menu.index');
 });

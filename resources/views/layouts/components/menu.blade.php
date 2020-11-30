@@ -62,6 +62,10 @@
                     <li class="{{ (request()->is('admin/parent-menu')) ? 'active' : '' }}">
                         <a href="{{ route('parent-menu.index') }}"> Parent Menu </a>
                     </li>
+
+                    <li class="{{ (request()->is('admin/child-menu')) ? 'active' : '' }}">
+                        <a href="{{ route('child-menu.index') }}"> Child Menu </a>
+                    </li>
                     
                 </ul>
             </li>

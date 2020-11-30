@@ -29,9 +29,23 @@ class BaseRepository implements BaseInterface
         return $this->model->all($this->visibleColumn);
     }
 
+    /**
+     * Get All Data Active (Status = 1)
+     * @return Collection
+     */
     public function allActive()
     {
         return $this->model->where('status', '1')->get($this->visibleColumn);
+    }
+
+    /**
+     * Get All Data Active (Status = 1)
+     * @param array $with
+     * @return Collection
+     */
+    public function allActiveWithRelation(array $with)
+    {
+        return $this->model->where('status', '1')->with($with)->get($this->visibleColumn);
     }
 
     /**

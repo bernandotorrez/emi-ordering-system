@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Page\ParentMenu;
+namespace App\Http\Livewire\Page\ChildMenu;
 
+use App\Repository\Eloquent\ChildMenuRepository;
 use App\Repository\Eloquent\ParentMenuRepository;
 use App\Traits\WithDeleteCache;
 use App\Traits\WithPaginationAttribute;
@@ -11,20 +12,20 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cache as CacheModel;
 
-class ParentMenuIndex extends Component
+class ChildMenuIndex extends Component
 {
     use WithPagination;
     use WithPaginationAttribute;
     use WithSorting;
     use WithDeleteCache;
 
-     /**
+    /**
      * Page Attributes
      */
-    public string $pageTitle = "Parent Menu";
+    public string $pageTitle = "Child Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['userGroup'];
+    protected array $relation = ['parentMenu'];
     
     protected $queryString = [
         'search' => ['except' => ''],
@@ -32,9 +33,10 @@ class ParentMenuIndex extends Component
     ];
     
     public $bind = [
+        'id_child_menu' => '',
         'id_parent_menu' => '',
-        'parent_position' => '',
-        'nama_parent_menu' => '',
+        'child_position' => '',
+        'nama_child_menu' => '',
         'url' => '',
         'icon' => '',
     ];
@@ -43,25 +45,27 @@ class ParentMenuIndex extends Component
      * Validation Attributes
      */
     protected $rules = [
-        'bind.parent_position' => 'required|numeric|min:1',
-        'bind.nama_parent_menu' => 'required|min:3|max:100',
+        'bind.id_parent_menu' => 'required',
+        'bind.child_position' => 'required|numeric|min:1',
+        'bind.nama_child_menu' => 'required|min:3|max:100',
         'bind.url' => 'required|min:1',
     ];
 
     protected $messages = [
-        'bind.parent_position.required' => 'The Parent Position Cant be Empty!',
-        'bind.parent_position.numeric' => 'The Parent Position must be Numeric',
-        'bind.parent_position.min' => 'The Parent Position must be at least :min Characters',
-        'bind.nama_parent_menu.required' => 'The Nama Parent Menu Cant be Empty!',
-        'bind.nama_parent_menu.min' => 'The Nama Parent Menu must be at least :min Characters',
-        'bind.nama_parent_menu.max' => 'The Nama Parent Menu Cant be maximal :max Characters',
+        'bind.id_parent_menu.required' => 'Please Choose ID Parent Menu',
+        'bind.child_position.required' => 'The Child Position Cant be Empty!',
+        'bind.child_position.numeric' => 'The Child Position must be Numeric',
+        'bind.child_position.min' => 'The Child Position must be at least :min Characters',
+        'bind.nama_child_menu.required' => 'The Nama Child Menu Cant be Empty!',
+        'bind.nama_child_menu.min' => 'The Nama Child Menu must be at least :min Characters',
+        'bind.nama_child_menu.max' => 'The Nama Child Menu Cant be maximal :max Characters',
         'bind.url.required' => 'The URL Cant be Empty!',
         'bind.url.min' => 'The URL must be at least :min Characters',
     ];
 
     public function mount()
     {
-        $this->sortBy = 'parent_position';
+        $this->sortBy = 'nama_child_menu';
         $this->fill(request()->only('search', 'page'));
     }
 
@@ -80,14 +84,18 @@ class ParentMenuIndex extends Component
         $this->reset(['bind']);
     }
 
-    public function render(ParentMenuRepository $parentMenuRepository)
+    public function render(
+        ChildMenuRepository $childMenuRepository,
+        ParentMenuRepository $parentMenuRepository
+        )
     {
-        $cache_name = 'parent-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
+
+        $cache_name = 'child-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
         $cache_name .= '-sortby-'.$this->sortBy.'-sortdirection-'.$this->sortDirection.'-user-'.session()->get('user')['id_user'];
 
-        $dataParentMenu = Cache::remember($cache_name, 60, function () use($parentMenuRepository, $cache_name) {
+        $dataChildMenu = Cache::remember($cache_name, 60, function () use($childMenuRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
-            return $parentMenuRepository->pagination(
+            return $childMenuRepository->paginationWithRelation(
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
@@ -96,20 +104,24 @@ class ParentMenuIndex extends Component
             );
         });
 
-        return view('livewire.page.parent-menu.parent-menu-index', ['dataParentMenu' => $dataParentMenu])
-        ->layout('layouts.app', ['title' => $this->pageTitle]);
+        $dataParentMenu = $parentMenuRepository->allActive();
+
+        return view('livewire.page.child-menu.child-menu-index', [
+            'dataChildMenu' => $dataChildMenu,
+            'dataParentMenu' => $dataParentMenu
+        ])->layout('layouts.app', ['title' => $this->pageTitle]);
     }
 
-    public function allChecked(ParentMenuRepository $parentMenuRepository)
+    public function allChecked(ChildMenuRepository $childMenuRepository)
     {
-        $datas = $parentMenuRepository->checked(
+        $datas = $childMenuRepository->checked(
             $this->search,
             $this->sortBy,
             $this->sortDirection,
             $this->perPageSelected
         );
 
-        $id = $parentMenuRepository->getPrimaryKey();
+        $id = $childMenuRepository->getPrimaryKey();
       
         // Dari Unchecked ke Checked
         if($this->allChecked == true) {
@@ -131,23 +143,27 @@ class ParentMenuIndex extends Component
         $this->emit('openModal');
     }
 
-    public function addProcess(ParentMenuRepository $parentMenuRepository)
+    public function addProcess(ChildMenuRepository $childMenuRepository)
     {
         $this->validate();
 
         $data = array(
-            'parent_position' => $this->bind['parent_position'],
-            'nama_parent_menu' => $this->bind['nama_parent_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'child_position' => $this->bind['child_position'],
+            'nama_child_menu' => $this->bind['nama_child_menu'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
         );
 
-        $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);
+        $where = array(
+            'nama_child_menu' => $this->bind['nama_child_menu'], 
+            'id_parent_menu' => $this->bind['id_parent_menu']
+        );
 
-        $count = $parentMenuRepository->findDuplicate($where);
+        $count = $childMenuRepository->findDuplicate($where);
 
         if($count <= 0) {
-            $insert = $parentMenuRepository->create($data);
+            $insert = $childMenuRepository->create($data);
 
             if($insert) {
                 $this->resetForm();
@@ -163,39 +179,44 @@ class ParentMenuIndex extends Component
         }
     }
 
-    public function editForm(ParentMenuRepository $parentMenuRepository)
+    public function editForm(ChildMenuRepository $childMenuRepository)
     {
         $this->isEdit = true;
 
-        $data = $parentMenuRepository->getByID($this->checked[0]);
+        $data = $childMenuRepository->getByID($this->checked[0]);
+        $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
-        $this->bind['parent_position'] = $data->parent_position;
-        $this->bind['nama_parent_menu'] = $data->nama_parent_menu;
+        $this->bind['child_position'] = $data->child_position;
+        $this->bind['nama_child_menu'] = $data->nama_child_menu;
         $this->bind['url'] = $data->url;
         $this->bind['icon'] = $data->icon ;
 
         $this->emit('openModal');
     }
 
-    public function editProcess(ParentMenuRepository $parentMenuRepository)
+    public function editProcess(ChildMenuRepository $childMenuRepository)
     {
         $this->validate();
 
         $data = array(
-            'parent_position' => $this->bind['parent_position'],
-            'nama_parent_menu' => $this->bind['nama_parent_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'child_position' => $this->bind['child_position'],
+            'nama_child_menu' => $this->bind['nama_child_menu'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
         );
 
-        $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);
+        $where = array(
+            'nama_child_menu' => $this->bind['nama_child_menu'], 
+            'id_parent_menu' => $this->bind['id_parent_menu']
+        );
 
-        $count = $parentMenuRepository->findDuplicateEdit($where, $this->bind['id_parent_menu']);
+        $count = $childMenuRepository->findDuplicateEdit($where, $this->bind['id_child_menu']);
 
         if($count >= 1) {
-            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_parent_menu'].'</strong> Already Exists!</div>');
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_child_menu'].'</strong> Already Exists!</div>');
         } else {
-            $update = $parentMenuRepository->update($this->bind['id_parent_menu'], $data);
+            $update = $childMenuRepository->update($this->bind['id_child_menu'], $data);
 
             if($update) {
                 $this->isEdit = false;
@@ -210,9 +231,9 @@ class ParentMenuIndex extends Component
         }
     }
 
-    public function deleteProcess(ParentMenuRepository $parentMenuRepository)
+    public function deleteProcess(ChildMenuRepository $childMenuRepository)
     {
-        $delete = $parentMenuRepository->massDelete($this->checked);
+        $delete = $childMenuRepository->massDelete($this->checked);
         
         if($delete) {
             $this->resetForm();
