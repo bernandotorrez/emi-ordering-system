@@ -8,11 +8,11 @@
                     {!! session('action_message') !!}
                 @endif
 
-                <button type="button" 
+                <!-- <button type="button" 
                 class="btn btn-primary mr-4" 
                 id="addButton"
                 wire:click.prevent="addForm"> Add
-                </button>
+                </button> -->
 
                 <button type="button" 
                 class="btn btn-success mr-4" 
@@ -22,13 +22,13 @@
                 > Edit
                 </button>
 
-                <button type="button" 
+                <!-- <button type="button" 
                 class="btn btn-danger" 
                 id="deleteButton"
                 wire:click.prevent="$emit('triggerDelete')"
                 @if(count($checked) <= 0 ) disabled @endif
                 > Delete
-                </button>
+                </button> -->
 
                 <!-- @dump($checked) -->
 
@@ -59,14 +59,14 @@
                                         <div class="col">
                                             <label for="username">Username</label>
                                             <input type="text" class="form-control" id="username" maxlength="100"
-                                                placeholder="Username" wire:model.lazy="bind.username">
+                                                placeholder="Username" wire:model.lazy="bind.username" readonly>
                                             @error('bind.username') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
                                             <label for="email">Email</label>
                                             <input type="text" class="form-control" id="email" maxlength="100" autocomplete="off"
-                                                placeholder="Example : tes@gmail.com" wire:model.lazy="bind.email">
+                                                placeholder="Example : tes@gmail.com" wire:model.lazy="bind.email" readonly>
                                             @error('bind.email') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -76,18 +76,20 @@
                                         <div class="col">
                                             <label for="nama_user">Nama User</label>
                                             <input type="text" class="form-control" id="nama_user" maxlength="100"
-                                                placeholder="Nama User" wire:model.lazy="bind.nama_user">
+                                                placeholder="Nama User" wire:model.lazy="bind.nama_user" readonly>
                                             @error('bind.nama_user') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
                                             <label for="status_atpm">Status ATPM</label>
-                                            <select class="form-control" id="status_atpm"
-                                                placeholder="Status ATPM" wire:model.lazy="bind.status_atpm">
+                                            <!-- <select class="form-control" id="status_atpm"
+                                                placeholder="Status ATPM" wire:model.lazy="bind.status_atpm" readonly>
                                                 <option value="">- Choose Status ATPM -</option>
                                                 <option value="atpm">ATPM</option>
                                                 <option value="dealer">Dealer</option>
-                                            </select>
+                                            </select> -->
+                                            <input type="text" class="form-control" id="status_atpm" maxlength="100"
+                                                placeholder="Status ATPM" wire:model.lazy="bind.status_atpm" readonly>
                                             @error('bind.status_atpm') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>   
