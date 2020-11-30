@@ -269,4 +269,43 @@ class BaseRepository implements BaseInterface
 
         return $data;
     }
+
+    /**
+     * Get Data Pagination With Relation Eager Loading
+     * @param array $with
+     * @param string $search
+     * @param string $sortBy
+     * @param string $sortDirection
+     * @param int $perPage
+     */
+    public function paginationWithRelation(
+        string $search = '',
+        string $sortBy,
+        string $sortDirection = 'asc',
+        int $perPage,
+        array $with = []
+    )
+    {
+        $searchableColumn = $this->searchableColumn;
+        $countField = count($searchableColumn);
+
+        $data = $this->model;
+        $data = $data->with($with);
+        $data = $data->where(function($query) use ($searchableColumn, $countField, $search) {
+            if($countField >= 1) {
+                for($i=0;$i <= $countField-1;$i++) {
+                    if($i == 0) {
+                        $query = $query->where($searchableColumn[$i], 'like', '%'.$search.'%');
+                    } else {
+                        $query = $query->orWhere($searchableColumn[$i], 'like', '%'.$search.'%');
+                    }
+                }
+            }
+        });
+        $data = $data->where('status', '1');
+        $data = $data->orderBy($sortBy, $sortDirection);
+        $data = $data->paginate($perPage);
+
+        return $data;
+    }
 }

@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
                 $table->string('password', 50)->default(md5('userwrs'));
                 $table->string('nama_user', 150);
                 $table->string('email', 150);
-                $table->bigInteger('id_group');
+                $table->bigInteger('id_user_group');
                 $table->integer('level_access')->default(4);
                 $table->enum('status_atpm', ['atpm', 'dealer'])->default('dealer');
                 $table->enum('status', ['0', '1'])->default(1);
@@ -51,7 +51,7 @@ class CreateUsersTable extends Migration
                     'nama_user' => $atpm['nm_atpm_user'],
                     'username' => $atpm['username'],
                     'email' => $atpm['email'],
-                    'id_group' => 1,
+                    'id_user_group' => 2,
                     'status_atpm' => 'atpm',
                 ]);
             }
@@ -72,7 +72,7 @@ class CreateUsersTable extends Migration
                     'nama_user' => $dealer['nm_dealer_user'],
                     'username' => $dealer['username'],
                     'email' => $dealer['email'],
-                    'id_group' => 1,
+                    'id_user_group' => 3,
                     'status_atpm' => 'dealer',
                 ]);
             }
@@ -86,7 +86,7 @@ class CreateUsersTable extends Migration
             'nama_user' => 'Bernando Torrez',
             'username' => 'bernand.hermawan',
             'email' => 'Bernand.Dayamuntari@eurokars.co.id',
-            'id_group' => 1,
+            'id_user_group' => 1,
             'status_atpm' => 'atpm',
             'level_access' => 1,
             'password' => md5('bernand.hermawan')
@@ -97,7 +97,7 @@ class CreateUsersTable extends Migration
             'nama_user' => 'Dewi Purnamasari',
             'username' => 'dewi.purnamasari',
             'email' => 'Dewi.Purnamasari@eurokars.co.id',
-            'id_group' => 1,
+            'id_user_group' => 1,
             'status_atpm' => 'atpm',
             'level_access' => 1,
             'password' => md5('dewi.purnamasari')
@@ -108,7 +108,7 @@ class CreateUsersTable extends Migration
             'nama_user' => 'Brian Yunanda',
             'username' => 'brian.yunanda',
             'email' => 'Brian.Yunanda@eurokars.co.id',
-            'id_group' => 1,
+            'id_user_group' => 1,
             'status_atpm' => 'atpm',
             'level_access' => 1,
             'password' => md5('brian.yunanda')

@@ -57,7 +57,6 @@ class UserGroupIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-        $this->insertDuplicate = false;
     }
 
     public function updatingSearch()

@@ -49,9 +49,6 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <h6 class="mb-4">{{ $pageTitle }}</h6>
-
-                                <p class=""></p>
 
                                 <form>
                                     @if(session()->has('message_duplicate'))

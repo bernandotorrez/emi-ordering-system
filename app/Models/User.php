@@ -14,9 +14,9 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'tbl_user';
-    protected $fillable = ['id_user', 'nama_user', 'username', 'password', 'email', 'id_group', 'level_access', 'status_atpm'];
+    protected $fillable = ['id_user', 'nama_user', 'username', 'password', 'email', 'id_user_group', 'level_access', 'status_atpm'];
     protected $primaryKey = 'id_user';
-    protected $visible = ['id_user', 'nama_user', 'username', 'email', 'id_group', 'status_atpm', 'level_access'];
+    protected $visible = ['id_user', 'nama_user', 'username', 'email', 'id_user_group', 'status_atpm', 'level_access'];
     protected $searchableColumn = ['nama_user', 'username', 'email', 'status_atpm'];
     public $incrementing = 'false';
     protected $keyType = 'string';
@@ -26,7 +26,7 @@ class User extends Authenticatable
         return $this->searchableColumn;
     }
 
-    public function oneUserGroup()
+    public function userGroup()
     {
         return $this->belongsTo(UserGroup::class, 'id_user_group');
     }

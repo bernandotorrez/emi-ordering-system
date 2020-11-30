@@ -44,7 +44,7 @@
             </li>
 
             @if(session()->get('level_access') == 1)
-            <li class="menu single-menu active">
+            <li class="menu single-menu {{ (request()->segment(1) == 'admin') ? 'active' : '' }}">
                 <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -64,9 +64,14 @@
                 </a>
                 <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#topAccordion">
 
-                    <li class="">
+                    <li class="{{ (request()->is('admin/user')) ? 'active' : '' }}">
+                        <a href="{{ route('user.index') }}"> User </a>
+                    </li>
+                    
+                    <li class="{{ (request()->is('admin/user-group')) ? 'active' : '' }}">
                         <a href="{{ route('user-group.index') }}"> User Group </a>
                     </li>
+                    
                 </ul>
             </li>
             @endif
