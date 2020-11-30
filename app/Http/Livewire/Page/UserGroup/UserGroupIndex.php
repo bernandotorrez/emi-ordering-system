@@ -121,8 +121,6 @@ class UserGroupIndex extends Component
     {
         $this->isEdit = false;
         $this->resetForm();
-
-        //$this->dispatchBrowserEvent('swal');
         $this->emit('openModal');
     }
 
@@ -147,8 +145,62 @@ class UserGroupIndex extends Component
                 session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
             }
         } else {
-            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->nama_group.'</strong>Already Exists!</div>');
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_group'].'</strong> Already Exists!</div>');
         }
+    }
+
+    public function editForm(UserGroupRepository $userGroupRepository)
+    {
+        $this->isEdit = true;
+
+        $data = $userGroupRepository->getByID($this->checked[0]);
+        $this->bind['id_user_group'] = $data->id_user_group;
+        $this->bind['nama_group'] = $data->nama_group;
+
+        $this->emit('openModal');
+    }
+
+    public function editProcess(UserGroupRepository $userGroupRepository)
+    {
+        $this->validate();
+
+        $data = array('nama_group' => $this->bind['nama_group']);
+
+        $count = $userGroupRepository->findDuplicateEdit($data, $this->bind['id_user_group']);
+
+        if($count >= 1) {
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_group'].'</strong> Already Exists!</div>');
+        } else {
+            $update = $userGroupRepository->update($this->bind['id_user_group'], $data);
+
+            if($update) {
+                $this->isEdit = false;
+                $this->resetForm();
+                $this->deleteCache();
+                $this->emit('closeModal');
+                
+                session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
+            } else {
+                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+            }
+        }
+        
+    }
+
+    public function deleteProcess(UserGroupRepository $userGroupRepository)
+    {
+        $delete = $userGroupRepository->massDelete($this->checked);
+
+        if($delete) {
+            $this->resetForm();
+            $this->deleteCache();
+
+            $deleteStatus = 'success';
+        } else {
+            $deleteStatus = 'failed';
+        }
+
+        $this->emit('deleted', $deleteStatus);
     }
 
     private function deleteCache()
