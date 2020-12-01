@@ -23,6 +23,6 @@ class ChildMenuRepository extends BaseRepository
 
     public function deleteByParent(array $arrayId)
     {
-        $this->model->whereIn($this->primaryKey, $arrayId)->update(['status' => '0']); 
+        $this->model->whereIn('id_parent_menu', $arrayId)->update(['status' => '0']); 
     }
 }

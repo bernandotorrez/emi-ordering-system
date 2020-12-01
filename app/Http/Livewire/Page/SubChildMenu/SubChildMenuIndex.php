@@ -27,7 +27,7 @@ class SubChildMenuIndex extends Component
     public string $pageTitle = "Sub Child Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['childMenu.parentMenu'];
+    protected array $relation = ['childMenu', 'parentMenu'];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -188,7 +188,7 @@ class SubChildMenuIndex extends Component
         }
     }
 
-    public function editForm(SubChildMenuRepository $subChildMenuRepository, ChildMenuRepository $childMenuRepository)
+    public function editForm(SubChildMenuRepository $subChildMenuRepository)
     {
         $this->isEdit = true;
 

@@ -13,20 +13,11 @@ class SubChildMenuRepository extends BaseRepository
 
     public function deleteByParent(array $arrayId)
     {
-        $this->model->whereIn($this->primaryKey, $arrayId)->update(['status' => '0']); 
+        $this->model->whereIn('id_parent_menu', $arrayId)->update(['status' => '0']); 
     }
 
-    public function deleteByChild(array $arrayId, $childMenuRepository)
+    public function deleteByChild(array $arrayId)
     {
-        $dataChildMenu = $childMenuRepository->getByIdParents($arrayId);
- 
-        $arrayIdChild = array();
-
-        foreach($dataChildMenu as $childMenu)
-        {
-           array_push($arrayIdChild, $childMenu->id_child_menu);
-        }
-
-        $this->model->whereIn($this->primaryKey, $arrayIdChild)->update(['status' => '0']);
+        $this->model->whereIn('id_child_menu', $arrayId)->update(['status' => '0']);
     }
 }
