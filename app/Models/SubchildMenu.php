@@ -11,12 +11,12 @@ class SubchildMenu extends Model
 
     protected $table = 'tbl_sub_child_menu';
     protected $primaryKey = 'id_sub_child_menu';
-    protected $fillable = ['id_child_menu', 'sub_child_position', 'nama_sub_child_menu', 'url', 'icon'];
+    protected $fillable = ['id_child_menu', 'id_parent_menu', 'sub_child_position', 'nama_sub_child_menu', 'url', 'icon'];
     protected $visible = [
-        'id_sub_child_menu', 'id_child_menu', 'sub_child_position', 'nama_sub_child_menu', 'url', 'icon'
+        'id_sub_child_menu', 'id_child_menu', 'id_parent_menu', 'sub_child_position', 'nama_sub_child_menu', 'url', 'icon'
     ];
     protected $searchableColumn =  [
-        'id_sub_child_menu', 'id_child_menu', 'sub_child_position', 'nama_sub_child_menu', 'url', 'icon'
+        'id_sub_child_menu', 'id_child_menu', 'id_parent_menu', 'sub_child_position', 'nama_sub_child_menu', 'url', 'icon'
     ];
 
     public function getSearchableColumn()

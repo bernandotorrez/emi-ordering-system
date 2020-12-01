@@ -207,7 +207,7 @@ class ParentMenuIndex extends Component
                 
                 session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
             } else {
-                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
     }
@@ -226,7 +226,7 @@ class ParentMenuIndex extends Component
             $deleteStatus = 'success';
             
             $childMenuRepository->deleteByParent($this->checked);
-            $subChildMenuRepository->deleteByChild($this->checked, $childMenuRepository);
+            $subChildMenuRepository->deleteByParent($this->checked, $childMenuRepository);
         } else {
             $deleteStatus = 'failed';
         }

@@ -156,6 +156,7 @@ class SubChildMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
             'sub_child_position' => $this->bind['sub_child_position'],
             'nama_sub_child_menu' => $this->bind['nama_sub_child_menu'],
@@ -192,10 +193,9 @@ class SubChildMenuIndex extends Component
         $this->isEdit = true;
 
         $data = $subChildMenuRepository->getByID($this->checked[0]);
-        $dataParentMenu = $childMenuRepository->getById($data->id_child_menu);
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
-        $this->bind['id_parent_menu'] = $dataParentMenu->id_parent_menu;
+        $this->bind['id_parent_menu'] = $data->id_parent_menu;
         $this->bind['sub_child_position'] = $data->sub_child_position;
         $this->bind['nama_sub_child_menu'] = $data->sub_nama_child_menu;
         $this->bind['url'] = $data->url;
@@ -210,6 +210,7 @@ class SubChildMenuIndex extends Component
 
         $data = array(
             'id_sub_child_menu' => $this->bind['id_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
             'sub_child_position' => $this->bind['sub_child_position'],
             'nama_sub_child_menu' => $this->bind['nama_sub_child_menu'],
@@ -237,7 +238,7 @@ class SubChildMenuIndex extends Component
                 
                 session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
             } else {
-                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
     }
