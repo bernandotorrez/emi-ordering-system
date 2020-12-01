@@ -7,7 +7,7 @@
                 </a>
             </li>
             <li class="nav-item theme-text">
-                <a href="/home" class="nav-link"> CORK </a>
+                <a href="/home" class="nav-link"> <h6>EMI Ordering System</h6> </a>
             </li>
         </ul>
 
