@@ -1802,12 +1802,12 @@ code {
 
 @media (max-width: 1440px) and (min-width: 992px) {
 
-    .topbar-nav.header nav#topbar ul.menu-categories li.menu:nth-child(1) .submenu .sub-sub-submenu-list:hover ul.sub-submenu,
-    .topbar-nav.header nav#topbar ul.menu-categories li.menu:nth-child(2) .submenu .sub-sub-submenu-list:hover ul.sub-submenu {
+    .topbar-nav.header nav#topbar ul.menu-categories li.menu:nth-child(1) .submenu .sub-sub-submenu-list .sub-sub-sub-submenu-list:hover ul.sub-submenu,
+    .topbar-nav.header nav#topbar ul.menu-categories li.menu:nth-child(2) .submenu .sub-sub-submenu-list .sub-sub-sub-submenu-list:hover ul.sub-submenu {
         right: -200px;
     }
 
-    .topbar-nav.header nav#topbar ul.menu-categories li.menu .submenu .sub-sub-submenu-list:hover ul.sub-submenu {
+    .topbar-nav.header nav#topbar ul.menu-categories li.menu .submenu .sub-sub-submenu-list .sub-sub-sub-submenu-list:hover ul.sub-submenu {
         right: 200px;
     }
 }
