@@ -36,17 +36,10 @@
             @livewire('dynamic-menu')
             <!-- Parent -->
             <li class="menu single-menu">
-                <a href="#menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle autodroprown">
+                <a href="#parent-menu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle autodroprown">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-box">
-                            <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                            </path>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                        </svg>
+                        <i class="fas fa-plus-circle {{ request()->segment(1) == 'admin' ? 'icon-active' : '' }}"
+                            style="font-size: 20px"></i> &nbsp;
                         <span>Sales</span>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -55,43 +48,43 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="menu2" data-parent="#topAccordion">
+                <ul class="collapse submenu list-unstyled" id="parent-menu" data-parent="#topAccordion">
                     <!-- Child -->
                     <li class="sub-sub-submenu-list">
-                        <a href="#sub-sub-category" data-toggle="collapse" aria-expanded="false"
+                        <a href="#child-menu" data-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle"> Sales Order <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                                 <polyline points="9 18 15 12 9 6"></polyline>
                             </svg> </a>
-                        <ul class="collapse list-unstyled sub-submenu" id="sub-sub-category" data-parent="#menu">
+                        <ul class="collapse list-unstyled sub-submenu" id="child-menu" data-parent="#parent-menu">
 
                             <!-- Subchild -->
                             <li class="sub-sub-sub-submenu-list">
-                                <a href="#sub-sub-category" data-toggle="collapse" aria-expanded="false"
+                                <a href="#sub-child" data-toggle="collapse" aria-expanded="false"
                                     class="dropdown-toggle"> ATPM <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                                         <polyline points="9 18 15 12 9 6"></polyline>
                                     </svg> </a>
-                                <ul class="collapse list-unstyled sub-sub-submenu" id="sub-sub-sub-category" data-parent="#menu">
+                                <ul class="collapse list-unstyled sub-sub-submenu" id="sub-child" data-parent="#child-menu">
 
                                     <!-- Sub Sub Child -->
                                     <li>
-                                        <a href="javascript:void(0);"> Approval & Allocated </a>
+                                        <a href="{{ url('home') }}"> Approval & Allocated </a>
                                     </li>
                                 </ul>
                             </li>
 
                             <!-- Subchild -->
                             <li class="sub-sub-sub-submenu-list">
-                                <a href="#sub-sub-category" data-toggle="collapse" aria-expanded="false"
+                                <a href="#sub-child1" data-toggle="collapse" aria-expanded="false"
                                     class="dropdown-toggle"> Dealer <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
                                         <polyline points="9 18 15 12 9 6"></polyline>
                                     </svg> </a>
-                                <ul class="collapse list-unstyled sub-sub-submenu" id="sub-sub-sub-category" data-parent="#menu">
+                                <ul class="collapse list-unstyled sub-sub-submenu" id="sub-child1" data-parent="#child-menu">
 
                                     <!-- Sub Sub Child -->
                                     <li>
@@ -107,7 +100,7 @@
 
             @if(session()->get('level_access') == 1)
             <li class="menu single-menu {{ (request()->segment(1) == 'admin') ? 'active' : '' }}">
-                <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+                <a href="#admin" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
                     <div class="">
                         <i class="fas fa-plus-circle {{ request()->segment(1) == 'admin' ? 'icon-active' : '' }}"
                             style="font-size: 20px"></i> &nbsp;
@@ -119,7 +112,7 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#topAccordion">
+                <ul class="collapse submenu list-unstyled" id="admin" data-parent="#topAccordion">
 
                     <li class="{{ (request()->is('admin/user')) ? 'active' : '' }}">
                         <a href="{{ route('user.index') }}"> User </a>
