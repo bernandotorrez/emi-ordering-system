@@ -37,6 +37,7 @@ class ParentMenuIndex extends Component
         'id_parent_menu' => '',
         'parent_position' => '',
         'nama_parent_menu' => '',
+        'prefix' => '',
         'url' => '',
         'icon' => '',
     ];
@@ -47,6 +48,7 @@ class ParentMenuIndex extends Component
     protected $rules = [
         'bind.parent_position' => 'required|numeric|min:1',
         'bind.nama_parent_menu' => 'required|min:3|max:100',
+        'bind.prefix' => 'required|min:1|max:100',
         'bind.url' => 'required|min:1',
     ];
 
@@ -57,6 +59,9 @@ class ParentMenuIndex extends Component
         'bind.nama_parent_menu.required' => 'The Nama Parent Menu Cant be Empty!',
         'bind.nama_parent_menu.min' => 'The Nama Parent Menu must be at least :min Characters',
         'bind.nama_parent_menu.max' => 'The Nama Parent Menu Cant be maximal :max Characters',
+        'bind.prefix.required' => 'The Prefix Cant be Empty!',
+        'bind.prefix.min' => 'The Prefix must be at least :min Characters',
+        'bind.prefix.max' => 'The Prefix Cant be maximal :max Characters',
         'bind.url.required' => 'The URL Cant be Empty!',
         'bind.url.min' => 'The URL must be at least :min Characters',
     ];
@@ -140,6 +145,7 @@ class ParentMenuIndex extends Component
         $data = array(
             'parent_position' => $this->bind['parent_position'],
             'nama_parent_menu' => $this->bind['nama_parent_menu'],
+            'prefix' => $this->bind['prefix'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
         );
@@ -173,6 +179,7 @@ class ParentMenuIndex extends Component
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
         $this->bind['parent_position'] = $data->parent_position;
         $this->bind['nama_parent_menu'] = $data->nama_parent_menu;
+        $this->bind['prefix'] = $data->prefix;
         $this->bind['url'] = $data->url;
         $this->bind['icon'] = $data->icon ;
 
@@ -186,6 +193,7 @@ class ParentMenuIndex extends Component
         $data = array(
             'parent_position' => $this->bind['parent_position'],
             'nama_parent_menu' => $this->bind['nama_parent_menu'],
+            'prefix' => $this->bind['prefix'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
         );

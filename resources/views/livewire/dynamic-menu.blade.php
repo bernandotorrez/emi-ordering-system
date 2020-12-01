@@ -1,5 +1,5 @@
 @foreach($dataParentMenu as $key => $parentMenu)
-<li class="menu single-menu">
+<li class="menu single-menu {{ (request()->segment(1) == $parentMenu->prefix) ? 'active' : '' }}">
     <a href="#{{$parentMenu->url}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle autodroprown">
         <div class="">
             <i class="fas fa-car"

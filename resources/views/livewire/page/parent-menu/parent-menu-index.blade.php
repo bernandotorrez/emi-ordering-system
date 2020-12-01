@@ -72,6 +72,14 @@
                                     </div>
 
                                     <div class="form-group mb-4">
+                                        <label for="prefix">Prefix</label>
+                                        <input type="text" class="form-control" id="prefix" maxlength="100"
+                                            placeholder="Example : sales" wire:model.lazy="bind.prefix">
+                                        @error('bind.prefix') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
                                         <label for="url">URL</label>
                                         <input type="text" class="form-control" id="url" maxlength="250"
                                             placeholder="Example : /admin/parent-menu" wire:model.lazy="bind.url">
@@ -144,6 +152,11 @@
                                     @include('livewire.datatable-icon', ['field' => 'nama_parent_menu'])
                                 </a>
                             </th>
+                            <th wire:click="sortBy('prefix')">
+                                <a href="javascript:void(0);">Prefix
+                                    @include('livewire.datatable-icon', ['field' => 'prefix'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('url')">
                                 <a href="javascript:void(0);">URL
                                     @include('livewire.datatable-icon', ['field' => 'url'])
@@ -167,6 +180,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->parent_position }}</td>
                                 <td>{{ $data->nama_parent_menu  }}</td>
+                                <td>{{ $data->prefix  }}</td>
                                 <td>{{ $data->url  }}</td>
                                 <td>{{ $data->icon  }}</td>
                             </tr>
