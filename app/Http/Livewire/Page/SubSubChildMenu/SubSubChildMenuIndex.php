@@ -9,8 +9,10 @@ use App\Repository\Eloquent\SubSubChildMenuRepository;
 use App\Traits\WithDeleteCache;
 use App\Traits\WithPaginationAttribute;
 use App\Traits\WithSorting;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Cache as CacheModel;
 
 class SubSubChildMenuIndex extends Component
 {
@@ -25,6 +27,7 @@ class SubSubChildMenuIndex extends Component
     public string $pageTitle = "Sub Sub Child Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
+    protected array $relation = ['subChildMenu', 'childMenu', 'parentMenu'];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -100,6 +103,54 @@ class SubSubChildMenuIndex extends Component
         $cache_name = 'sub-sub-child-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
         $cache_name .= '-sortby-'.$this->sortBy.'-sortdirection-'.$this->sortDirection.'-user-'.session()->get('user')['id_user'];
 
-        return view('livewire.page.sub-sub-child-menu.sub-sub-child-menu-index');
+        $dataSubSubChildMenu = Cache::remember('key', 60, function () use($subSubChildMenuRepository, $cache_name) {
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
+            return $subSubChildMenuRepository->paginationWithRelation(
+                $this->search,
+                $this->sortBy,
+                $this->sortDirection,
+                $this->perPageSelected,
+                $this->relation
+            );
+        });
+
+        return view('livewire.page.sub-sub-child-menu.sub-sub-child-menu-index', [
+            'dataSubSubChildMenu' => $dataSubSubChildMenu,
+            'dataParentMenu' => $parentMenuRepository->allActive(),
+            'dataChildMenu' => $childMenuRepository->getByIdParent($this->bind['id_parent_menu']),
+            'dataSubChildMenu' => $subChildMenuRepository->getByIdChild($this->bind['id_child_menu'])
+        ])
+        ->layout('layouts.app', ['title' => $this->pageTitle]);
+    }
+
+    public function allChecked(SubSubChildMenuRepository $subSubChildMenuRepository)
+    {
+        $datas = $subSubChildMenuRepository->checked(
+            $this->search,
+            $this->sortBy,
+            $this->sortDirection,
+            $this->perPageSelected
+        );
+
+        $id = $subSubChildMenuRepository->getPrimaryKey();
+      
+        // Dari Unchecked ke Checked
+        if($this->allChecked == true) {
+            foreach($datas as $data) {
+                if(!in_array($data->$id, $this->checked)) {
+                    array_push($this->checked, (string) $data->$id);
+                }
+            }
+        } else {
+            // Checked ke Unchecked
+            $this->checked = [];
+        }
+    }
+
+    public function addForm()
+    {
+        $this->isEdit = false;
+        $this->resetForm();
+        $this->emit('openModal');
     }
 }

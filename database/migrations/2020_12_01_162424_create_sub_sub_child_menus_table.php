@@ -17,6 +17,7 @@ class CreateSubSubChildMenusTable extends Migration
             Schema::create('tbl_sub_sub_child_menu', function (Blueprint $table) {
                 $table->id('id_sub_sub_child_menu');
                 $table->bigInteger('id_sub_child_menu');
+                $table->bigInteger('id_child_menu');
                 $table->bigInteger('id_parent_menu');
                 $table->integer('sub_sub_child_position');
                 $table->string('nama_sub_sub_child_menu', 100);

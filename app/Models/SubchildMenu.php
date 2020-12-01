@@ -33,4 +33,9 @@ class SubchildMenu extends Model
     {
         return $this->belongsTo(ParentMenu::class, 'id_parent_menu');
     }
+
+    public function subSubChildsMenu()
+    {
+        return $this->hasMany(SubSubChildMenu::class, 'id_sub_child_menu');
+    }
 }

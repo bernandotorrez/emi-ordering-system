@@ -26,7 +26,12 @@ class SubSubChildMenu extends Model
 
     public function subChildMenu()
     {
-        return $this->belongsTo(SubchildMenu::class, 'id_child_menu');
+        return $this->belongsTo(SubchildMenu::class, 'id_sub_child_menu');
+    }
+
+    public function childMenu()
+    {
+        return $this->belongsTo(ChildMenu::class, 'id_child_menu');
     }
 
     public function parentMenu()

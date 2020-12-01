@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class DynamicMenu extends Component
 {
-    protected $relation = ['childsMenu.subChildsMenu'];
+    protected $relation = ['childsMenu.subChildsMenu.subSubChildsMenu'];
 
     public function render(ParentMenuRepository $parentMenuRepository)
     {

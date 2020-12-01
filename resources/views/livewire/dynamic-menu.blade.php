@@ -37,10 +37,11 @@
                     <ul class="collapse list-unstyled sub-sub-submenu" id="{{$subChildMenu->url}}" data-parent="#{{$childMenu->url}}">
 
                         <!-- Sub Sub Child menu -->
-                        
-                        <li>
-                            <a href="{{ url($subChildMenu->url) }}"> Sub Sub Child</a>
+                        @foreach($subChildMenu->subSubChildsMenu as $keySubSubChild => $subSubChildMenu)
+                        <li class="text-wrap" style="overflow: auto;">
+                            <a href="{{ url($subSubChildMenu->url) }}"> {{$subSubChildMenu->nama_sub_sub_child_menu}}</a>
                         </li>
+                        @endforeach
                     </ul>
                 </li>
                 @endforeach

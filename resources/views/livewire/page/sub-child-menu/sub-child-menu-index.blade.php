@@ -167,7 +167,11 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
-                            <th>Parent Menu</th>
+                            <th wire:click="sortBy('id_parent_menu')">
+                                <a href="javascript:void(0);">Parent Menu
+                                    @include('livewire.datatable-icon', ['field' => 'id_parent_menu'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('id_child_menu')">
                                 <a href="javascript:void(0);">Child Menu
                                     @include('livewire.datatable-icon', ['field' => 'id_child_menu'])
