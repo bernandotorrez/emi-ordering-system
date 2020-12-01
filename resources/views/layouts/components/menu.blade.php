@@ -211,6 +211,10 @@
                         <a href="{{ route('child-menu.index') }}"> Child Menu </a>
                     </li>
 
+                    <li class="{{ (request()->is('admin/sub-child-menu')) ? 'active' : '' }}">
+                        <a href="{{ route('sub-child-menu.index') }}"> Sub Child Menu </a>
+                    </li>
+
                 </ul>
             </li>
             @endif

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cache as CacheModel;
+use App\Repository\Eloquent\ChildMenuRepository;
+use App\Repository\Eloquent\SubChildMenuRepository;
 
 class ParentMenuIndex extends Component
 {
@@ -210,15 +212,21 @@ class ParentMenuIndex extends Component
         }
     }
 
-    public function deleteProcess(ParentMenuRepository $parentMenuRepository)
+    public function deleteProcess(
+        ParentMenuRepository $parentMenuRepository,
+        ChildMenuRepository $childMenuRepository,
+        SubChildMenuRepository $subChildMenuRepository
+        )
     {
         $delete = $parentMenuRepository->massDelete($this->checked);
         
         if($delete) {
             $this->resetForm();
             $this->deleteCache();
-
             $deleteStatus = 'success';
+            
+            $childMenuRepository->deleteByParent($this->checked);
+            $subChildMenuRepository->deleteByChild($this->checked, $childMenuRepository);
         } else {
             $deleteStatus = 'failed';
         }

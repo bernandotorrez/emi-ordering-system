@@ -7,6 +7,7 @@ use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
+use App\Http\Livewire\Page\SubChildMenu\SubChildMenuIndex;
 use App\Http\Livewire\Page\UserGroup\UserGroupIndex;
 use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
 use App\Http\Livewire\Page\User\UserIndex;
@@ -49,4 +50,5 @@ Route::middleware('admin.session')->prefix('admin')->group(function() {
     Route::get('/user-group', UserGroupIndex::class)->name('user-group.index');
     Route::get('/parent-menu', ParentMenuIndex::class)->name('parent-menu.index');
     Route::get('/child-menu', ChildMenuIndex::class)->name('child-menu.index');
+    Route::get('/sub-child-menu', SubChildMenuIndex::class)->name('sub-child-menu.index');
 });

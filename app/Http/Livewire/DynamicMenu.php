@@ -7,11 +7,12 @@ use Livewire\Component;
 
 class DynamicMenu extends Component
 {
-    protected $relation = ['childsMenu'];
+    protected $relation = ['childsMenu.subChildsMenu'];
 
     public function render(ParentMenuRepository $parentMenuRepository)
     {
         $dataParentMenu = $parentMenuRepository->allActiveWithRelation($this->relation);
+        
         return view('livewire.dynamic-menu', ['dataParentMenu' => $dataParentMenu]);
     }
 }

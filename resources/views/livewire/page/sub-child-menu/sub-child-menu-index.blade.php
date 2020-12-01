@@ -1,3 +1,4 @@
+
 <div class="row layout-top-spacing">
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
@@ -72,18 +73,34 @@
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <label for="child_position">Child Position</label>
-                                        <input type="text" class="form-control" id="child_position" maxlength="10"
-                                            placeholder="Example : 1" wire:model.lazy="bind.child_position">
-                                        @error('bind.child_position') <span class="error">{{ $message }}</span>
+                                        <label for="id_child_menu">Child Menu</label>
+                                        <select class="form-control" id="id_child_menu" name="id_child_menu"
+                                        wire:model.lazy="bind.id_child_menu">
+                                            <option value="">- Choose Child Menu -</option>
+
+                                            @foreach($dataChildMenu as $childMenu)
+                                                <option value="{{ $childMenu->id_child_menu }}">
+                                                    {{ $childMenu->nama_child_menu }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('bind.id_child_menu') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <label for="nama_child_menu">Nama Child Menu</label>
-                                        <input type="text" class="form-control" id="nama_child_menu" maxlength="100"
-                                            placeholder="Example : Sales Order" wire:model.lazy="bind.nama_child_menu">
-                                        @error('bind.nama_child_menu') <span class="error">{{ $message }}</span>
+                                        <label for="sub_child_position">Sub Child Position</label>
+                                        <input type="text" class="form-control" id="child_position" maxlength="10"
+                                            placeholder="Example : 1" wire:model.lazy="bind.sub_child_position">
+                                        @error('bind.sub_child_position') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="nama_sub_child_menu">Nama Sub Child Menu</label>
+                                        <input type="text" class="form-control" id="nama_sub_child_menu" maxlength="100"
+                                            placeholder="Example : Sales Order" wire:model.lazy="bind.nama_sub_child_menu">
+                                        @error('bind.nama_sub_child_menu') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -150,19 +167,20 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
-                            <th wire:click="sortBy('id_parent_menu')">
-                                <a href="javascript:void(0);">Parent Menu
-                                    @include('livewire.datatable-icon', ['field' => 'id_parent_menu'])
+                            <th>Parent Menu</th>
+                            <th wire:click="sortBy('id_child_menu')">
+                                <a href="javascript:void(0);">Child Menu
+                                    @include('livewire.datatable-icon', ['field' => 'id_child_menu'])
                                 </a>
                             </th>
-                            <th wire:click="sortBy('child_position')">
-                                <a href="javascript:void(0);">Child Position
-                                    @include('livewire.datatable-icon', ['field' => 'child_position'])
+                            <th wire:click="sortBy('sub_child_position')">
+                                <a href="javascript:void(0);">Sub Child Position
+                                    @include('livewire.datatable-icon', ['field' => 'sub_child_position'])
                                 </a>
                             </th>
-                            <th wire:click="sortBy('nama_child_menu')">
-                                <a href="javascript:void(0);">Nama Child Menu
-                                    @include('livewire.datatable-icon', ['field' => 'nama_child_menu'])
+                            <th wire:click="sortBy('nama_sub_child_menu')">
+                                <a href="javascript:void(0);">Nama Sub Child Menu
+                                    @include('livewire.datatable-icon', ['field' => 'nama_sub_child_menu'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('url')">
@@ -177,18 +195,19 @@
                             </th>
                         </thead>
                         <tbody>
-                            @foreach($dataChildMenu as $data)
+                            @foreach($dataSubChildMenu as $data)
                             <tr>
                                 <td>
                                     <input type="checkbox" 
-                                    value="{{ $data->id_child_menu }}" 
+                                    value="{{ $data->id_sub_child_menu }}" 
                                     class="new-control-input"
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->parentMenu->nama_parent_menu }}</td>
-                                <td>{{ $data->child_position }}</td>
-                                <td>{{ $data->nama_child_menu  }}</td>
+                                <td>{{ $data->childMenu->parentMenu->nama_parent_menu }}</td>
+                                <td>{{ $data->childMenu->nama_child_menu }}</td>
+                                <td>{{ $data->sub_child_position }}</td>
+                                <td>{{ $data->nama_sub_child_menu  }}</td>
                                 <td>{{ $data->url  }}</td>
                                 <td>{{ $data->icon  }}</td>
                             </tr>
@@ -197,7 +216,7 @@
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $dataChildMenu->links('livewire.pagination-links') }}
+                        {{ $dataSubChildMenu->links('livewire.pagination-links') }}
                     </div>
 
                 </div>
