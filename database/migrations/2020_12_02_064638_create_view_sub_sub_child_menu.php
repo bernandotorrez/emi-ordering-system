@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateViewSubSubChildMenu extends Migration
@@ -13,10 +14,7 @@ class CreateViewSubSubChildMenu extends Migration
      */
     public function up()
     {
-        Schema::create('view_sub_sub_child_menu', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        DB::statement($this->createView());
     }
 
     /**
@@ -26,6 +24,27 @@ class CreateViewSubSubChildMenu extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('view_sub_sub_child_menu');
+        DB::statement($this->dropView());
+    }
+
+    private function createView()
+    {
+        return '
+            CREATE VIEW IF NOT EXISTS view_sub_sub_child_menu
+            AS
+            SELECT tsscm.*, tscm.nama_sub_child_menu, tcm.nama_child_menu, tpm.nama_parent_menu
+            FROM tbl_sub_sub_child_menu tsscm
+            INNER JOIN tbl_sub_child_menu tscm ON tscm.id_sub_child_menu = tsscm.id_sub_child_menu
+            INNER JOIN tbl_child_menu tcm ON tcm.id_child_menu = tscm.id_child_menu
+            INNER JOIN tbl_parent_menu tpm ON tpm.id_parent_menu = tscm.id_parent_menu
+            WHERE tscm.status = "1"
+        ';
+    }
+
+    private function dropView()
+    {
+        return '
+            DROP VIEW IF EXISTS view_sub_sub_child_menu
+        ';
     }
 }

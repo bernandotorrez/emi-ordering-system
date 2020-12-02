@@ -105,12 +105,12 @@ class SubSubChildMenuIndex extends Component
 
         $dataSubSubChildMenu = Cache::remember($cache_name, 60, function () use($subSubChildMenuRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
-            return $subSubChildMenuRepository->paginationWithRelation(
+            return $subSubChildMenuRepository->viewPagination(
+                $this->view,
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
                 $this->perPageSelected,
-                $this->relation
             );
         });
 
@@ -125,7 +125,8 @@ class SubSubChildMenuIndex extends Component
 
     public function allChecked(SubSubChildMenuRepository $subSubChildMenuRepository)
     {
-        $datas = $subSubChildMenuRepository->checked(
+        $datas = $subSubChildMenuRepository->viewChecked(
+            $this->view,
             $this->search,
             $this->sortBy,
             $this->sortDirection,
