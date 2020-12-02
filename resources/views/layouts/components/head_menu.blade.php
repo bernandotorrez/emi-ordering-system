@@ -12,7 +12,8 @@
             </svg></a>
 
         <div class="nav-logo align-self-center">
-            <a class="navbar-brand" href="/home"><img alt="logo" src="{{ asset('assets/img/90x90.jpg') }}"> <span
+            <img alt="logo" class="img-fluid" style="max-height: 8%; max-width: 8%;" src="{{ asset('assets/img/mazda-logo.png') }}"> 
+            <a class="navbar-brand" href="{{route('home.index')}}"><span
                     class="navbar-brand-name">EMI Ordering System</span></a>
         </div>
 

@@ -1,11 +1,6 @@
 <div class="topbar-nav header navbar" role="banner">
     <nav id="topbar">
         <ul class="navbar-nav theme-brand flex-row  text-center">
-            <li class="nav-item theme-logo">
-                <a href="{{ url()->route('home.index') }}"">
-                    <img src=" assets/img/90x90.jpg" class="navbar-logo" alt="logo">
-                </a>
-            </li>
             <li class="nav-item theme-text">
                 <a href="/home" class="nav-link"> <h6>EMI Ordering System</h6> </a>
             </li>
@@ -73,6 +68,10 @@
 
                     <li class="{{ (request()->is('admin/sub-sub-child-menu')) ? 'active' : '' }}">
                         <a href="{{ route('sub-sub-child-menu.index') }}"> Sub Sub Child Menu </a>
+                    </li>
+
+                    <li class="{{ (request()->is('admin/menu-user-group')) ? 'active' : '' }}">
+                        <a href="{{ route('menu-user-group.index') }}"> Menu User Group </a>
                     </li>
 
                 </ul>
