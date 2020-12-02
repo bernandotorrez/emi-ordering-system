@@ -27,7 +27,7 @@ class SubSubChildMenuIndex extends Component
     public string $pageTitle = "Sub Sub Child Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['subChildMenu', 'childMenu', 'parentMenu'];
+    protected string $view = 'view_sub_sub_child_menu';
 
     protected $queryString = [
         'search' => ['except' => ''],

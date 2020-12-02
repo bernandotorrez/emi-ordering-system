@@ -28,7 +28,7 @@ class SubChildMenuIndex extends Component
     public string $pageTitle = "Sub Child Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['childMenu', 'parentMenu'];
+    protected string $view = 'view_sub_child_menu';
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -101,12 +101,12 @@ class SubChildMenuIndex extends Component
 
         $dataSubChildMenu = Cache::remember($cache_name, 60, function () use($subChildMenuRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
-            return $subChildMenuRepository->paginationWithRelation(
+            return $subChildMenuRepository->viewPagination(
+                $this->view,
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
                 $this->perPageSelected,
-                $this->relation
             );
         });
         
@@ -123,7 +123,8 @@ class SubChildMenuIndex extends Component
 
     public function allChecked(SubChildMenuRepository $subChildMenuRepository)
     {
-        $datas = $subChildMenuRepository->checked(
+        $datas = $subChildMenuRepository->viewChecked(
+            $this->view,
             $this->search,
             $this->sortBy,
             $this->sortDirection,
