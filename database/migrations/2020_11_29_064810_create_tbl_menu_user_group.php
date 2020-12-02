@@ -20,6 +20,7 @@ class CreateTblMenuUserGroup extends Migration
                 $table->bigInteger('id_parent_menu');
                 $table->bigInteger('id_child_menu');
                 $table->bigInteger('id_sub_child_menu');
+                $table->bigInteger('id_sub_sub_child_menu');
                 $table->enum('can_view', ['0', '1']);
                 $table->enum('can_add', ['0', '1']);
                 $table->enum('can_edit', ['0', '1']);

@@ -35,8 +35,8 @@ class CreateViewSubSubChildMenu extends Migration
             SELECT tsscm.*, tscm.nama_sub_child_menu, tcm.nama_child_menu, tpm.nama_parent_menu
             FROM tbl_sub_sub_child_menu tsscm
             INNER JOIN tbl_sub_child_menu tscm ON tscm.id_sub_child_menu = tsscm.id_sub_child_menu
-            INNER JOIN tbl_child_menu tcm ON tcm.id_child_menu = tscm.id_child_menu
-            INNER JOIN tbl_parent_menu tpm ON tpm.id_parent_menu = tscm.id_parent_menu
+            INNER JOIN tbl_child_menu tcm ON tcm.id_child_menu = tsscm.id_child_menu
+            INNER JOIN tbl_parent_menu tpm ON tpm.id_parent_menu = tsscm.id_parent_menu
             WHERE tscm.status = "1"
         ';
     }

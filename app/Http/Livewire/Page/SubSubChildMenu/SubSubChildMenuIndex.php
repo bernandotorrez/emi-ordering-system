@@ -251,7 +251,7 @@ class SubSubChildMenuIndex extends Component
 
     public function deleteProcess(
         SubSubChildMenuRepository $subSubChildMenuRepository
-        )
+    )
     {
         $delete = $subSubChildMenuRepository->massDelete($this->checked);
         
