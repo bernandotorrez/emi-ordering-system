@@ -16,7 +16,7 @@ class BaseRepository implements BaseInterface
         $this->model = $model;
         $this->primaryKey = (new $model)->getKeyName();
         $this->searchableColumn = (new $model)->getSearchableColumn();
-        $this->visibleColumn = (new $model)->getVisible();
+        //$this->visibleColumn = (new $model)->getVisible();
     }
 
     /**
@@ -26,7 +26,7 @@ class BaseRepository implements BaseInterface
      */
     public function all()
     {
-        return $this->model->all($this->visibleColumn);
+        return $this->model->all();
     }
 
     /**
@@ -35,7 +35,7 @@ class BaseRepository implements BaseInterface
      */
     public function allActive()
     {
-        return $this->model->where('status', '1')->get($this->visibleColumn);
+        return $this->model->where('status', '1')->get();
     }
 
     /**
@@ -45,7 +45,7 @@ class BaseRepository implements BaseInterface
      */
     public function allActiveWithRelation(array $with)
     {
-        return $this->model->where('status', '1')->with($with)->get($this->visibleColumn);
+        return $this->model->where('status', '1')->with($with)->get();
     }
 
     /**
