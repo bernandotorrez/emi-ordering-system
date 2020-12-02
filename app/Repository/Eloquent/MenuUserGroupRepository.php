@@ -20,4 +20,9 @@ class MenuUserGroupRepository extends BaseRepository
             $query->where('status', '1');
         })->get();
     }
+
+    public function getByIdUserGroup($idUserGroup)
+    {
+        return $this->model->where(['status' => '1', 'id_user_group' => $idUserGroup])->get();
+    }
 }

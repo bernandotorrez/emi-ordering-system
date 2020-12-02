@@ -12,13 +12,13 @@ class DynamicMenu extends Component
     //protected $relation = ['parentsMenu.childsMenu.subChildsMenu.subSubChildsMenu'];
     protected $relation = ['childsMenu.subChildsMenu.subSubChildsMenu'];
 
-    public function render(ParentMenuRepository $menuUserGroupRepository)
+    public function render(MenuUserGroupRepository $menuUserGroupRepository)
     {
-        // $idUserGroup = session()->get('user')['id_user_group'];
+        $idUserGroup = session()->get('user')['id_user_group'];
         // $dataParentMenu = $menuUserGroupRepository->getDynamicMenu($idUserGroup);
 
-        $dataParentMenu = $menuUserGroupRepository->allActiveWithRelation($this->relation);
+        $dataMenuUserGroup = $menuUserGroupRepository->getByIdUserGroup($idUserGroup);
         
-        return view('livewire.dynamic-menu', ['dataParentMenu' => $dataParentMenu]);
+        return view('livewire.dynamic-menu', ['dataMenuUserGroup' => $dataMenuUserGroup]);
     }
 }
