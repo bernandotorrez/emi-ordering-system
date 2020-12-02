@@ -39,8 +39,8 @@ class SubSubChildMenuIndex extends Component
         'id_sub_child_menu' => '',
         'id_parent_menu' => '',
         'id_child_menu' => '',
-        'sub_child_position' => '',
-        'nama_sub_child_menu' => '',
+        'sub_sub_child_position' => '',
+        'nama_sub_sub_child_menu' => '',
         'url' => '',
         'icon' => '',
     ];
@@ -103,7 +103,7 @@ class SubSubChildMenuIndex extends Component
         $cache_name = 'sub-sub-child-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
         $cache_name .= '-sortby-'.$this->sortBy.'-sortdirection-'.$this->sortDirection.'-user-'.session()->get('user')['id_user'];
 
-        $dataSubSubChildMenu = Cache::remember('key', 60, function () use($subSubChildMenuRepository, $cache_name) {
+        $dataSubSubChildMenu = Cache::remember($cache_name, 60, function () use($subSubChildMenuRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
             return $subSubChildMenuRepository->paginationWithRelation(
                 $this->search,
@@ -152,5 +152,117 @@ class SubSubChildMenuIndex extends Component
         $this->isEdit = false;
         $this->resetForm();
         $this->emit('openModal');
+    }
+
+    public function addProcess(SubSubChildMenuRepository $subSubChildMenuRepository)
+    {
+        $this->validate();
+
+        $data = array(
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_child_menu' => $this->bind['id_child_menu'],
+            'sub_sub_child_position' => $this->bind['sub_sub_child_position'],
+            'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'],
+            'url' => $this->bind['url'],
+            'icon' => $this->bind['icon'],
+        );
+
+        $where = array(
+            'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'], 
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu']
+        );
+
+        $count = $subSubChildMenuRepository->findDuplicate($where);
+
+        if($count <= 0) {
+            $insert = $subSubChildMenuRepository->create($data);
+
+            if($insert) {
+                $this->resetForm();
+                $this->deleteCache();
+                $this->emit('closeModal');
+
+                session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
+            } else {
+                session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+            }
+        } else {
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_sub_sub_child_menu'].'</strong> Already Exists!</div>');
+        }
+    }
+
+    public function editForm(SubSubChildMenuRepository $subSubChildMenuRepository)
+    {
+        $this->isEdit = true;
+
+        $data = $subSubChildMenuRepository->getByID($this->checked[0]);
+        $this->bind['id_sub_sub_child_menu'] = $data->id_sub_child_menu;
+        $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
+        $this->bind['id_child_menu'] = $data->id_child_menu;
+        $this->bind['id_parent_menu'] = $data->id_parent_menu;
+        $this->bind['sub_sub_child_position'] = $data->sub_sub_child_position;
+        $this->bind['nama_sub_sub_child_menu'] = $data->nama_sub_sub_child_menu;
+        $this->bind['url'] = $data->url;
+        $this->bind['icon'] = $data->icon;
+
+        $this->emit('openModal');
+    }
+
+    public function editProcess(SubSubChildMenuRepository $subSubChildMenuRepository)
+    {
+        $this->validate();
+
+        $data = array(
+            'id_sub_child_menu' => $this->bind['id_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_child_menu' => $this->bind['id_child_menu'],
+            'sub_sub_child_position' => $this->bind['sub_sub_child_position'],
+            'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'],
+            'url' => $this->bind['url'],
+            'icon' => $this->bind['icon'],
+        );
+
+        $where = array(
+            'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'], 
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu']
+        );
+
+        $count = $subSubChildMenuRepository->findDuplicateEdit($where, $this->bind['id_sub_sub_child_menu']);
+
+        if($count >= 1) {
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_sub_sub_child_menu'].'</strong> Already Exists!</div>');
+        } else {
+            $update = $subSubChildMenuRepository->update($this->bind['id_sub_sub_child_menu'], $data);
+
+            if($update) {
+                $this->isEdit = false;
+                $this->resetForm();
+                $this->deleteCache();
+                $this->emit('closeModal');
+                
+                session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
+            } else {
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
+            }
+        }
+    }
+
+    public function deleteProcess(
+        SubSubChildMenuRepository $subSubChildMenuRepository
+        )
+    {
+        $delete = $subSubChildMenuRepository->massDelete($this->checked);
+        
+        if($delete) {
+            $this->resetForm();
+            $this->deleteCache();
+            $deleteStatus = 'success';
+
+        } else {
+            $deleteStatus = 'failed';
+        }
+
+        $this->emit('deleted', $deleteStatus);
     }
 }

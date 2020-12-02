@@ -13,6 +13,7 @@ use App\Models\Cache as CacheModel;
 use App\Models\SubchildMenu;
 use App\Repository\Eloquent\ChildMenuRepository;
 use App\Repository\Eloquent\ParentMenuRepository;
+use App\Repository\Eloquent\SubSubChildMenuRepository;
 
 class SubChildMenuIndex extends Component
 {
@@ -184,7 +185,7 @@ class SubChildMenuIndex extends Component
                 session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
             }
         } else {
-            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_parent_menu'].'</strong> Already Exists!</div>');
+            session()->flash('message_duplicate', '<div class="alert alert-warning"><strong>'.$this->bind['nama_sub_child_menu'].'</strong> Already Exists!</div>');
         }
     }
 
@@ -197,7 +198,7 @@ class SubChildMenuIndex extends Component
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
         $this->bind['sub_child_position'] = $data->sub_child_position;
-        $this->bind['nama_sub_child_menu'] = $data->sub_nama_child_menu;
+        $this->bind['nama_sub_child_menu'] = $data->nama_sub_child_menu;
         $this->bind['url'] = $data->url;
         $this->bind['icon'] = $data->icon;
 
@@ -219,8 +220,8 @@ class SubChildMenuIndex extends Component
         );
 
         $where = array(
-            'nama_sub_child_menu' => $this->bind['nama_child_menu'], 
-            'id_child_menu' => $this->bind['id_parent_menu']
+            'nama_sub_child_menu' => $this->bind['nama_sub_child_menu'], 
+            'id_child_menu' => $this->bind['id_child_menu']
         );
 
         $count = $subChildMenuRepository->findDuplicateEdit($where, $this->bind['id_sub_child_menu']);
@@ -241,5 +242,25 @@ class SubChildMenuIndex extends Component
                 session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
+    }
+
+    public function deleteProcess(
+        SubChildMenuRepository $subChildMenuRepository,
+        SubSubChildMenuRepository $subSubChildMenuRepository
+        )
+    {
+        $delete = $subChildMenuRepository->massDelete($this->checked);
+        
+        if($delete) {
+            $this->resetForm();
+            $this->deleteCache();
+            $deleteStatus = 'success';
+
+            $subSubChildMenuRepository->deleteBySubChild($this->checked);
+        } else {
+            $deleteStatus = 'failed';
+        }
+
+        $this->emit('deleted', $deleteStatus);
     }
 }

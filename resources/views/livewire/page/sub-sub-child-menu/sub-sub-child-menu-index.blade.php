@@ -96,7 +96,7 @@
 
                                         @foreach($dataSubChildMenu as $subChildMenu)
                                             <option value="{{ $subChildMenu->id_sub_child_menu }}">
-                                                {{ $childMenu->nama_sub_child_menu }}
+                                                {{ $subChildMenu->nama_sub_child_menu }}
                                             </option>
                                         @endforeach
                                     </select>

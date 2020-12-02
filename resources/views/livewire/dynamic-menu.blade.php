@@ -38,7 +38,7 @@
 
                         <!-- Sub Sub Child menu -->
                         @foreach($subChildMenu->subSubChildsMenu as $keySubSubChild => $subSubChildMenu)
-                        <li class="text-wrap" style="overflow: auto;">
+                        <li class="text-wrap {{ (request()->is($subSubChildMenu->url)) ? 'active' : '' }}" style="overflow: hidden;">
                             <a href="{{ url($subSubChildMenu->url) }}"> {{$subSubChildMenu->nama_sub_sub_child_menu}}</a>
                         </li>
                         @endforeach

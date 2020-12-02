@@ -244,7 +244,7 @@ class ChildMenuIndex extends Component
             $this->deleteCache();
             $deleteStatus = 'success';
 
-            $subChildMenuRepository->deleteByChild($this->checked, $childMenuRepository);
+            $subChildMenuRepository->deleteByChild($this->checked);
         } else {
             $deleteStatus = 'failed';
         }
