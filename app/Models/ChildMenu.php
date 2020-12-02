@@ -11,9 +11,14 @@ class ChildMenu extends Model
 
     protected $table = 'tbl_child_menu';
     protected $primaryKey = 'id_child_menu';
-    protected $fillable = ['id_parent_menu', 'child_position', 'nama_child_menu', 'url', 'icon'];
-    protected $visible = ['id_child_menu', 'id_parent_menu', 'child_position', 'nama_child_menu', 'url', 'icon'];
-    protected $searchableColumn =  ['id_parent_menu', 'child_position', 'nama_child_menu', 'url', 'icon'];
+    protected $searchableColumn =  [
+        'nama_parent_menu', 
+        'child_position', 
+        'nama_child_menu', 
+        'url', 
+        'icon'
+    ];
+    protected $guarded = ['id_child_menu'];
 
     public function getSearchableColumn()
     {

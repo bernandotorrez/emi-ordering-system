@@ -188,9 +188,9 @@
                                     @include('livewire.datatable-icon', ['field' => 'email'])
                                 </a>
                             </th>
-                            <th wire:click="sortBy('id_user_group')">
+                            <th wire:click="sortBy('nama_group')">
                                 <a href="javascript:void(0);">User Group
-                                    @include('livewire.datatable-icon', ['field' => 'id_user_group'])
+                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('level_access')">

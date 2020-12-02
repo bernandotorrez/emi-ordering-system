@@ -26,7 +26,7 @@ class ChildMenuIndex extends Component
     public string $pageTitle = "Child Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['parentMenu'];
+    protected string $view = 'view_child_menu';
     
     protected $queryString = [
         'search' => ['except' => ''],
@@ -66,7 +66,7 @@ class ChildMenuIndex extends Component
 
     public function mount()
     {
-        $this->sortBy = 'nama_child_menu';
+        $this->sortBy = 'nama_parent_menu';
         $this->fill(request()->only('search', 'page'));
     }
 
@@ -96,12 +96,12 @@ class ChildMenuIndex extends Component
 
         $dataChildMenu = Cache::remember($cache_name, 60, function () use($childMenuRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
-            return $childMenuRepository->paginationWithRelation(
+            return $childMenuRepository->viewPagination(
+                $this->view,
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
-                $this->perPageSelected,
-                $this->relation
+                $this->perPageSelected
             );
         });
 
@@ -115,7 +115,8 @@ class ChildMenuIndex extends Component
 
     public function allChecked(ChildMenuRepository $childMenuRepository)
     {
-        $datas = $childMenuRepository->checked(
+        $datas = $childMenuRepository->allChecked(
+            $this->view,
             $this->search,
             $this->sortBy,
             $this->sortDirection,

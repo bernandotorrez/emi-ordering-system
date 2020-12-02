@@ -150,9 +150,9 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
-                            <th wire:click="sortBy('id_parent_menu')">
+                            <th wire:click="sortBy('nama_parent_menu')">
                                 <a href="javascript:void(0);">Parent Menu
-                                    @include('livewire.datatable-icon', ['field' => 'id_parent_menu'])
+                                    @include('livewire.datatable-icon', ['field' => 'nama_parent_menu'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('child_position')">
@@ -186,7 +186,7 @@
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->parentMenu->nama_parent_menu }}</td>
+                                <td>{{ $data->nama_parent_menu }}</td>
                                 <td>{{ $data->child_position }}</td>
                                 <td>{{ $data->nama_child_menu  }}</td>
                                 <td>{{ $data->url  }}</td>
