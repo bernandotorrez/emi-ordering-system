@@ -2,16 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use App\Repository\Eloquent\ParentMenuRepository;
+use App\Models\MenuUserGroup;
 use Livewire\Component;
 
 class DynamicMenu extends Component
 {
-    protected $relation = ['childsMenu.subChildsMenu.subSubChildsMenu'];
-
-    public function render(ParentMenuRepository $parentMenuRepository)
+    public function render()
     {
-        $dataParentMenu = $parentMenuRepository->allActiveWithRelation($this->relation);
+        $idUserGroup = session()->get('user')['id_user_group'];
+        $dataParentMenu = MenuUserGroup::where('id_user_group', $idUserGroup)
+        ->with('parentsMenu.childsMenu.subChildsMenu.subSubChildsMenu')
+        ->get();
+
+        dd($dataParentMenu);
         
         return view('livewire.dynamic-menu', ['dataParentMenu' => $dataParentMenu]);
     }
