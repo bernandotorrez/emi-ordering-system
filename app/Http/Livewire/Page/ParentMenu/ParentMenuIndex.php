@@ -107,8 +107,11 @@ class ParentMenuIndex extends Component
             );
         });
 
+        $idUserGroup = session()->get('user')['id_user_group'];
+
         return view('livewire.page.parent-menu.parent-menu-index', [
-            'dataParentMenu' => $dataParentMenu
+            'dataParentMenu' => $dataParentMenu,
+            'menuPrivilege' => $menuUserGroupRepository->getMenuPrivilege($idUserGroup, ['status_parent' => '1'])
             ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
     }
