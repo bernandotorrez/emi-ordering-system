@@ -5,7 +5,7 @@
     @if($userGroup->id_child_menu == 0 && $userGroup->id_sub_child_menu == 0 && $userGroup->id_sub_sub_child_menu == 0)
 
         @php
-            $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->get()
+            $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
         @endphp
         @foreach($dataParentMenu as $key => $parentMenu)
         <li class="menu single-menu {{ Request::is($parentMenu->url) ? 'active' : '' }}">
@@ -21,7 +21,7 @@
 
     @elseif($userGroup->id_child_menu == 1 && $userGroup->id_sub_child_menu == 0 && $userGroup->id_sub_sub_child_menu == 0)
         @php
-            $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->get()
+            $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
         @endphp
         @foreach($dataParentMenu as $key => $parentMenu)
         <li class="menu single-menu {{ (request()->segment(1) == $parentMenu->prefix) ? 'active' : '' }}">
@@ -40,7 +40,7 @@
             <ul class="collapse submenu list-unstyled" id="{{Str::slug($parentMenu->nama_parent_menu, '-')}}"
                 data-parent="#topAccordion">
                 @php
-                $dataChildMenu = \App\Models\ChildMenu::where(['status' => '1', 'id_child_menu' => $userGroup->id_child_menu])->get()
+                $dataChildMenu = \App\Models\ChildMenu::where(['status' => '1', 'id_child_menu' => $userGroup->id_child_menu])->orderBy('child_position', 'asc')->get()
                 @endphp
                 @foreach($dataChildMenu as $keyChild => $childMenu)
 
@@ -60,7 +60,7 @@
     @elseif($userGroup->id_child_menu == 1 && $userGroup->id_sub_child_menu == 1 && $userGroup->id_sub_sub_child_menu == 0)
 
     @php
-        $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->get()
+        $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
     @endphp
     @foreach($dataParentMenu as $key => $parentMenu)
     <li class="menu single-menu {{ (request()->segment(1) == $parentMenu->prefix) ? 'active' : '' }}">
@@ -79,7 +79,7 @@
         <ul class="collapse submenu list-unstyled" id="{{Str::slug($parentMenu->nama_parent_menu, '-')}}"
             data-parent="#topAccordion">
             @php
-            $dataChildMenu = \App\Models\ChildMenu::where(['status' => '1', 'id_child_menu' => $userGroup->id_child_menu])->get()
+            $dataChildMenu = \App\Models\ChildMenu::where(['status' => '1', 'id_child_menu' => $userGroup->id_child_menu])->orderBy('child_position', 'asc')->get()
             @endphp
             @foreach($dataChildMenu as $keyChild => $childMenu)
 
@@ -98,7 +98,7 @@
                     data-parent="#{{Str::slug($childMenu->nama_child_menu, '-')}}">
                  
                     @php
-                        $dataSubChildMenu = \App\Models\SubChildMenu::where(['status' => '1', 'id_sub_child_menu' => $userGroup->id_sub_child_menu])->get()
+                        $dataSubChildMenu = \App\Models\SubChildMenu::where(['status' => '1', 'id_sub_child_menu' => $userGroup->id_sub_child_menu])->orderBy('sub_child_position', 'asc')->get()
                     @endphp
 
                     @foreach($dataSubChildMenu as $keySubChildMenu => $subChildMenu)
@@ -123,7 +123,7 @@
 
     @elseif($userGroup->id_child_menu == 1 && $userGroup->id_sub_child_menu == 1 && $userGroup->id_sub_sub_child_menu == 1)
         @php
-            $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->get()
+            $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
         @endphp
         @foreach($dataParentMenu as $key => $parentMenu)
         <li class="menu single-menu {{ (request()->segment(1) == $parentMenu->prefix) ? 'active' : '' }}">
@@ -142,7 +142,7 @@
             <ul class="collapse submenu list-unstyled" id="{{Str::slug($parentMenu->nama_parent_menu, '-')}}"
                 data-parent="#topAccordion">
                 @php
-                $dataChildMenu = \App\Models\ChildMenu::where(['status' => '1', 'id_child_menu' => $userGroup->id_child_menu])->get()
+                $dataChildMenu = \App\Models\ChildMenu::where(['status' => '1', 'id_child_menu' => $userGroup->id_child_menu])->orderBy('child_position', 'asc')->get()
                 @endphp
                 @foreach($dataChildMenu as $keyChild => $childMenu)
 
@@ -161,7 +161,7 @@
                         data-parent="#{{Str::slug($childMenu->nama_child_menu, '-')}}">
                     
                         @php
-                            $dataSubChildMenu = \App\Models\SubChildMenu::where(['status' => '1', 'id_sub_child_menu' => $userGroup->id_sub_child_menu])->get()
+                            $dataSubChildMenu = \App\Models\SubChildMenu::where(['status' => '1', 'id_sub_child_menu' => $userGroup->id_sub_child_menu])->orderBy('sub_child_position', 'asc')->get()
                         @endphp
 
                         @foreach($dataSubChildMenu as $keySubChildMenu => $subChildMenu)
@@ -182,7 +182,7 @@
                                 data-parent="#{{Str::slug($subChildMenu->nama_sub_child_menu, '-')}}">
 
                                 @php
-                                    $dataSubSubChildMenu = \App\Models\SubSubChildMenu::where(['status' => '1', 'id_sub_sub_child_menu' => $userGroup->id_sub_sub_child_menu])->get()
+                                    $dataSubSubChildMenu = \App\Models\SubSubChildMenu::where(['status' => '1', 'id_sub_sub_child_menu' => $userGroup->id_sub_sub_child_menu])->orderBy('sub_sub_child_position', 'asc')->get()
                                 @endphp
 
                                 @foreach($dataSubSubChildMenu as $keySubSubChildMenu => $subSubChildMenu)
