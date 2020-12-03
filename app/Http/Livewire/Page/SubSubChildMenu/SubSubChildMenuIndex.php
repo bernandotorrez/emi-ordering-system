@@ -43,6 +43,10 @@ class SubSubChildMenuIndex extends Component
         'nama_sub_sub_child_menu' => '',
         'url' => '',
         'icon' => '',
+        'can_view' => false,
+        'can_add' => false,
+        'can_edit' => false,
+        'can_delete' => false,
     ];
 
     /**
@@ -167,6 +171,10 @@ class SubSubChildMenuIndex extends Component
             'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
+            'can_view' => $this->bind['can_view'] ? '1' : '0',
+            'can_add' => $this->bind['can_add'] ? '1' : '0',
+            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
+            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array(
@@ -198,7 +206,7 @@ class SubSubChildMenuIndex extends Component
         $this->isEdit = true;
 
         $data = $subSubChildMenuRepository->getByID($this->checked[0]);
-        $this->bind['id_sub_sub_child_menu'] = $data->id_sub_child_menu;
+        $this->bind['id_sub_sub_child_menu'] = $data->id_sub_sub_child_menu;
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
@@ -206,6 +214,10 @@ class SubSubChildMenuIndex extends Component
         $this->bind['nama_sub_sub_child_menu'] = $data->nama_sub_sub_child_menu;
         $this->bind['url'] = $data->url;
         $this->bind['icon'] = $data->icon;
+        $this->bind['can_view'] = $data->can_view ? true : false;
+        $this->bind['can_add'] = $data->can_add ? true : false;
+        $this->bind['can_edit'] = $data->can_edit ? true : false;
+        $this->bind['can_delete'] = $data->can_delete ? true : false;
 
         $this->emit('openModal');
     }
@@ -222,6 +234,10 @@ class SubSubChildMenuIndex extends Component
             'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
+            'can_view' => $this->bind['can_view'] ? '1' : '0',
+            'can_add' => $this->bind['can_add'] ? '1' : '0',
+            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
+            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array(

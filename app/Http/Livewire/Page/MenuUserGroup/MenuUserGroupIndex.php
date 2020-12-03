@@ -211,10 +211,10 @@ class MenuUserGroupIndex extends Component
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
-        $this->bind['can_view'] = $data->can_view ? true : '';
-        $this->bind['can_add'] = $data->can_add ? true : '';
-        $this->bind['can_edit'] = $data->can_edit ? true : '';
-        $this->bind['can_delete'] = $data->can_delete ? true : '';
+        $this->bind['can_view'] = $data->can_view ? true : false;
+        $this->bind['can_add'] = $data->can_add ? true : false;
+        $this->bind['can_edit'] = $data->can_edit ? true : false;
+        $this->bind['can_delete'] = $data->can_delete ? true : false;
 
         $this->emit('openModal');
     }

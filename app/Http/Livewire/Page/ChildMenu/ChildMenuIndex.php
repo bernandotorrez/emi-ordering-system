@@ -40,6 +40,10 @@ class ChildMenuIndex extends Component
         'nama_child_menu' => '',
         'url' => '',
         'icon' => '',
+        'can_view' => false,
+        'can_add' => false,
+        'can_edit' => false,
+        'can_delete' => false,
     ];
 
     /**
@@ -115,7 +119,7 @@ class ChildMenuIndex extends Component
 
     public function allChecked(ChildMenuRepository $childMenuRepository)
     {
-        $datas = $childMenuRepository->allChecked(
+        $datas = $childMenuRepository->viewPagination(
             $this->view,
             $this->search,
             $this->sortBy,
@@ -155,6 +159,10 @@ class ChildMenuIndex extends Component
             'nama_child_menu' => $this->bind['nama_child_menu'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
+            'can_view' => $this->bind['can_view'] ? '1' : '0',
+            'can_add' => $this->bind['can_add'] ? '1' : '0',
+            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
+            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array(
@@ -191,7 +199,11 @@ class ChildMenuIndex extends Component
         $this->bind['child_position'] = $data->child_position;
         $this->bind['nama_child_menu'] = $data->nama_child_menu;
         $this->bind['url'] = $data->url;
-        $this->bind['icon'] = $data->icon ;
+        $this->bind['icon'] = $data->icon;
+        $this->bind['can_view'] = $data->can_view ? true : false;
+        $this->bind['can_add'] = $data->can_add ? true : false;
+        $this->bind['can_edit'] = $data->can_edit ? true : false;
+        $this->bind['can_delete'] = $data->can_delete ? true : false;
 
         $this->emit('openModal');
     }
@@ -206,6 +218,10 @@ class ChildMenuIndex extends Component
             'nama_child_menu' => $this->bind['nama_child_menu'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
+            'can_view' => $this->bind['can_view'] ? '1' : '0',
+            'can_add' => $this->bind['can_add'] ? '1' : '0',
+            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
+            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array(

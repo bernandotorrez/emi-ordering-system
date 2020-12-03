@@ -40,6 +40,10 @@ class ParentMenuIndex extends Component
         'prefix' => '',
         'url' => '',
         'icon' => '',
+        'can_view' => false,
+        'can_add' => false,
+        'can_edit' => false,
+        'can_delete' => false,
     ];
 
     /**
@@ -148,6 +152,10 @@ class ParentMenuIndex extends Component
             'prefix' => $this->bind['prefix'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
+            'can_view' => $this->bind['can_view'] ? '1' : '0',
+            'can_add' => $this->bind['can_add'] ? '1' : '0',
+            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
+            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);
@@ -181,7 +189,11 @@ class ParentMenuIndex extends Component
         $this->bind['nama_parent_menu'] = $data->nama_parent_menu;
         $this->bind['prefix'] = $data->prefix;
         $this->bind['url'] = $data->url;
-        $this->bind['icon'] = $data->icon ;
+        $this->bind['icon'] = $data->icon;
+        $this->bind['can_view'] = $data->can_view ? true : false;
+        $this->bind['can_add'] = $data->can_add ? true : false;
+        $this->bind['can_edit'] = $data->can_edit ? true : false;
+        $this->bind['can_delete'] = $data->can_delete ? true : false;
 
         $this->emit('openModal');
     }
@@ -196,6 +208,10 @@ class ParentMenuIndex extends Component
             'prefix' => $this->bind['prefix'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
+            'can_view' => $this->bind['can_view'] ? '1' : '0',
+            'can_add' => $this->bind['can_add'] ? '1' : '0',
+            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
+            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);

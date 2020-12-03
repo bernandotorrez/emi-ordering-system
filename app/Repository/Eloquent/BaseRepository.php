@@ -63,7 +63,7 @@ class BaseRepository implements BaseInterface
      */
     public function findDuplicate(array $where)
     {
-        return $this->model->where($where)->count();
+        return $this->model->where($where)->where('status', '1')->count();
     }
 
     /**
@@ -73,7 +73,7 @@ class BaseRepository implements BaseInterface
      */
     public function findDuplicateEdit(array $where, $id)
     {
-        return $this->model->where($where)->where($this->primaryKey, '!=', $id)->count();
+        return $this->model->where($where)->where('status', '1')->where($this->primaryKey, '!=', $id)->count();
     }
 
     /**
