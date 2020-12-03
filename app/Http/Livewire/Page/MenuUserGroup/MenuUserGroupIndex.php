@@ -43,22 +43,10 @@ class MenuUserGroupIndex extends Component
         'id_sub_child_menu' => '',
         'id_parent_menu' => '',
         'id_child_menu' => '',
-        'can_view_parent' => '',
-        'can_add_parent' => '',
-        'can_edit_parent' => '',
-        'can_delete_parent' => '',
-        'can_view_child' => '',
-        'can_add_child' => '',
-        'can_edit_child' => '',
-        'can_delete_child' => '',
-        'can_view_sub_child' => '',
-        'can_add_sub_child' => '',
-        'can_edit_sub_child' => '',
-        'can_delete_sub_child' => '',
-        'can_view_sub_sub_child' => '',
-        'can_add_sub_sub_child' => '',
-        'can_edit_sub_sub_child' => '',
-        'can_delete_sub_sub_child' => '',
+        'can_view' => '',
+        'can_add' => '',
+        'can_edit' => '',
+        'can_delete' => '',
         
     ];
 
@@ -90,27 +78,6 @@ class MenuUserGroupIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-
-        if($this->bind['id_child_menu'] == false) {
-            $this->bind['can_view_child'] = false;
-            $this->bind['can_add_child'] = false;
-            $this->bind['can_edit_child'] = false;
-            $this->bind['can_delete_child'] = false;
-        }
-
-        if($this->bind['id_sub_child_menu'] == false) {
-            $this->bind['can_view_sub_child'] = false;
-            $this->bind['can_add_sub_child'] = false;
-            $this->bind['can_edit_sub_child'] = false;
-            $this->bind['can_delete_sub_child'] = false;
-        }
-
-        if($this->bind['id_sub_sub_child_menu'] == false) {
-            $this->bind['can_view_sub_sub_child'] = false;
-            $this->bind['can_add_sub_sub_child'] = false;
-            $this->bind['can_edit_sub_sub_child'] = false;
-            $this->bind['can_delete_sub_sub_child'] = false;
-        }
     }
 
     public function updatingSearch()
@@ -200,22 +167,10 @@ class MenuUserGroupIndex extends Component
             'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
-            'can_view_parent' => $this->bind['can_view_parent'] ? '1': '0',
-            'can_add_parent' => $this->bind['can_add_parent'] ? '1': '0',
-            'can_edit_parent' => $this->bind['can_edit_parent'] ? '1': '0',
-            'can_delete_parent' => $this->bind['can_delete_parent'] ? '1': '0',
-            'can_view_child' => $this->bind['can_view_child'] ? '1': '0',
-            'can_add_child' => $this->bind['can_add_child'] ? '1': '0',
-            'can_edit_child' => $this->bind['can_edit_child'] ? '1': '0',
-            'can_delete_child' => $this->bind['can_delete_child'] ? '1': '0',
-            'can_view_sub_child' => $this->bind['can_view_sub_child'] ? '1': '0',
-            'can_add_sub_child' => $this->bind['can_add_sub_child'] ? '1': '0',
-            'can_edit_sub_child' => $this->bind['can_edit_sub_child'] ? '1': '0',
-            'can_delete_sub_child' => $this->bind['can_delete_sub_child'] ? '1': '0',
-            'can_view_sub_sub_child' => $this->bind['can_view_sub_sub_child'] ? '1': '0',
-            'can_add_sub_sub_child' => $this->bind['can_add_sub_sub_child'] ? '1': '0',
-            'can_edit_sub_sub_child' => $this->bind['can_edit_sub_sub_child'] ? '1': '0',
-            'can_delete_sub_sub_child' => $this->bind['can_delete_sub_sub_child'] ? '1': '0',
+            'can_view' => $this->bind['can_view'] ? '1': '0',
+            'can_add' => $this->bind['can_add'] ? '1': '0',
+            'can_edit' => $this->bind['can_edit'] ? '1': '0',
+            'can_delete' => $this->bind['can_delete'] ? '1': '0',
         );
 
         $where = array(
@@ -253,23 +208,10 @@ class MenuUserGroupIndex extends Component
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
-        $this->bind['can_view_parent'] = ($data->can_view_parent == '1') ? true : false;
-        $this->bind['can_add_parent'] = ($data->can_add_parent == '1') ? true : false;
-        $this->bind['can_edit_parent'] = ($data->can_edit_parent == '1') ? true : false;
-        $this->bind['can_delete_parent'] = ($data->can_delete_parent == '1') ? true : false;
-        $this->bind['can_view_child'] = ($data->can_view_child == '1') ? true : false;
-        $this->bind['can_add_child'] = ($data->can_add_child == '1') ? true : false;
-        $this->bind['can_edit_child'] = ($data->can_edit_child == '1') ? true : false;
-        $this->bind['can_delete_child'] = ($data->can_delete_child == '1') ? true : false;
-        $this->bind['can_view_sub_child'] = ($data->can_view_sub_child == '1') ? true : false;
-        $this->bind['can_add_sub_child'] = ($data->can_add_sub_child == '1') ? true : false;
-        $this->bind['can_edit_sub_child'] = ($data->can_edit_sub_child == '1') ? true : false;
-        $this->bind['can_delete_sub_child'] = ($data->can_delete_sub_child == '1') ? true : false;
-        $this->bind['can_view_sub_sub_child'] = ($data->can_view_sub_sub_child == '1') ? true : false;
-        $this->bind['can_add_sub_sub_child'] = ($data->can_add_sub_sub_child == '1') ? true : false;
-        $this->bind['can_edit_sub_sub_child'] = ($data->can_edit_sub_sub_child == '1') ? true : false;
-        $this->bind['can_delete_sub_sub_child'] = ($data->can_delete_sub_sub_child == '1') ? true : false;
-
+        $this->bind['can_view'] = ($data->can_view == '1') ? true : false;
+        $this->bind['can_add'] = ($data->can_add == '1') ? true : false;
+        $this->bind['can_edit'] = ($data->can_edit == '1') ? true : false;
+        $this->bind['can_delete'] = ($data->can_delete == '1') ? true : false;
         $this->emit('openModal');
     }
 
@@ -283,22 +225,10 @@ class MenuUserGroupIndex extends Component
             'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
-            'can_view_parent' => $this->bind['can_view_parent'] ? '1': '0',
-            'can_add_parent' => $this->bind['can_add_parent'] ? '1': '0',
-            'can_edit_parent' => $this->bind['can_edit_parent'] ? '1': '0',
-            'can_delete_parent' => $this->bind['can_delete_parent'] ? '1': '0',
-            'can_view_child' => $this->bind['can_view_child'] ? '1': '0',
-            'can_add_child' => $this->bind['can_add_child'] ? '1': '0',
-            'can_edit_child' => $this->bind['can_edit_child'] ? '1': '0',
-            'can_delete_child' => $this->bind['can_delete_child'] ? '1': '0',
-            'can_view_sub_child' => $this->bind['can_view_sub_child'] ? '1': '0',
-            'can_add_sub_child' => $this->bind['can_add_sub_child'] ? '1': '0',
-            'can_edit_sub_child' => $this->bind['can_edit_sub_child'] ? '1': '0',
-            'can_delete_sub_child' => $this->bind['can_delete_sub_child'] ? '1': '0',
-            'can_view_sub_sub_child' => $this->bind['can_view_sub_sub_child'] ? '1': '0',
-            'can_add_sub_sub_child' => $this->bind['can_add_sub_sub_child'] ? '1': '0',
-            'can_edit_sub_sub_child' => $this->bind['can_edit_sub_sub_child'] ? '1': '0',
-            'can_delete_sub_sub_child' => $this->bind['can_delete_sub_sub_child'] ? '1': '0',
+            'can_view' => $this->bind['can_view'] ? '1': '0',
+            'can_add' => $this->bind['can_add'] ? '1': '0',
+            'can_edit' => $this->bind['can_edit'] ? '1': '0',
+            'can_delete' => $this->bind['can_delete'] ? '1': '0',
         );
 
         $where = array(

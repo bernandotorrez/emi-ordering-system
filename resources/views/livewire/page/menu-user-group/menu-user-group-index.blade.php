@@ -76,45 +76,6 @@
                                         @enderror
                                     </div>
 
-                                    <div class="row text-center">
-                                        <div class="col">
-                                            <label for="can_view_parent">Can View</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_parent">Can Add</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_parent">Can Edit</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_parent">Can Delete</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4 text-center">
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view_parent">
-                                            @error('bind.can_view_parent') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add_parent">
-                                            @error('bind.can_add_parent') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit_parent">
-                                            @error('bind.can_edit_parent') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input"
-                                                wire:model="bind.can_delete_parent">
-                                            @error('bind.can_delete_parent') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
                                     <div class="form-group mb-4">
                                         <label for="id_child_menu">Child Menu</label>
                                         <select class="form-control" id="id_child_menu" name="id_child_menu"
@@ -131,45 +92,6 @@
                                         @enderror
                                     </div>
 
-                                    <div class="row text-center">
-                                        <div class="col">
-                                            <label for="can_view_child">Can View</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_child">Can Add</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_child">Can Edit</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_child">Can Delete</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4 text-center">
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view_child">
-                                            @error('bind.can_view_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add_child">
-                                            @error('bind.can_add_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit_child">
-                                            @error('bind.can_edit_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input"
-                                                wire:model="bind.can_delete_child">
-                                            @error('bind.can_delete_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
                                     <div class="form-group mb-4">
                                         <label for="id_sub_child_menu">Sub Child Menu</label>
                                         <select class="form-control" id="id_sub_child_menu" name="id_sub_child_menu"
@@ -184,45 +106,6 @@
                                         </select>
                                         @error('bind.id_sub_child_menu') <span class="error">{{ $message }}</span>
                                         @enderror
-                                    </div>
-
-                                    <div class="row text-center">
-                                        <div class="col">
-                                            <label for="can_view_sub_child">Can View</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_sub_child">Can Add</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_sub_child">Can Edit</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add_sub_child">Can Delete</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4 text-center">
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view_sub_child">
-                                            @error('bind.can_view_sub_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add_sub_child">
-                                            @error('bind.can_add_sub_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit_sub_child">
-                                            @error('bind.can_edit_sub_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input"
-                                                wire:model="bind.can_delete_sub_child">
-                                            @error('bind.can_delete_sub_child') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
                                     </div>
 
                                     <div class="form-group mb-4">
@@ -243,39 +126,39 @@
 
                                     <div class="row text-center">
                                         <div class="col">
-                                            <label for="can_view_sub_sub_child">Can View</label>
+                                            <label for="can_view">Can View</label>
                                         </div>
                                         <div class="col">
-                                            <label for="can_add_sub_sub_child">Can Add</label>
+                                            <label for="can_add">Can Add</label>
                                         </div>
                                         <div class="col">
-                                            <label for="can_add_sub_sub_child">Can Edit</label>
+                                            <label for="can_edit">Can Edit</label>
                                         </div>
                                         <div class="col">
-                                            <label for="can_add_sub_sub_child">Can Delete</label>
+                                            <label for="can_delete">Can Delete</label>
                                         </div>
                                     </div>
 
                                     <div class="row mb-4 text-center">
                                         <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view_sub_sub_child">
-                                            @error('bind.can_view_sub_sub_child') <span class="error">{{ $message }}</span>
+                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view">
+                                            @error('bind.can_view') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add_sub_sub_child">
-                                            @error('bind.can_add_sub_sub_child') <span class="error">{{ $message }}</span>
+                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add">
+                                            @error('bind.can_add') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit_sub_sub_child">
-                                            @error('bind.can_edit_sub_sub_child') <span class="error">{{ $message }}</span>
+                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit">
+                                            @error('bind.can_edit') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                         <div class="col">
                                             <input type="checkbox" class="new-control-input"
-                                                wire:model="bind.can_delete_sub_sub_child">
-                                            @error('bind.can_delete_sub_sub_child') <span class="error">{{ $message }}</span>
+                                                wire:model="bind.can_delete">
+                                            @error('bind.can_delete') <span class="error">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
