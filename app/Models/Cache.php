@@ -10,6 +10,5 @@ class Cache extends Model
     use HasFactory;
 
     protected $table = 'tbl_cache';
-    protected $fillable = ['cache_name', 'id_user'];
-    protected $visible = ['cache_name', 'id_user'];
+    protected $guarded = ['id'];
 }

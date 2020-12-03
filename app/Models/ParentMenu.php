@@ -12,7 +12,7 @@ class ParentMenu extends Model
     protected $table = 'tbl_parent_menu';
     protected $primaryKey = 'id_parent_menu';
     protected $searchableColumn =  ['parent_position', 'prefix', 'nama_parent_menu', 'url', 'icon'];
-    protected $guarded = 'id_parent_menu';
+    protected $guarded = ['id_parent_menu'];
 
     public function getSearchableColumn()
     {

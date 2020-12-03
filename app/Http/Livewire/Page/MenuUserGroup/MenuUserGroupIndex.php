@@ -54,9 +54,9 @@ class MenuUserGroupIndex extends Component
      */
     protected $rules = [
         'bind.id_user_group' => 'required',
-        'bind.id_sub_sub_child_menu' => 'required',
-        'bind.id_sub_child_menu' => 'required',
-        'bind.id_child_menu' => 'required',
+        // 'bind.id_sub_sub_child_menu' => 'required',
+        // 'bind.id_sub_child_menu' => 'required',
+        // 'bind.id_child_menu' => 'required',
         'bind.id_parent_menu' => 'required',
         // 'bind.can_view' => 'required',
         // 'bind.can_add' => 'required',
@@ -165,9 +165,9 @@ class MenuUserGroupIndex extends Component
         $this->validate();
 
         $data = array(
-            'id_sub_sub_child_menu' => $this->bind['id_sub_child_menu'],
-            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
-            'id_child_menu' => $this->bind['id_child_menu'],
+            'id_sub_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
+            'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
             'can_view' => $this->bind['can_view'],
@@ -224,9 +224,9 @@ class MenuUserGroupIndex extends Component
         $this->validate();
 
         $data = array(
-            'id_sub_sub_child_menu' => $this->bind['id_sub_child_menu'],
-            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
-            'id_child_menu' => $this->bind['id_child_menu'],
+            'id_sub_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
+            'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
             'can_view' => $this->bind['can_view'],

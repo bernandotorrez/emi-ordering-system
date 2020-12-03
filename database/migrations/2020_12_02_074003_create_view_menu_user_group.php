@@ -34,12 +34,12 @@ class CreateViewMenuUserGroup extends Migration
             AS
             SELECT tmug.*, tug.nama_group, tsscm.nama_sub_sub_child_menu ,tscm.nama_sub_child_menu, tcm.nama_child_menu, tpm.nama_parent_menu
             FROM tbl_menu_user_group tmug
-            INNER JOIN tbl_sub_sub_child_menu tsscm ON tsscm.id_sub_child_menu = tmug.id_sub_child_menu
-            INNER JOIN tbl_sub_child_menu tscm ON tscm.id_sub_child_menu = tmug.id_sub_child_menu
-            INNER JOIN tbl_child_menu tcm ON tcm.id_child_menu = tmug.id_child_menu
+            LEFT JOIN tbl_sub_sub_child_menu tsscm ON tsscm.id_sub_child_menu = tmug.id_sub_child_menu
+            LEFT JOIN tbl_sub_child_menu tscm ON tscm.id_sub_child_menu = tmug.id_sub_child_menu
+            LEFT JOIN tbl_child_menu tcm ON tcm.id_child_menu = tmug.id_child_menu
             INNER JOIN tbl_parent_menu tpm ON tpm.id_parent_menu = tmug.id_parent_menu
             INNER JOIN tbl_user_group tug ON tug.id_user_group = tmug.id_user_group
-            WHERE tscm.status = "1" 
+            WHERE tmug.status = "1" 
         ';
     }
 
