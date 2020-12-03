@@ -90,6 +90,27 @@ class MenuUserGroupIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+
+        if($this->bind['id_child_menu'] == false) {
+            $this->bind['can_view_child'] = false;
+            $this->bind['can_add_child'] = false;
+            $this->bind['can_edit_child'] = false;
+            $this->bind['can_delete_child'] = false;
+        }
+
+        if($this->bind['id_sub_child_menu'] == false) {
+            $this->bind['can_view_sub_child'] = false;
+            $this->bind['can_add_sub_child'] = false;
+            $this->bind['can_edit_sub_child'] = false;
+            $this->bind['can_delete_sub_child'] = false;
+        }
+
+        if($this->bind['id_sub_sub_child_menu'] == false) {
+            $this->bind['can_view_sub_sub_child'] = false;
+            $this->bind['can_add_sub_sub_child'] = false;
+            $this->bind['can_edit_sub_sub_child'] = false;
+            $this->bind['can_delete_sub_sub_child'] = false;
+        }
     }
 
     public function updatingSearch()
@@ -198,9 +219,6 @@ class MenuUserGroupIndex extends Component
         );
 
         $where = array(
-            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu'], 
-            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
-            'id_child_menu' => $this->bind['id_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
         );
@@ -284,9 +302,6 @@ class MenuUserGroupIndex extends Component
         );
 
         $where = array(
-            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu'], 
-            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
-            'id_child_menu' => $this->bind['id_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
         );

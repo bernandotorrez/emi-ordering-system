@@ -1,8 +1,9 @@
 
 
 @foreach($dataMenuUserGroup as $keyUserGroup => $userGroup)
-
-    @if($userGroup->id_child_menu == 0 && $userGroup->id_sub_child_menu == 0 && $userGroup->id_sub_sub_child_menu == 0)
+  
+    @if($userGroup->id_parent_menu != 0 && $userGroup->id_child_menu == 0 
+    && $userGroup->id_sub_child_menu == 0 && $userGroup->id_sub_sub_child_menu == 0)
 
         @php
             $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
@@ -19,7 +20,8 @@
         </li>
         @endforeach
 
-    @elseif($userGroup->id_child_menu == 1 && $userGroup->id_sub_child_menu == 0 && $userGroup->id_sub_sub_child_menu == 0)
+    @elseif($userGroup->id_parent_menu != 0 && $userGroup->id_child_menu != 0 
+        && $userGroup->id_sub_child_menu == 0 && $userGroup->id_sub_sub_child_menu == 0)
         @php
             $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
         @endphp
@@ -57,7 +59,8 @@
             </ul>
         </li>
         @endforeach
-    @elseif($userGroup->id_child_menu == 1 && $userGroup->id_sub_child_menu == 1 && $userGroup->id_sub_sub_child_menu == 0)
+    @elseif($userGroup->id_parent_menu != 0 && $userGroup->id_child_menu != 0 
+        && $userGroup->id_sub_child_menu != 0 && $userGroup->id_sub_sub_child_menu == 0)
 
     @php
         $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
@@ -121,7 +124,8 @@
     </li>
     @endforeach
 
-    @elseif($userGroup->id_child_menu == 1 && $userGroup->id_sub_child_menu == 1 && $userGroup->id_sub_sub_child_menu == 1)
+    @elseif($userGroup->id_parent_menu != 0 && $userGroup->id_child_menu != 0 
+        && $userGroup->id_sub_child_menu != 0 && $userGroup->id_sub_sub_child_menu != 0)
         @php
             $dataParentMenu = \App\Models\ParentMenu::where(['status' => '1', 'id_parent_menu' => $userGroup->id_parent_menu])->orderBy('parent_position', 'asc')->get()
         @endphp
