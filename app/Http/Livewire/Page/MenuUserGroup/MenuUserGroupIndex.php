@@ -165,7 +165,7 @@ class MenuUserGroupIndex extends Component
         $this->validate();
 
         $data = array(
-            'id_sub_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
+            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu'] ? $this->bind['id_sub_sub_child_menu'] : 0,
             'id_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
             'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
@@ -178,7 +178,7 @@ class MenuUserGroupIndex extends Component
 
         $where = array(
             'id_user_group' => $this->bind['id_user_group'], 
-            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu']
+            'id_parent_menu' => $this->bind['id_parent_menu']
         );
 
         $count = $MenuUserGroupRepository->findDuplicate($where);
@@ -207,7 +207,7 @@ class MenuUserGroupIndex extends Component
         $data = $menuUserGroupRepository->getByID($this->checked[0]);
         $this->bind['id_menu_user_group'] = $data->id_menu_user_group;
         $this->bind['id_user_group'] = $data->id_user_group;
-        $this->bind['id_sub_sub_child_menu'] = $data->id_sub_child_menu;
+        $this->bind['id_sub_sub_child_menu'] = $data->id_sub_sub_child_menu;
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
@@ -224,7 +224,7 @@ class MenuUserGroupIndex extends Component
         $this->validate();
 
         $data = array(
-            'id_sub_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
+            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu'] ? $this->bind['id_sub_sub_child_menu'] : 0,
             'id_sub_child_menu' => $this->bind['id_sub_child_menu'] ? $this->bind['id_sub_child_menu'] : 0,
             'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
@@ -237,7 +237,7 @@ class MenuUserGroupIndex extends Component
 
         $where = array(
             'id_user_group' => $this->bind['id_user_group'], 
-            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu']
+            'id_parent_menu' => $this->bind['id_parent_menu']
         );
 
         $count = $menuUserGroupRepository->findDuplicateEdit($where, $this->bind['id_menu_user_group']);

@@ -234,7 +234,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" 
-                                value="{{ $data->id_sub_child_menu }}" 
+                                value="{{ $data->id_menu_user_group }}" 
                                 class="new-control-input"
                                 wire:model="checked">
                             </td>
