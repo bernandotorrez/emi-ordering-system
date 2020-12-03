@@ -171,7 +171,9 @@ class SubSubChildMenuIndex extends Component
 
         $where = array(
             'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'], 
-            'id_sub_child_menu' => $this->bind['id_sub_child_menu']
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
+            'id_child_menu' => $this->bind['id_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
         );
 
         $count = $subSubChildMenuRepository->findDuplicate($where);
@@ -226,7 +228,9 @@ class SubSubChildMenuIndex extends Component
 
         $where = array(
             'nama_sub_sub_child_menu' => $this->bind['nama_sub_sub_child_menu'], 
-            'id_sub_child_menu' => $this->bind['id_sub_child_menu']
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
+            'id_child_menu' => $this->bind['id_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
         );
 
         $count = $subSubChildMenuRepository->findDuplicateEdit($where, $this->bind['id_sub_sub_child_menu']);

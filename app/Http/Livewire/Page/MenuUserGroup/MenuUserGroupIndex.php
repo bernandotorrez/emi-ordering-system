@@ -198,8 +198,11 @@ class MenuUserGroupIndex extends Component
         );
 
         $where = array(
-            'id_user_group' => $this->bind['id_user_group'], 
-            'id_parent_menu' => $this->bind['id_parent_menu']
+            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu'], 
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
+            'id_child_menu' => $this->bind['id_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
         );
 
         $count = $MenuUserGroupRepository->findDuplicate($where);
@@ -281,8 +284,11 @@ class MenuUserGroupIndex extends Component
         );
 
         $where = array(
-            'id_user_group' => $this->bind['id_user_group'], 
-            'id_parent_menu' => $this->bind['id_parent_menu']
+            'id_sub_sub_child_menu' => $this->bind['id_sub_sub_child_menu'], 
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
+            'id_child_menu' => $this->bind['id_child_menu'],
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
         );
 
         $count = $menuUserGroupRepository->findDuplicateEdit($where, $this->bind['id_menu_user_group']);

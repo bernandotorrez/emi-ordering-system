@@ -36,8 +36,8 @@ class CreateUsersTable extends Migration
             });
         }
 
-        $this->insertAtpm();
-        $this->insertDealer();
+        // $this->insertAtpm();
+        // $this->insertDealer();
         $this->insertAdmin();
     }
 

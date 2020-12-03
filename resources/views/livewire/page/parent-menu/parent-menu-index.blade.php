@@ -8,33 +8,19 @@
                 {!! session('action_message') !!}
                 @endif
 
-                @if(session()->get('level_access') == '1')
-                <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
-                </button>
-                @elseif($menuPrivilege->can_add_parent == '1')
-                <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
-                </button>
-                @endif
 
-                @if(session()->get('level_access') == '1')
+                <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
+                </button>
+
+
                 <button type="button" class="btn btn-success mr-4" id="editButton" wire:click.prevent="editForm"
                     @if(count($checked) !=1) disabled @endif> Edit
                 </button>
-                @elseif($menuPrivilege->can_edit_parent == '1')
-                <button type="button" class="btn btn-success mr-4" id="editButton" wire:click.prevent="editForm"
-                    @if(count($checked) !=1) disabled @endif> Edit
-                </button>
-                @endif
 
-                @if(session()->get('level_access') == '1')
+
                 <button type="button" class="btn btn-danger" id="deleteButton"
                     wire:click.prevent="$emit('triggerDelete')" @if(count($checked) <=0 ) disabled @endif> Delete
                 </button>
-                @elseif($menuPrivilege->can_delete_parent == '1')
-                <button type="button" class="btn btn-danger" id="deleteButton"
-                    wire:click.prevent="$emit('triggerDelete')" @if(count($checked) <=0 ) disabled @endif> Delete
-                </button>
-                @endif
                 <!-- @dump($checked) -->
 
                 <!-- Modal -->
@@ -121,8 +107,6 @@
 
                 <p></p>
 
-                @if(session()->get('level_access') != '1')
-                @if($menuPrivilege->can_view_parent)
                 <div class="table-responsive mt-4">
                     <div class="d-flex">
                         <div class="p-2 align-content-center align-items-center" class="text-center">Per Page : </div>
@@ -144,12 +128,10 @@
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                @if(session()->get('level_access') != '1')
-                                @if($menuPrivilege->can_add_parent == '1' && $menuPrivilege->can_edit_parent == '1')
+
                                 <input type="checkbox" class="new-control-input" wire:model="allChecked"
                                     wire:click="allChecked">
-                                @endif
-                                @endif
+
                             </th>
                             <th width="10%">No</th>
                             <th wire:click="sortBy('parent_position')">
@@ -182,12 +164,10 @@
                             @foreach($dataParentMenu as $data)
                             <tr>
                                 <td>
-                                    @if(session()->get('level_access') != '1')
-                                    @if($menuPrivilege->can_add_parent == '1' && $menuPrivilege->can_edit_parent == '1')
+
                                     <input type="checkbox" value="{{ $data->id_parent_menu }}" class="new-control-input"
                                         wire:model="checked">
-                                    @endif
-                                    @endif
+
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->parent_position }}</td>
@@ -205,8 +185,6 @@
                     </div>
 
                 </div>
-                @endif
-                @endif
 
             </div>
         </div>
@@ -232,5 +210,6 @@
             }
         });
     });
+
 </script>
 @endpush
