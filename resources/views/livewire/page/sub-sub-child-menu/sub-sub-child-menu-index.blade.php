@@ -136,44 +136,6 @@
                                     @enderror
                                 </div>
 
-                                <div class="row text-center">
-                                        <div class="col">
-                                            <label for="can_view">Can View</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add">Can Add</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add">Can Edit</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add">Can Delete</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4 text-center">
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view">
-                                            @error('bind.can_view') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add">
-                                            @error('bind.can_add') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit">
-                                            @error('bind.can_edit') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_delete">
-                                            @error('bind.can_delete') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -256,26 +218,6 @@
                                 @include('livewire.datatable-icon', ['field' => 'icon'])
                             </a>
                         </th>
-                        <th wire:click="sortBy('can_view')">
-                                <a href="javascript:void(0);">Can View
-                                    @include('livewire.datatable-icon', ['field' => 'can_view'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('can_add')">
-                                <a href="javascript:void(0);">Can Add
-                                    @include('livewire.datatable-icon', ['field' => 'can_add'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('can_edit')">
-                                <a href="javascript:void(0);">Can Edit
-                                    @include('livewire.datatable-icon', ['field' => 'can_edit'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('can_delete')">
-                                <a href="javascript:void(0);">Can Delete
-                                    @include('livewire.datatable-icon', ['field' => 'can_delete'])
-                                </a>
-                            </th>
                     </thead>
                     <tbody>
                         @foreach($dataSubSubChildMenu as $data)
@@ -294,10 +236,6 @@
                             <td>{{ $data->nama_sub_sub_child_menu  }}</td>
                             <td>{{ $data->url  }}</td>
                             <td>{{ $data->icon  }}</td>
-                            <td>{{ $data->can_view  }}</td>
-                            <td>{{ $data->can_add  }}</td>
-                            <td>{{ $data->can_edit  }}</td>
-                            <td>{{ $data->can_delete  }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -4,6 +4,7 @@ namespace App\Repository\Eloquent;
 
 use App\Models\MenuUserGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class MenuUserGroupRepository extends BaseRepository
 {
@@ -24,5 +25,13 @@ class MenuUserGroupRepository extends BaseRepository
     public function getByIdUserGroup($idUserGroup)
     {
         return $this->model->where(['status' => '1', 'id_user_group' => $idUserGroup])->get();
+    }
+
+    public function getMenuPrivilege($idUserGroup, $where)
+    {
+        return DB::table('view_menu_user_group')
+        ->where('id_user_group', $idUserGroup)
+        ->where($where)
+        ->first();
     }
 }

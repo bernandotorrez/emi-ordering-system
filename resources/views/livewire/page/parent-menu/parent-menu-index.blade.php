@@ -5,29 +5,21 @@
             <div class="widget-one">
 
                 @if(session()->has('action_message'))
-                    {!! session('action_message') !!}
+                {!! session('action_message') !!}
                 @endif
 
-                <button type="button" 
-                class="btn btn-primary mr-4" 
-                id="addButton"
-                wire:click.prevent="addForm"> Add
+                <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
                 </button>
 
-                <button type="button" 
-                class="btn btn-success mr-4" 
-                id="editButton"
-                wire:click.prevent="editForm"
-                @if(count($checked) != 1) disabled @endif
-                > Edit
+
+                <button type="button" class="btn btn-success mr-4" id="editButton" wire:click.prevent="editForm"
+                    @if(count($checked) !=1) disabled @endif> Edit
                 </button>
 
-                <button type="button" 
-                class="btn btn-danger" 
-                id="deleteButton"
-                wire:click.prevent="$emit('triggerDelete')"
-                @if(count($checked) <= 0 ) disabled @endif
-                > Delete
+
+
+                <button type="button" class="btn btn-danger" id="deleteButton"
+                    wire:click.prevent="$emit('triggerDelete')" @if(count($checked) <=0 ) disabled @endif> Delete
                 </button>
 
                 <!-- @dump($checked) -->
@@ -52,7 +44,7 @@
 
                                 <form>
                                     @if(session()->has('message_duplicate'))
-                                     {!! session('message_duplicate') !!}
+                                    {!! session('message_duplicate') !!}
                                     @endif
 
                                     <div class="form-group mb-4">
@@ -95,44 +87,6 @@
                                         @enderror
                                     </div>
 
-                                    <div class="row text-center">
-                                        <div class="col">
-                                            <label for="can_view">Can View</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add">Can Add</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add">Can Edit</label>
-                                        </div>
-                                        <div class="col">
-                                            <label for="can_add">Can Delete</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mb-4 text-center">
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_view">
-                                            @error('bind.can_view') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_add">
-                                            @error('bind.can_add') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_edit">
-                                            @error('bind.can_edit') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <input type="checkbox" class="new-control-input" wire:model="bind.can_delete">
-                                            @error('bind.can_delete') <span class="error">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -143,9 +97,8 @@
                                     wire:click.prevent="editProcess" wire:offline.attr="disabled"> Update </button>
                                 @else
                                 <button type="button" class="btn btn-primary" id="submit"
-                                    wire:click.prevent="addProcess" 
-                                    wire:offline.attr="disabled"
-                                    @error('bind.*') disabled @enderror> Submit </button>
+                                    wire:click.prevent="addProcess" wire:offline.attr="disabled" @error('bind.*')
+                                    disabled @enderror> Submit </button>
                                 @endif
                             </div>
                         </div>
@@ -171,13 +124,13 @@
                             <input type="text" class="form-control" wire:model="search" placeholder="Search...">
                         </div>
                     </div>
+
+
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                <input type="checkbox"
-                                class="new-control-input"
-                                wire:model="allChecked"
-                                wire:click="allChecked">
+                                <input type="checkbox" class="new-control-input" wire:model="allChecked"
+                                    wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
                             <th wire:click="sortBy('parent_position')">
@@ -205,35 +158,13 @@
                                     @include('livewire.datatable-icon', ['field' => 'icon'])
                                 </a>
                             </th>
-                            <th wire:click="sortBy('can_view')">
-                                <a href="javascript:void(0);">Can View
-                                    @include('livewire.datatable-icon', ['field' => 'can_view'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('can_add')">
-                                <a href="javascript:void(0);">Can Add
-                                    @include('livewire.datatable-icon', ['field' => 'can_add'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('can_edit')">
-                                <a href="javascript:void(0);">Can Edit
-                                    @include('livewire.datatable-icon', ['field' => 'can_edit'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('can_delete')">
-                                <a href="javascript:void(0);">Can Delete
-                                    @include('livewire.datatable-icon', ['field' => 'can_delete'])
-                                </a>
-                            </th>
                         </thead>
                         <tbody>
                             @foreach($dataParentMenu as $data)
                             <tr>
                                 <td>
-                                    <input type="checkbox" 
-                                    value="{{ $data->id_parent_menu }}" 
-                                    class="new-control-input"
-                                    wire:model="checked">
+                                    <input type="checkbox" value="{{ $data->id_parent_menu }}" class="new-control-input"
+                                        wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->parent_position }}</td>
@@ -241,10 +172,6 @@
                                 <td>{{ $data->prefix  }}</td>
                                 <td>{{ $data->url  }}</td>
                                 <td>{{ $data->icon  }}</td>
-                                <td>{{ $data->can_view  }}</td>
-                                <td>{{ $data->can_add  }}</td>
-                                <td>{{ $data->can_edit  }}</td>
-                                <td>{{ $data->can_delete  }}</td>
                             </tr>
                             @endforeach
                         </tbody>

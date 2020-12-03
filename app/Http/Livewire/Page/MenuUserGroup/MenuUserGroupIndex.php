@@ -43,10 +43,6 @@ class MenuUserGroupIndex extends Component
         'id_sub_child_menu' => '',
         'id_parent_menu' => '',
         'id_child_menu' => '',
-        'can_view' => false,
-        'can_add' => false,
-        'can_edit' => false,
-        'can_delete' => false,
     ];
 
     /**
@@ -66,10 +62,6 @@ class MenuUserGroupIndex extends Component
         'bind.id_sub_child_menu.required' => 'Please Choose ID Sub Child Menu',
         'bind.id_child_menu.required' => 'Please Choose ID Child Menu',
         'bind.id_parent_menu.required' => 'Please Choose ID Parent Menu',
-        'bind.can_view.required' => 'Please Choose Can View',
-        'bind.can_add.required' => 'Please Choose Can Add',
-        'bind.can_edit.required' => 'Please Choose Can Edit',
-        'bind.can_delete.required' => 'Please Choose Can Delete',
     ];
 
     public function mount()
@@ -170,10 +162,6 @@ class MenuUserGroupIndex extends Component
             'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
-            'can_view' => $this->bind['can_view'] ? '1' : '0',
-            'can_add' => $this->bind['can_add'] ? '1' : '0',
-            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
-            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array(
@@ -211,10 +199,6 @@ class MenuUserGroupIndex extends Component
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
-        $this->bind['can_view'] = $data->can_view ? true : false;
-        $this->bind['can_add'] = $data->can_add ? true : false;
-        $this->bind['can_edit'] = $data->can_edit ? true : false;
-        $this->bind['can_delete'] = $data->can_delete ? true : false;
 
         $this->emit('openModal');
     }
@@ -229,10 +213,6 @@ class MenuUserGroupIndex extends Component
             'id_child_menu' => $this->bind['id_child_menu'] ? $this->bind['id_child_menu'] : 0,
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_user_group' => $this->bind['id_user_group'],
-            'can_view' => $this->bind['can_view'] ? '1' : '0',
-            'can_add' => $this->bind['can_add'] ? '1' : '0',
-            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
-            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array(

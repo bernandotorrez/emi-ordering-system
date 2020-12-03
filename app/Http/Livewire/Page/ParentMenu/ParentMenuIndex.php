@@ -11,6 +11,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cache as CacheModel;
 use App\Repository\Eloquent\ChildMenuRepository;
+use App\Repository\Eloquent\MenuUserGroupRepository;
 use App\Repository\Eloquent\SubChildMenuRepository;
 
 class ParentMenuIndex extends Component
@@ -40,10 +41,6 @@ class ParentMenuIndex extends Component
         'prefix' => '',
         'url' => '',
         'icon' => '',
-        'can_view' => false,
-        'can_add' => false,
-        'can_edit' => false,
-        'can_delete' => false,
     ];
 
     /**
@@ -91,7 +88,10 @@ class ParentMenuIndex extends Component
         $this->reset(['bind']);
     }
 
-    public function render(ParentMenuRepository $parentMenuRepository)
+    public function render(
+        ParentMenuRepository $parentMenuRepository,
+        MenuUserGroupRepository $menuUserGroupRepository
+        )
     {
         $cache_name = 'parent-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
         $cache_name .= '-sortby-'.$this->sortBy.'-sortdirection-'.$this->sortDirection.'-user-'.session()->get('user')['id_user'];
@@ -107,7 +107,9 @@ class ParentMenuIndex extends Component
             );
         });
 
-        return view('livewire.page.parent-menu.parent-menu-index', ['dataParentMenu' => $dataParentMenu])
+        return view('livewire.page.parent-menu.parent-menu-index', [
+            'dataParentMenu' => $dataParentMenu
+            ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
     }
 
@@ -152,10 +154,6 @@ class ParentMenuIndex extends Component
             'prefix' => $this->bind['prefix'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
-            'can_view' => $this->bind['can_view'] ? '1' : '0',
-            'can_add' => $this->bind['can_add'] ? '1' : '0',
-            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
-            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);
@@ -190,10 +188,6 @@ class ParentMenuIndex extends Component
         $this->bind['prefix'] = $data->prefix;
         $this->bind['url'] = $data->url;
         $this->bind['icon'] = $data->icon;
-        $this->bind['can_view'] = $data->can_view ? true : false;
-        $this->bind['can_add'] = $data->can_add ? true : false;
-        $this->bind['can_edit'] = $data->can_edit ? true : false;
-        $this->bind['can_delete'] = $data->can_delete ? true : false;
 
         $this->emit('openModal');
     }
@@ -208,10 +202,6 @@ class ParentMenuIndex extends Component
             'prefix' => $this->bind['prefix'],
             'url' => $this->bind['url'],
             'icon' => $this->bind['icon'],
-            'can_view' => $this->bind['can_view'] ? '1' : '0',
-            'can_add' => $this->bind['can_add'] ? '1' : '0',
-            'can_edit' => $this->bind['can_edit'] ? '1' : '0',
-            'can_delete' => $this->bind['can_delete'] ? '1' : '0',
         );
 
         $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);

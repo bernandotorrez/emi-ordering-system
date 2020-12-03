@@ -21,10 +21,6 @@ class CreateTblChildMenu extends Migration
                 $table->string('nama_child_menu', 100);
                 $table->text('url');
                 $table->string('icon', 100);
-                $table->enum('can_view', ['0', '1']);
-                $table->enum('can_add', ['0', '1']);
-                $table->enum('can_edit', ['0', '1']);
-                $table->enum('can_delete', ['0', '1']);
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
