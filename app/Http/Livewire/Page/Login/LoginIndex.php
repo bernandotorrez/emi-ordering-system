@@ -122,7 +122,9 @@ class LoginIndex extends Component
                     }
                 }
 
-                session(['user' => $response['data'], 'level_access' => 4]);
+                $loginData = User::where(['username' => $this->username])->first();
+
+                session(['user' => $loginData->toArray(), 'level_access' => $loginData->level_access]);
                 return redirect()->route('home.index');
             }
         }
