@@ -178,7 +178,8 @@ class MenuUserGroupIndex extends Component
             'id_user_group' => $this->bind['id_user_group'],
         );
 
-        $count = $MenuUserGroupRepository->findDuplicate($where);
+        //$count = $MenuUserGroupRepository->findDuplicate($where);
+        $count = 0;
 
         if($count <= 0) {
             $insert = $MenuUserGroupRepository->create($data);
@@ -236,7 +237,8 @@ class MenuUserGroupIndex extends Component
             'id_user_group' => $this->bind['id_user_group'],
         );
 
-        $count = $menuUserGroupRepository->findDuplicateEdit($where, $this->bind['id_menu_user_group']);
+        //$count = $menuUserGroupRepository->findDuplicateEdit($where, $this->bind['id_menu_user_group']);
+        $count = 0;
 
         if($count >= 1) {
             session()->flash('message_duplicate', '<div class="alert alert-warning"><strong> Already Exists!</div>');

@@ -31,6 +31,21 @@ class MenuUserGroup extends Model
 
     public function parentsMenu()
     {
-        return $this->hasMany(ParentMenu::class, 'id_parent_menu');
+        return $this->belongsTo(ParentMenu::class, 'id_parent_menu');
+    }
+
+    public function childsMenu()
+    {
+        return $this->belongsTo(ChildMenu::class, 'id_child_menu');
+    }
+
+    public function subChildsMenu()
+    {
+        return $this->belongsTo(SubchildMenu::class, 'id_sub_child_menu');
+    }
+
+    public function subSubChildsMenu()
+    {
+        return $this->belongsTo(SubSubChildMenu::class, 'id_sub_sub_child_menu');
     }
 }

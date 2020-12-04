@@ -27,11 +27,10 @@ class MenuUserGroupRepository extends BaseRepository
         return $this->model->where(['status' => '1', 'id_user_group' => $idUserGroup])->get();
     }
 
-    public function getMenuPrivilege($idUserGroup, $where)
+    public function getMenuPrivilege($idUserGroup)
     {
         return DB::table('view_menu_user_group')
         ->where('id_user_group', $idUserGroup)
-        ->where($where)
-        ->first();
+        ->get();
     }
 }
