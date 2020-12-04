@@ -41,12 +41,9 @@ class DynamicMenu extends Component
                     ]);
             },
         ])->get();
-
-        // $dataParentMenu = ParentMenu::whereHas(['childsMenu.subChildsMenu.subSubChildsMenu' => function ($query) use($idUserGroup) {
-        //     $query->where('id_user_group', $idUserGroup);
-        // }])
-        // ->get();
         
+
+        //TODO: buat loopingan untuk get is_exist_Parent, is_exist_child, id_exists_sub_child or is_exists_sub_sub_child
         return view('livewire.dynamic-menu', ['dataParentMenu' => $dataParentMenu]);
     }
 }

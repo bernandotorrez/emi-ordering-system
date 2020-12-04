@@ -17,7 +17,7 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
             Schema::create('tbl_master_additional_order_unit', function (Blueprint $table) {
                 $table->id('id_additional_order_unit');
                 $table->string('no_order_atpm', 7);
-                $table->string('oreder_no_dealer', 10);
+                $table->string('order_no_dealer', 10);
                 $table->dateTime('date_save_order');
                 $table->dateTime('date_send_approval');
                 $table->dateTime('date_approval');

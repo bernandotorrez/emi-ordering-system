@@ -14,7 +14,7 @@ class MasterAdditionalOrderUnit extends Model
     protected $searchableColumn =  [
         'id_oder',
         'order_no_atpm',
-        'oreder_no_dealer',
+        'order_no_dealer',
         'date_save_order',
         'date_send_approval',
         'date_approval',

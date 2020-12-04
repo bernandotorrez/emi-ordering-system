@@ -7,7 +7,7 @@
                 @if(session()->has('action_message'))
                 {!! session('action_message') !!}
                 @endif
-
+                
                 <form id="contact" class="section contact">
                     <div class="info">
                         <h5 class="mb-4" >{{ $pageTitle }}</h5>
@@ -16,52 +16,44 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="country">Country</label>
-                                            <select class="form-control" id="country">
-                                                <option>All Countries</option>
-                                                <option selected="">United States</option>
-                                                <option>India</option>
-                                                <option>Japan</option>
-                                                <option>China</option>
-                                                <option>Brazil</option>
-                                                <option>Norway</option>
-                                                <option>Canada</option>
-                                            </select>
+                                            <label for="order_number">Order Number</label>
+                                            <input type="text" class="form-control mb-4" id="order_number"
+                                                placeholder="AA0001" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="address">Address</label>
-                                            <input type="text" class="form-control mb-4" id="address"
-                                                placeholder="Address" value="New York">
+                                            <label for="id_dealer">Dealer ID</label>
+                                            <input type="text" class="form-control mb-4" id="id_dealer"
+                                                placeholder="Dealer" value="{{session()->get('user')['id_dealer']}}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="location">Location</label>
-                                            <input type="text" class="form-control mb-4" id="location"
-                                                placeholder="Location">
+                                            <label for="order_no_dealer"><font class="text-danger">PO Number Dealer *</font></label>
+                                            <input type="text" class="form-control mb-4" id="order_no_dealer"
+                                                placeholder="PO Number Dealer" wire:model.lazy="bind.order_number_dealer" autofocus>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="phone">Phone</label>
-                                            <input type="text" class="form-control mb-4" id="phone"
-                                                placeholder="Write your phone number here" value="+1 (530) 555-12121">
+                                            <label for="dealer_name">Dealer Name</label>
+                                            <input type="text" class="form-control mb-4" id="dealer_name"
+                                                placeholder="Dealer Name" value="{{$dealerName}}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-4" id="email"
-                                                placeholder="Write your email here" value="Jimmy@gmail.com">
+                                            <label for="year_order">Year Order</label>
+                                            <input type="text" class="form-control mb-4" id="year_order"
+                                                placeholder="" value="{{ date('Y') }}" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="website1">Website</label>
-                                            <input type="text" class="form-control mb-4" id="website1"
-                                                placeholder="Write your website here">
+                                            <label for="id_user">User Dealer</label>
+                                            <input type="text" class="form-control mb-4" id="id_user"
+                                                placeholder="" value="{{ session()->get('user')['nama_user'] }}" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -69,6 +61,63 @@
                         </div>
                     </div>
                 </form>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr align="center">
+                                <th>No</th>
+                                <th>Model Name</th>
+                                <th>Type Name</th>
+                                <!-- <th>Total Qty</th>
+                                <th>Prod Year</th> -->
+                                <th><button class="btn btn-success" wire:click.prevent="addDetail">+</button></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($detailData as $key => $data)
+                            <tr align="center" wire:key="{{ $key }}">
+                                <td>{{ $loop->iteration }} </td>
+                                <td>
+                                    <select type="text" class="form-control" wire:model.lazy="detailData.{{$key}}.id_model"
+                                    wire:change="$set('id_model', $event.target.value)">
+                                        <option value="">- Choose Model -</option>
+
+                                        @foreach($dataModel as $model)
+                                        <option value="{{$model['kd_model']}}">{{$model['nm_model']}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('detailData.'.$key.'.id_model') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                </td>
+                                <td> 
+                                    <select type="text" class="form-control" ">
+                                        <option value="">- Choose Type -</option>
+
+                                        @foreach($dataType as $type)
+                                        <option value="{{$type['kd_type']}}">{{$type['nm_type']}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('detailData.'.$key.'.id_type') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                </td>
+                                
+                                <td><button class="btn btn-danger" wire:click.prevent="deleteDetail({{$key}})"
+                                @if(count($detailData) == 1) disabled @endif
+                                >-</button></td>
+                            </tr>
+                            @endforeach
+                            <tr>
+                                <td colspan="2" align="right">Total Qty : </td>
+                                <td colspan="2">
+                                    <input type="text" id="total_qty" 
+                                    class="form-control" readonly>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>
