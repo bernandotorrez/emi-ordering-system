@@ -54,7 +54,7 @@ class BaseRepository implements BaseInterface
      */
     public function create(array $data)
     {
-        return $this->model->firstOrCreate($data);
+        return $this->model->create($data);
     }
 
     /**
