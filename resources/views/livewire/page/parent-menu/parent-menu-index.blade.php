@@ -8,25 +8,16 @@
                 {!! session('action_message') !!}
                 @endif
 
-                @if(empty($menuPrivilege->can_add) && session()->get('level_access') != '1')
-                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_add) == '1')
                 <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
                 </button>
-                @endif
-
-                @if(empty($menuPrivilege->can_edit) && session()->get('level_access') != '1')
-                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_edit) == '1')
+              
                 <button type="button" class="btn btn-success mr-4" id="editButton" wire:click.prevent="editForm"
                     @if(count($checked) !=1) disabled @endif> Edit
                 </button>
-                @endif
 
-                @if(empty($menuPrivilege->can_delete) && session()->get('level_access') != '1')
-                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_delete) == '1')
                 <button type="button" class="btn btn-danger" id="deleteButton"
                     wire:click.prevent="$emit('triggerDelete')" @if(count($checked) <=0 ) disabled @endif> Delete
                 </button>
-                @endif
                 <!-- @dump($checked) -->
 
                 <!-- Modal -->
@@ -51,6 +42,22 @@
                                     @if(session()->has('message_duplicate'))
                                     {!! session('message_duplicate') !!}
                                     @endif
+
+                                    <div class="form-group mb-4">
+                                        <label for="id_user_group">User Group</label>
+                                        <select type="text" class="form-control" id="id_user_group" 
+                                        wire:model.lazy="bind.id_user_group">
+                                            <option value="">- Choose User Group -</option>
+
+                                            @foreach($dataUserGroup as $userGroup)
+                                            <option value="{{$userGroup->id_user_group}}">
+                                            {{$userGroup->nama_group}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('bind.id_user_group') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
                                     <div class="form-group mb-4">
                                         <label for="parent_position">Parent Position</label>
@@ -113,8 +120,6 @@
 
                 <p></p>
 
-                @if(empty($menuPrivilege->can_view) && session()->get('level_access') != '1')
-                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_view) == '1')
                 <div class="table-responsive mt-4">
                     <div class="d-flex">
                         <div class="p-2 align-content-center align-items-center" class="text-center">Per Page : </div>
@@ -136,15 +141,15 @@
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                @if(empty($menuPrivilege->can_edit) && empty($menuPrivilege->can_delete) 
-                                && session()->get('level_access') != '1')
-                                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_edit) == '1' 
-                                && isset($menuPrivilege->can_delete) == '1')
                                 <input type="checkbox" class="new-control-input" wire:model="allChecked"
                                     wire:click="allChecked">
-                                @endif
                             </th>
                             <th width="10%">No</th>
+                            <th wire:click="sortBy('nama_group')">
+                                <a href="javascript:void(0);">User Group
+                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('parent_position')">
                                 <a href="javascript:void(0);">Parent Position
                                     @include('livewire.datatable-icon', ['field' => 'parent_position'])
@@ -175,15 +180,11 @@
                             @foreach($dataParentMenu as $data)
                             <tr>
                                 <td>
-                                    @if(empty($menuPrivilege->can_edit) && empty($menuPrivilege->can_delete) 
-                                    && session()->get('level_access') != '1')
-                                    @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_edit) == '1' 
-                                    && isset($menuPrivilege->can_delete) == '1')
                                     <input type="checkbox" value="{{ $data->id_parent_menu }}" class="new-control-input"
                                         wire:model="checked">
-                                    @endif
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->nama_group }}</td>
                                 <td>{{ $data->parent_position }}</td>
                                 <td>{{ $data->nama_parent_menu  }}</td>
                                 <td>{{ $data->prefix  }}</td>
@@ -199,7 +200,6 @@
                     </div>
 
                 </div>
-                @endif
             </div>
         </div>
     </div>

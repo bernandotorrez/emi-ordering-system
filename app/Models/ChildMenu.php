@@ -16,7 +16,8 @@ class ChildMenu extends Model
         'child_position', 
         'nama_child_menu', 
         'url', 
-        'icon'
+        'icon',
+        'nama_group'
     ];
     protected $guarded = ['id_child_menu'];
 

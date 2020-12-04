@@ -12,6 +12,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cache as CacheModel;
 use App\Repository\Eloquent\SubChildMenuRepository;
+use App\Repository\Eloquent\UserGroupRepository;
 
 class ChildMenuIndex extends Component
 {
@@ -34,6 +35,7 @@ class ChildMenuIndex extends Component
     ];
     
     public $bind = [
+        'id_user_group' => '',
         'id_child_menu' => '',
         'id_parent_menu' => '',
         'child_position' => '',
@@ -46,6 +48,7 @@ class ChildMenuIndex extends Component
      * Validation Attributes
      */
     protected $rules = [
+        'bind.id_user_group' => 'required',
         'bind.id_parent_menu' => 'required',
         'bind.child_position' => 'required|numeric|min:1',
         'bind.nama_child_menu' => 'required|min:3|max:100',
@@ -53,6 +56,7 @@ class ChildMenuIndex extends Component
     ];
 
     protected $messages = [
+        'bind.id_user_group.required' => 'Please Choose ID User Group',
         'bind.id_parent_menu.required' => 'Please Choose ID Parent Menu',
         'bind.child_position.required' => 'The Child Position Cant be Empty!',
         'bind.child_position.numeric' => 'The Child Position must be Numeric',
@@ -87,8 +91,9 @@ class ChildMenuIndex extends Component
 
     public function render(
         ChildMenuRepository $childMenuRepository,
-        ParentMenuRepository $parentMenuRepository
-        )
+        ParentMenuRepository $parentMenuRepository,
+        UserGroupRepository $userGroupRepository
+    )
     {
 
         $cache_name = 'child-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
@@ -109,7 +114,8 @@ class ChildMenuIndex extends Component
 
         return view('livewire.page.child-menu.child-menu-index', [
             'dataChildMenu' => $dataChildMenu,
-            'dataParentMenu' => $dataParentMenu
+            'dataParentMenu' => $dataParentMenu,
+            'dataUserGroup' => $userGroupRepository->allActive()
         ])->layout('layouts.app', ['title' => $this->pageTitle]);
     }
 
@@ -150,6 +156,7 @@ class ChildMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_user_group' => $this->bind['id_user_group'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'child_position' => $this->bind['child_position'],
             'nama_child_menu' => $this->bind['nama_child_menu'],
@@ -159,7 +166,8 @@ class ChildMenuIndex extends Component
 
         $where = array(
             'nama_child_menu' => $this->bind['nama_child_menu'], 
-            'id_parent_menu' => $this->bind['id_parent_menu']
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
         );
 
         $count = $childMenuRepository->findDuplicate($where);
@@ -186,6 +194,7 @@ class ChildMenuIndex extends Component
         $this->isEdit = true;
 
         $data = $childMenuRepository->getByID($this->checked[0]);
+        $this->bind['id_user_group'] = $data->id_user_group;
         $this->bind['id_child_menu'] = $data->id_child_menu;
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
         $this->bind['child_position'] = $data->child_position;
@@ -201,6 +210,7 @@ class ChildMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_user_group' => $this->bind['id_user_group'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'child_position' => $this->bind['child_position'],
             'nama_child_menu' => $this->bind['nama_child_menu'],
@@ -210,7 +220,8 @@ class ChildMenuIndex extends Component
 
         $where = array(
             'nama_child_menu' => $this->bind['nama_child_menu'], 
-            'id_parent_menu' => $this->bind['id_parent_menu']
+            'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
         );
 
         $count = $childMenuRepository->findDuplicateEdit($where, $this->bind['id_child_menu']);

@@ -5,31 +5,28 @@
             <div class="widget-one">
 
                 @if(session()->has('action_message'))
-                    {!! session('action_message') !!}
+                {!! session('action_message') !!}
                 @endif
 
-                <button type="button" 
-                class="btn btn-primary mr-4" 
-                id="addButton"
-                wire:click.prevent="addForm"> Add
+                @if(empty($menuPrivilege->can_add) && session()->get('level_access') != '1')
+                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_add) == '1')
+                <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
                 </button>
+                @endif
 
-                <button type="button" 
-                class="btn btn-success mr-4" 
-                id="editButton"
-                wire:click.prevent="editForm"
-                @if(count($checked) != 1) disabled @endif
-                > Edit
+                @if(empty($menuPrivilege->can_edit) && session()->get('level_access') != '1')
+                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_edit) == '1')
+                <button type="button" class="btn btn-success mr-4" id="editButton" wire:click.prevent="editForm"
+                    @if(count($checked) !=1) disabled @endif> Edit
                 </button>
+                @endif
 
-                <button type="button" 
-                class="btn btn-danger" 
-                id="deleteButton"
-                wire:click.prevent="$emit('triggerDelete')"
-                @if(count($checked) <= 0 ) disabled @endif
-                > Delete
+                @if(empty($menuPrivilege->can_delete) && session()->get('level_access') != '1')
+                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_delete) == '1')
+                <button type="button" class="btn btn-danger" id="deleteButton"
+                    wire:click.prevent="$emit('triggerDelete')" @if(count($checked) <=0 ) disabled @endif> Delete
                 </button>
-
+                @endif
                 <!-- @dump($checked) -->
 
                 <!-- Modal -->
@@ -52,54 +49,30 @@
 
                                 <form>
                                     @if(session()->has('message_duplicate'))
-                                     {!! session('message_duplicate') !!}
+                                    {!! session('message_duplicate') !!}
                                     @endif
 
                                     <div class="form-group mb-4">
-                                        <label for="id_user_group">User Group</label>
-                                        <select type="text" class="form-control" id="id_user_group" 
-                                        wire:model.lazy="bind.id_user_group">
-                                            <option value="">- Choose User Group -</option>
-
-                                            @foreach($dataUserGroup as $userGroup)
-                                            <option value="{{$userGroup->id_user_group}}">
-                                            {{$userGroup->nama_group}}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        @error('bind.id_user_group') <span class="error">{{ $message }}</span>
+                                        <label for="parent_position">Parent Position</label>
+                                        <input type="text" class="form-control" id="parent_position" maxlength="10"
+                                            placeholder="Example : 1" wire:model.lazy="bind.parent_position">
+                                        @error('bind.parent_position') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <label for="id_parent_menu">Parent Menu</label>
-                                        <select class="form-control" id="id_parent_menu" name="id_parent_menu"
-                                        wire:model.lazy="bind.id_parent_menu">
-                                            <option value="">- Choose Parent Menu -</option>
-
-                                            @foreach($dataParentMenu as $parentMenu)
-                                                <option value="{{ $parentMenu->id_parent_menu }}">
-                                                    {{ $parentMenu->nama_parent_menu }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('bind.id_parent_menu') <span class="error">{{ $message }}</span>
+                                        <label for="nama_parent_menu">Nama Parent Menu</label>
+                                        <input type="text" class="form-control" id="nama_parent_menu" maxlength="100"
+                                            placeholder="Example : Sales Order" wire:model.lazy="bind.nama_parent_menu">
+                                        @error('bind.nama_parent_menu') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-4">
-                                        <label for="child_position">Child Position</label>
-                                        <input type="text" class="form-control" id="child_position" maxlength="10"
-                                            placeholder="Example : 1" wire:model.lazy="bind.child_position">
-                                        @error('bind.child_position') <span class="error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group mb-4">
-                                        <label for="nama_child_menu">Nama Child Menu</label>
-                                        <input type="text" class="form-control" id="nama_child_menu" maxlength="100"
-                                            placeholder="Example : Sales Order" wire:model.lazy="bind.nama_child_menu">
-                                        @error('bind.nama_child_menu') <span class="error">{{ $message }}</span>
+                                        <label for="prefix">Prefix</label>
+                                        <input type="text" class="form-control" id="prefix" maxlength="100"
+                                            placeholder="Example : sales" wire:model.lazy="bind.prefix">
+                                        @error('bind.prefix') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -119,7 +92,6 @@
                                         @enderror
                                     </div>
 
-
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -130,9 +102,8 @@
                                     wire:click.prevent="editProcess" wire:offline.attr="disabled"> Update </button>
                                 @else
                                 <button type="button" class="btn btn-primary" id="submit"
-                                    wire:click.prevent="addProcess" 
-                                    wire:offline.attr="disabled"
-                                    @error('bind.*') disabled @enderror> Submit </button>
+                                    wire:click.prevent="addProcess" wire:offline.attr="disabled" @error('bind.*')
+                                    disabled @enderror> Submit </button>
                                 @endif
                             </div>
                         </div>
@@ -142,6 +113,8 @@
 
                 <p></p>
 
+                @if(empty($menuPrivilege->can_view) && session()->get('level_access') != '1')
+                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_view) == '1')
                 <div class="table-responsive mt-4">
                     <div class="d-flex">
                         <div class="p-2 align-content-center align-items-center" class="text-center">Per Page : </div>
@@ -158,33 +131,38 @@
                             <input type="text" class="form-control" wire:model="search" placeholder="Search...">
                         </div>
                     </div>
+
+
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                <input type="checkbox"
-                                class="new-control-input"
-                                wire:model="allChecked"
-                                wire:click="allChecked">
+                                @if(empty($menuPrivilege->can_edit) && empty($menuPrivilege->can_delete) 
+                                && session()->get('level_access') != '1')
+                                @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_edit) == '1' 
+                                && isset($menuPrivilege->can_delete) == '1')
+                                <input type="checkbox" class="new-control-input" wire:model="allChecked"
+                                    wire:click="allChecked">
+                                @endif
                             </th>
                             <th width="10%">No</th>
-                            <th wire:click="sortBy('nama_group')">
+                            <th wire:click="sortBy('id_user_group')">
                                 <a href="javascript:void(0);">User Group
-                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
+                                    @include('livewire.datatable-icon', ['field' => 'parent_position'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('parent_position')">
+                                <a href="javascript:void(0);">Parent Position
+                                    @include('livewire.datatable-icon', ['field' => 'parent_position'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('nama_parent_menu')">
-                                <a href="javascript:void(0);">Parent Menu
+                                <a href="javascript:void(0);">Nama Parent Menu
                                     @include('livewire.datatable-icon', ['field' => 'nama_parent_menu'])
                                 </a>
                             </th>
-                            <th wire:click="sortBy('child_position')">
-                                <a href="javascript:void(0);">Child Position
-                                    @include('livewire.datatable-icon', ['field' => 'child_position'])
-                                </a>
-                            </th>
-                            <th wire:click="sortBy('nama_child_menu')">
-                                <a href="javascript:void(0);">Nama Child Menu
-                                    @include('livewire.datatable-icon', ['field' => 'nama_child_menu'])
+                            <th wire:click="sortBy('prefix')">
+                                <a href="javascript:void(0);">Prefix
+                                    @include('livewire.datatable-icon', ['field' => 'prefix'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('url')">
@@ -199,19 +177,21 @@
                             </th>
                         </thead>
                         <tbody>
-                            @foreach($dataChildMenu as $data)
+                            @foreach($dataParentMenu as $data)
                             <tr>
                                 <td>
-                                    <input type="checkbox" 
-                                    value="{{ $data->id_child_menu }}" 
-                                    class="new-control-input"
-                                    wire:model="checked">
+                                    @if(empty($menuPrivilege->can_edit) && empty($menuPrivilege->can_delete) 
+                                    && session()->get('level_access') != '1')
+                                    @elseif(session()->get('level_access') == '1' || isset($menuPrivilege->can_edit) == '1' 
+                                    && isset($menuPrivilege->can_delete) == '1')
+                                    <input type="checkbox" value="{{ $data->id_parent_menu }}" class="new-control-input"
+                                        wire:model="checked">
+                                    @endif
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->nama_group }}</td>
-                                <td>{{ $data->nama_parent_menu }}</td>
-                                <td>{{ $data->child_position }}</td>
-                                <td>{{ $data->nama_child_menu  }}</td>
+                                <td>{{ $data->parent_position }}</td>
+                                <td>{{ $data->nama_parent_menu  }}</td>
+                                <td>{{ $data->prefix  }}</td>
                                 <td>{{ $data->url  }}</td>
                                 <td>{{ $data->icon  }}</td>
                             </tr>
@@ -220,11 +200,11 @@
                     </table>
 
                     <div class="d-flex justify-content-center">
-                        {{ $dataChildMenu->links('livewire.pagination-links') }}
+                        {{ $dataParentMenu->links('livewire.pagination-links') }}
                     </div>
 
                 </div>
-
+                @endif
             </div>
         </div>
     </div>
@@ -249,5 +229,6 @@
             }
         });
     });
+
 </script>
 @endpush

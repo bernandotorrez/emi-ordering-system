@@ -57,6 +57,22 @@
                                     @endif
 
                                     <div class="form-group mb-4">
+                                        <label for="id_user_group">User Group</label>
+                                        <select type="text" class="form-control" id="id_user_group" 
+                                        wire:model.lazy="bind.id_user_group">
+                                            <option value="">- Choose User Group -</option>
+
+                                            @foreach($dataUserGroup as $userGroup)
+                                            <option value="{{$userGroup->id_user_group}}">
+                                            {{$userGroup->nama_group}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('bind.id_user_group') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
                                         <label for="id_parent_menu">Parent Menu</label>
                                         <select class="form-control" id="id_parent_menu" name="id_parent_menu"
                                         wire:model.lazy="bind.id_parent_menu">
@@ -168,6 +184,11 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
+                            <th wire:click="sortBy('nama_group')">
+                                <a href="javascript:void(0);">User Group
+                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('nama_parent_menu')">
                                 <a href="javascript:void(0);">Parent Menu
                                     @include('livewire.datatable-icon', ['field' => 'nama_parent_menu'])
@@ -209,6 +230,7 @@
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->nama_group }}</td>
                                 <td>{{ $data->nama_parent_menu }}</td>
                                 <td>{{ $data->nama_child_menu }}</td>
                                 <td>{{ $data->sub_child_position }}</td>

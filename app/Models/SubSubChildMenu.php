@@ -19,7 +19,8 @@ class SubSubChildMenu extends Model
         'sub_sub_child_position', 
         'nama_sub_sub_child_menu', 
         'url', 
-        'icon'
+        'icon',
+        'nama_group'
     ];
     protected $guarded = ['id_sub_sub_child_menu'];
 

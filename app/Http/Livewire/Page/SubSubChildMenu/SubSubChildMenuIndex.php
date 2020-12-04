@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Cache as CacheModel;
+use App\Repository\Eloquent\UserGroupRepository;
 
 class SubSubChildMenuIndex extends Component
 {
@@ -35,6 +36,7 @@ class SubSubChildMenuIndex extends Component
     ];
 
     public $bind = [
+        'id_user_group' => '',
         'id_sub_sub_child_menu' => '',
         'id_sub_child_menu' => '',
         'id_parent_menu' => '',
@@ -49,6 +51,7 @@ class SubSubChildMenuIndex extends Component
      * Validation Attributes
      */
     protected $rules = [
+        'bind.id_user_group' => 'required',
         'bind.id_sub_child_menu' => 'required',
         'bind.id_child_menu' => 'required',
         'bind.id_parent_menu' => 'required',
@@ -58,6 +61,7 @@ class SubSubChildMenuIndex extends Component
     ];
 
     protected $messages = [
+        'bind.id_user_group.required' => 'Please Choose ID User Group',
         'bind.id_parent_menu.required' => 'Please Choose ID Parent Menu',
         'bind.id_sub_child_menu.required' => 'Please Choose ID Sub Child Menu',
         'bind.id_child_menu.required' => 'Please Choose ID Child Menu',
@@ -96,7 +100,8 @@ class SubSubChildMenuIndex extends Component
         SubSubChildMenuRepository $subSubChildMenuRepository,
         SubChildMenuRepository $subChildMenuRepository,
         ChildMenuRepository $childMenuRepository,
-        ParentMenuRepository $parentMenuRepository
+        ParentMenuRepository $parentMenuRepository,
+        UserGroupRepository $userGroupRepository
     )
     {
 
@@ -118,7 +123,8 @@ class SubSubChildMenuIndex extends Component
             'dataSubSubChildMenu' => $dataSubSubChildMenu,
             'dataParentMenu' => $parentMenuRepository->allActive(),
             'dataChildMenu' => $childMenuRepository->getByIdParent($this->bind['id_parent_menu']),
-            'dataSubChildMenu' => $subChildMenuRepository->getByIdChild($this->bind['id_child_menu'])
+            'dataSubChildMenu' => $subChildMenuRepository->getByIdChild($this->bind['id_child_menu']),
+            'dataUserGroup' => $userGroupRepository->allActive()
         ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
     }
@@ -160,6 +166,7 @@ class SubSubChildMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_user_group' => $this->bind['id_user_group'],
             'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
@@ -174,6 +181,7 @@ class SubSubChildMenuIndex extends Component
             'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
         );
 
         $count = $subSubChildMenuRepository->findDuplicate($where);
@@ -200,6 +208,7 @@ class SubSubChildMenuIndex extends Component
         $this->isEdit = true;
 
         $data = $subSubChildMenuRepository->getByID($this->checked[0]);
+        $this->bind['id_user_group'] = $data->id_user_group;
         $this->bind['id_sub_sub_child_menu'] = $data->id_sub_sub_child_menu;
         $this->bind['id_sub_child_menu'] = $data->id_sub_child_menu;
         $this->bind['id_child_menu'] = $data->id_child_menu;
@@ -217,6 +226,7 @@ class SubSubChildMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_user_group' => $this->bind['id_user_group'],
             'id_sub_child_menu' => $this->bind['id_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
@@ -231,6 +241,7 @@ class SubSubChildMenuIndex extends Component
             'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
         );
 
         $count = $subSubChildMenuRepository->findDuplicateEdit($where, $this->bind['id_sub_sub_child_menu']);

@@ -19,6 +19,7 @@ class CreateSubSubChildMenusTable extends Migration
                 $table->bigInteger('id_sub_child_menu');
                 $table->bigInteger('id_child_menu');
                 $table->bigInteger('id_parent_menu');
+                $table->bigInteger('id_user_group');
                 $table->integer('sub_sub_child_position');
                 $table->string('nama_sub_sub_child_menu', 100);
                 $table->text('url');

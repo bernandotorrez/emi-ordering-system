@@ -32,9 +32,10 @@ class CreateViewChildMenu extends Migration
         return '
             CREATE VIEW IF NOT EXISTS view_child_menu
             AS
-            SELECT tcm.*, tpm.nama_parent_menu
+            SELECT tcm.*, tpm.nama_parent_menu, tug.nama_group
             FROM tbl_child_menu tcm
             INNER JOIN tbl_parent_menu tpm ON tpm.id_parent_menu = tcm.id_parent_menu
+            INNER JOIN tbl_user_group tug ON tug.id_user_group = tcm.id_user_group
             WHERE tcm.status = "1"
         ';
     }

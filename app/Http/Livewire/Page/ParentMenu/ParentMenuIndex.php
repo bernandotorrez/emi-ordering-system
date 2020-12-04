@@ -13,6 +13,7 @@ use App\Models\Cache as CacheModel;
 use App\Repository\Eloquent\ChildMenuRepository;
 use App\Repository\Eloquent\MenuUserGroupRepository;
 use App\Repository\Eloquent\SubChildMenuRepository;
+use App\Repository\Eloquent\UserGroupRepository;
 
 class ParentMenuIndex extends Component
 {
@@ -27,7 +28,7 @@ class ParentMenuIndex extends Component
     public string $pageTitle = "Parent Menu";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['userGroup'];
+    protected string $view = 'view_parent_menu';
     
     protected $queryString = [
         'search' => ['except' => ''],
@@ -36,6 +37,7 @@ class ParentMenuIndex extends Component
     
     public $bind = [
         'id_parent_menu' => '',
+        'id_user_group' => '',
         'parent_position' => '',
         'nama_parent_menu' => '',
         'prefix' => '',
@@ -47,6 +49,7 @@ class ParentMenuIndex extends Component
      * Validation Attributes
      */
     protected $rules = [
+        'bind.id_user_group' => 'required',
         'bind.parent_position' => 'required|numeric|min:1',
         'bind.nama_parent_menu' => 'required|min:3|max:100',
         'bind.prefix' => 'required|min:1|max:100',
@@ -54,6 +57,7 @@ class ParentMenuIndex extends Component
     ];
 
     protected $messages = [
+        'bind.id_user_group.required' => 'Please Choose ID User Group!',
         'bind.parent_position.required' => 'The Parent Position Cant be Empty!',
         'bind.parent_position.numeric' => 'The Parent Position must be Numeric',
         'bind.parent_position.min' => 'The Parent Position must be at least :min Characters',
@@ -90,7 +94,8 @@ class ParentMenuIndex extends Component
 
     public function render(
         ParentMenuRepository $parentMenuRepository,
-        MenuUserGroupRepository $menuUserGroupRepository
+        MenuUserGroupRepository $menuUserGroupRepository,
+        UserGroupRepository $userGroupRepository
         )
     {
         $cache_name = 'parent-menu-index-page-'.$this->page.'-pageselected-'.$this->perPageSelected.'-search-'.$this->search;
@@ -98,12 +103,12 @@ class ParentMenuIndex extends Component
 
         $dataParentMenu = Cache::remember($cache_name, 60, function () use($parentMenuRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
-            return $parentMenuRepository->pagination(
+            return $parentMenuRepository->viewPagination(
+                $this->view,
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
-                $this->perPageSelected,
-                $this->relation
+                $this->perPageSelected
             );
         });
 
@@ -111,6 +116,7 @@ class ParentMenuIndex extends Component
 
         return view('livewire.page.parent-menu.parent-menu-index', [
             'dataParentMenu' => $dataParentMenu,
+            'dataUserGroup' => $userGroupRepository->allActive(),
             'menuPrivilege' => $menuUserGroupRepository->getMenuPrivilege($idUserGroup, ['status_parent' => '1'])
             ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
@@ -118,7 +124,8 @@ class ParentMenuIndex extends Component
 
     public function allChecked(ParentMenuRepository $parentMenuRepository)
     {
-        $datas = $parentMenuRepository->checked(
+        $datas = $parentMenuRepository->viewChecked(
+            $this->view,
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -152,6 +159,7 @@ class ParentMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_user_group' => $this->bind['id_user_group'],
             'parent_position' => $this->bind['parent_position'],
             'nama_parent_menu' => $this->bind['nama_parent_menu'],
             'prefix' => $this->bind['prefix'],
@@ -159,7 +167,10 @@ class ParentMenuIndex extends Component
             'icon' => $this->bind['icon'],
         );
 
-        $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);
+        $where = array(
+            'nama_parent_menu' => $this->bind['nama_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
+        );
 
         $count = $parentMenuRepository->findDuplicate($where);
 
@@ -186,6 +197,7 @@ class ParentMenuIndex extends Component
 
         $data = $parentMenuRepository->getByID($this->checked[0]);
         $this->bind['id_parent_menu'] = $data->id_parent_menu;
+        $this->bind['id_user_group'] = $data->id_user_group;
         $this->bind['parent_position'] = $data->parent_position;
         $this->bind['nama_parent_menu'] = $data->nama_parent_menu;
         $this->bind['prefix'] = $data->prefix;
@@ -200,6 +212,7 @@ class ParentMenuIndex extends Component
         $this->validate();
 
         $data = array(
+            'id_user_group' => $this->bind['id_user_group'],
             'parent_position' => $this->bind['parent_position'],
             'nama_parent_menu' => $this->bind['nama_parent_menu'],
             'prefix' => $this->bind['prefix'],
@@ -207,7 +220,10 @@ class ParentMenuIndex extends Component
             'icon' => $this->bind['icon'],
         );
 
-        $where = array('nama_parent_menu' => $this->bind['nama_parent_menu']);
+        $where = array(
+            'nama_parent_menu' => $this->bind['nama_parent_menu'],
+            'id_user_group' => $this->bind['id_user_group'],
+        );
 
         $count = $parentMenuRepository->findDuplicateEdit($where, $this->bind['id_parent_menu']);
 

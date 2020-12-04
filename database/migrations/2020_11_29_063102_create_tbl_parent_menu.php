@@ -16,6 +16,7 @@ class CreateTblParentMenu extends Migration
         if(!Schema::hasTable('tbl_parent_menu')) {
             Schema::create('tbl_parent_menu', function (Blueprint $table) {
                 $table->id('id_parent_menu');
+                $table->bigInteger('id_user_group');
                 $table->integer('parent_position');
                 $table->string('nama_parent_menu', 100);
                 $table->string('prefix', 100);
