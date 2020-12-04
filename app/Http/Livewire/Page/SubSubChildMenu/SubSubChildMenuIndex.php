@@ -121,7 +121,7 @@ class SubSubChildMenuIndex extends Component
 
         return view('livewire.page.sub-sub-child-menu.sub-sub-child-menu-index', [
             'dataSubSubChildMenu' => $dataSubSubChildMenu,
-            'dataParentMenu' => $parentMenuRepository->allActive(),
+            'dataParentMenu' => $parentMenuRepository->getByIdUserGroup($this->bind['id_user_group']),
             'dataChildMenu' => $childMenuRepository->getByIdParent($this->bind['id_parent_menu']),
             'dataSubChildMenu' => $subChildMenuRepository->getByIdChild($this->bind['id_child_menu']),
             'dataUserGroup' => $userGroupRepository->allActive()

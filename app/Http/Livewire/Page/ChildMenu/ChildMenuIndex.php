@@ -110,11 +110,9 @@ class ChildMenuIndex extends Component
             );
         });
 
-        $dataParentMenu = $parentMenuRepository->allActive();
-
         return view('livewire.page.child-menu.child-menu-index', [
             'dataChildMenu' => $dataChildMenu,
-            'dataParentMenu' => $dataParentMenu,
+            'dataParentMenu' => $parentMenuRepository->getByIdUserGroup($this->bind['id_user_group']),
             'dataUserGroup' => $userGroupRepository->allActive()
         ])->layout('layouts.app', ['title' => $this->pageTitle]);
     }

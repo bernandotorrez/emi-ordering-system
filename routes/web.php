@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
+use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderAdd;
+use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
@@ -47,6 +49,10 @@ Route::middleware('user.session')->group(function() {
 
     //Contoh Menu privilege
     Route::get('/parent-menu', ParentMenuIndex::class)->name('parent-menu.index');
+
+    // Additional Order
+    Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
+    Route::get('/sales/dealer/additional-order/add', AdditionalOrderAdd::class)->name('additional-order.add');
 
 });
 

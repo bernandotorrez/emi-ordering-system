@@ -115,12 +115,11 @@ class SubChildMenuIndex extends Component
             );
         });
         
-        $dataParentMenu = $parentMenuRepository->allActive();
         $dataChildMenu = $childMenuRepository->getByIdParent($this->bind['id_parent_menu']);
 
         return view('livewire.page.sub-child-menu.sub-child-menu-index', [
             'dataSubChildMenu' => $dataSubChildMenu,
-            'dataParentMenu' => $dataParentMenu,
+            'dataParentMenu' => $parentMenuRepository->getByIdUserGroup($this->bind['id_user_group']),
             'dataChildMenu' => $dataChildMenu,
             'dataUserGroup' => $userGroupRepository->allActive()
         ])
