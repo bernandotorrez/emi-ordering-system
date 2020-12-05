@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Page\AdditionalOrder;
 
+use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -13,10 +14,27 @@ class AdditionalOrderAdd extends Component
 
     public $pageTitle = 'Additional Order - Add';
     public array $detailData = [];
-    public $id_model = 0;
+    public $totalQty = 0;
     
     public array $bind = [
-        'order_number_number' => ''
+        'order_number_dealer' => ''
+    ];
+
+    protected $rules = [
+        'bind.order_number_dealer' => 'required|min:1|max:100',
+        'detailData.*.id_model' => 'required',
+        'detailData.*.id_type' => 'required',
+        'detailData.*.id_colour' => 'required',
+        'detailData.*.qty' => 'required|numeric|min:1|max:99999',
+    ];
+
+    protected $messages = [
+        'detailData.*.id_model.required' => 'Please Choose Model Name!',
+        'detailData.*.id_type.required' => 'Please Choose Type Name!',
+        'detailData.*.id_colour.required' => 'Please Choose Colour!',
+        'detailData.*.qty.required' => 'Quantity cant be Empty!',
+        'detailData.*.qty.min' => 'Please input Quantity at Least :min',
+        'detailData.*.qty.max' => 'Please input Quantity at Max :max',
     ];
     
     public function mount()
@@ -24,12 +42,12 @@ class AdditionalOrderAdd extends Component
         $data = array(
             'no' => 1,
             'id_model' => '',
-            'model_name' => '',
             'id_type' => '',
-            'type_name' => '',
-            'total_qty' => 0,
-            'year_prod' => '',
-            'data_type' => []
+            'id_colour' => '',
+            'qty' => 0,
+            'year_production' => date('Y'),
+            'data_type' => [],
+            'data_colour' => []
         );
 
         array_push($this->detailData, $data);
@@ -42,12 +60,12 @@ class AdditionalOrderAdd extends Component
         $data = array(
             'no' => floatval($end['no'] + 1),
             'id_model' => '',
-            'model_name' => '',
             'id_type' => '',
-            'type_name' => '',
-            'total_qty' => 0,
-            'year_prod' => '',
-            'data_type' => []
+            'id_colour' => '',
+            'qty' => 0,
+            'year_production' => date('Y'),
+            'data_type' => [],
+            'data_colour' => []
         );
 
         array_push($this->detailData, $data);
@@ -58,9 +76,21 @@ class AdditionalOrderAdd extends Component
         unset($this->detailData[$key]);
     }
 
-    public function updated()
+    public function updated($propertyName)
     {
-        
+        $this->validateOnly($propertyName);
+        $this->sumTotalQty();
+    }
+
+    private function sumTotalQty()
+    {
+        $totalQty = 0;
+        foreach($this->detailData as $key => $detailData)
+        {
+            $totalQty += $this->detailData[$key]['qty'] ? $this->detailData[$key]['qty'] : 0;
+        }
+
+        $this->totalQty = $totalQty;
     }
 
     public function updateDataType($key, $value)
@@ -70,6 +100,19 @@ class AdditionalOrderAdd extends Component
                 return Http::get($this->wrsApi.'/type-model/get/fk_model/'.$value)->json();
             });
             $this->detailData[$key]['data_type'] = ($dataType['count'] > 0) ? $dataType['data'] : [];
+        }
+
+        $this->updateDataColour($key, $value);
+        
+    }
+
+    public function updateDataColour($key, $value)
+    {
+        if($this->detailData[$key]['id_model'] != '') {
+            $dataColor = Cache::remember('data-color-with-id-model-'.$value, 30, function () use($value) {
+                return Http::get($this->wrsApi.'/model-color/get/fk_model/'.$value)->json();
+            });
+            $this->detailData[$key]['data_colour'] = ($dataColor['count'] > 0) ? $dataColor['data'] : [];
         }
         
     }
@@ -89,5 +132,32 @@ class AdditionalOrderAdd extends Component
             'dataModel' => ($dataModel['count'] > 0) ? $dataModel['data'] : [],
         ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
+    }
+
+    public function addProcess(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
+    {
+        $this->validate();
+
+        $dataMaster = array(
+            'no_order_atpm' => '',
+            'no_order_dealer' => $this->bind['order_number_dealer'],
+            'date_save_order' => date('Y-m-d H:i:s'),
+            'id_dealer' => session()->get('user')['id_dealer'],
+            'id_user' => session()->get('user')['id_user'],
+            'user_order' => session()->get('user')['nama_user'],
+            'month_order' => date('m'),
+            'year_order' => date('Y'),
+            'total_qty' => $this->totalQty,
+            'status' => '1'
+        );
+
+        $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+
+        if($insert) {
+            session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
+            return redirect()->to(route('additional-order.index'));
+        } else {
+            session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+        }
     }
 }

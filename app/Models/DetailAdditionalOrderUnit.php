@@ -21,4 +21,14 @@ class DetailAdditionalOrderUnit extends Model
         'year_production',
     ];
     protected $guarded = ['id_detail_order_unit'];
+
+    public function getSearchableColumn()
+    {
+        return $this->searchableColumn;
+    }
+
+    public function masterAdditionalOrderUnit()
+    {
+        return $this->belongsTo(MasterAdditionalOrderUnit::class, 'id_master_additional_order_unit');
+    }
 }

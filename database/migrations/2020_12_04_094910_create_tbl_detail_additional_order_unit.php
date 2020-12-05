@@ -18,7 +18,8 @@ class CreateTblDetailAdditionalOrderUnit extends Migration
                 $table->id('id_detail_additional_order_unit');
                 $table->bigInteger('id_master_additional_order_unit');
                 $table->bigInteger('id_model');
-                $table->bigInteger('id_colour');
+                $table->string('id_colour', 25);
+                $table->string('id_type', 150);
                 $table->integer('qty');
                 $table->string('year_production', 4);
                 $table->enum('status', ['0', '1'])->default(1);
