@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Page\AdditionalOrder;
 
+use App\Repository\Api\ApiDealerRepository;
+use App\Repository\Api\ApiModelColorRepository;
+use App\Repository\Api\ApiModelRepository;
+use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class AdditionalOrderAdd extends Component
@@ -93,38 +96,44 @@ class AdditionalOrderAdd extends Component
         $this->totalQty = $totalQty;
     }
 
-    public function updateDataType($key, $value)
+    public function updateDataType($key, $value, 
+        ApiTypeModelRepository $apiTypeModelRepository,
+        ApiModelColorRepository $apiModelColorRepository
+    )
     {
         if($this->detailData[$key]['id_model'] != '') {
-            $dataType = Cache::remember('data-type-with-id-model-'.$value, 30, function () use($value) {
-                return Http::get($this->wrsApi.'/type-model/get/fk_model/'.$value)->json();
+            $dataType = Cache::remember('data-type-with-id-model-'.$value, 30, function () use($value, $apiTypeModelRepository) {
+                return $apiTypeModelRepository->getByIdModel($value);
             });
             $this->detailData[$key]['data_type'] = ($dataType['count'] > 0) ? $dataType['data'] : [];
         }
 
-        $this->updateDataColour($key, $value);
+        $this->updateDataColour($key, $value, $apiModelColorRepository);
         
     }
 
-    public function updateDataColour($key, $value)
+    public function updateDataColour($key, $value, $apiModelColorRepository)
     {
         if($this->detailData[$key]['id_model'] != '') {
-            $dataColor = Cache::remember('data-color-with-id-model-'.$value, 30, function () use($value) {
-                return Http::get($this->wrsApi.'/model-color/get/fk_model/'.$value)->json();
+            $dataColor = Cache::remember('data-color-with-id-model-'.$value, 30, function () use($value, $apiModelColorRepository) {
+                return $apiModelColorRepository->getByIdModel($value);
             });
             $this->detailData[$key]['data_colour'] = ($dataColor['count'] > 0) ? $dataColor['data'] : [];
         }
         
     }
 
-    public function render()
+    public function render(
+        ApiModelRepository $apiModelRepository,
+        ApiDealerRepository $apiDealerRepository
+    )
     {
-        $dealerName = Cache::remember('dealer-name'.session()->get('user')['id_dealer'], 60, function () {
-            return Http::get($this->wrsApi.'/dealer/get/'.session()->get('user')['id_dealer'])->json();
+        $dealerName = Cache::remember('dealer-name'.session()->get('user')['id_dealer'], 60, function () use($apiDealerRepository) {
+            return $apiDealerRepository->getById(session()->get('user')['id_dealer']);
         });
 
-        $dataModel = Cache::remember('data-model', 30, function () {
-            return Http::get($this->wrsApi.'/model')->json();
+        $dataModel = Cache::remember('data-model', 30, function () use($apiModelRepository) {
+            return $apiModelRepository->all();
         });
 
         return view('livewire.page.additional-order.additional-order-add', [
