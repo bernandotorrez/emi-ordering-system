@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Page\AdditionalOrder;
 
 use App\Traits\WithWrsApi;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
@@ -27,7 +28,8 @@ class AdditionalOrderAdd extends Component
             'id_type' => '',
             'type_name' => '',
             'total_qty' => 0,
-            'year_prod' => ''
+            'year_prod' => '',
+            'data_type' => []
         );
 
         array_push($this->detailData, $data);
@@ -44,7 +46,8 @@ class AdditionalOrderAdd extends Component
             'id_type' => '',
             'type_name' => '',
             'total_qty' => 0,
-            'year_prod' => ''
+            'year_prod' => '',
+            'data_type' => []
         );
 
         array_push($this->detailData, $data);
@@ -55,16 +58,35 @@ class AdditionalOrderAdd extends Component
         unset($this->detailData[$key]);
     }
 
+    public function updated()
+    {
+        
+    }
+
+    public function updateDataType($key, $value)
+    {
+        if($this->detailData[$key]['id_model'] != '') {
+            $dataType = Cache::remember('data-type-with-id-model-'.$value, 30, function () use($value) {
+                return Http::get($this->wrsApi.'/type-model/get/fk_model/'.$value)->json();
+            });
+            $this->detailData[$key]['data_type'] = ($dataType['count'] > 0) ? $dataType['data'] : [];
+        }
+        
+    }
+
     public function render()
     {
-        $dealerName = Http::get($this->wrsApi.'/dealer/get/'.session()->get('user')['id_dealer']);
-        $dataModel = Http::get($this->wrsApi.'/model');
-        $dataType = Http::get($this->wrsApi.'/type-model/get/fk_model/'.$this->id_model);
+        $dealerName = Cache::remember('dealer-name'.session()->get('user')['id_dealer'], 60, function () {
+            return Http::get($this->wrsApi.'/dealer/get/'.session()->get('user')['id_dealer'])->json();
+        });
+
+        $dataModel = Cache::remember('data-model', 30, function () {
+            return Http::get($this->wrsApi.'/model')->json();
+        });
 
         return view('livewire.page.additional-order.additional-order-add', [
-            'dealerName' => $dealerName['data']['nm_dealer'],
-            'dataModel' => $dataModel['data'],
-            'dataType' => $dataType['data'],
+            'dealerName' => ($dealerName['count'] > 0) ? $dealerName['data']['nm_dealer'] : 'Admin',
+            'dataModel' => ($dataModel['count'] > 0) ? $dataModel['data'] : [],
         ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
     }

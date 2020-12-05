@@ -81,8 +81,8 @@
                                 <td>{{ $loop->iteration }} </td>
                                 <td>
                                     <select type="text" class="form-control" wire:model.lazy="detailData.{{$key}}.id_model"
-                                    wire:change="$set('id_model', $event.target.value)">
-                                        <option value="">- Choose Model -</option>
+                                    wire:change="updateDataType({{$key}}, $event.target.value)">
+                                        <option value="" selected>- Choose Model -</option>
 
                                         @foreach($dataModel as $model)
                                         <option value="{{$model['kd_model']}}">{{$model['nm_model']}}</option>
@@ -93,9 +93,9 @@
                                 </td>
                                 <td> 
                                     <select type="text" class="form-control" ">
-                                        <option value="">- Choose Type -</option>
+                                        <option value="" selected>- Choose Type -</option>
 
-                                        @foreach($dataType as $type)
+                                        @foreach($detailData[$key]['data_type'] as $type)
                                         <option value="{{$type['kd_type']}}">{{$type['nm_type']}}</option>
                                         @endforeach
                                     </select>
