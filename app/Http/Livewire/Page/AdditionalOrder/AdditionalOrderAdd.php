@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Page\AdditionalOrder;
 
+use App\Repository\Api\ApiColorRepository;
 use App\Repository\Api\ApiDealerRepository;
 use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
@@ -45,8 +46,11 @@ class AdditionalOrderAdd extends Component
         $data = array(
             'no' => 1,
             'id_model' => '',
+            'model_name',
             'id_type' => '',
+            'type_name',
             'id_colour' => '',
+            'colour_name' => '',
             'qty' => 0,
             'year_production' => date('Y'),
             'data_type' => [],
@@ -63,8 +67,11 @@ class AdditionalOrderAdd extends Component
         $data = array(
             'no' => floatval($end['no'] + 1),
             'id_model' => '',
+            'model_name',
             'id_type' => '',
+            'type_name',
             'id_colour' => '',
+            'colour_name' => '',
             'qty' => 0,
             'year_production' => date('Y'),
             'data_type' => [],
@@ -139,7 +146,12 @@ class AdditionalOrderAdd extends Component
         ->layout('layouts.app', ['title' => $this->pageTitle]);
     }
 
-    public function addProcess(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
+    public function addProcess(
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        ApiModelRepository $apiModelRepository,
+        ApiTypeModelRepository $apiTypeModelRepository,
+        ApiColorRepository $apiColorRepository
+    )
     {
         $this->validate();
 
@@ -156,13 +168,55 @@ class AdditionalOrderAdd extends Component
             'status' => '1'
         );
 
-        $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+        $this->updateModelTypeColour($apiModelRepository, $apiTypeModelRepository, $apiColorRepository);
 
-        if($insert) {
-            session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
-            return redirect()->to(route('additional-order.index'));
+        $where = array('no_order_dealer' => $this->bind['order_number_dealer']);
+
+        $count = $masterAdditionalOrderRepository->findDuplicate($where);
+
+        if($count > 0) {
+            session()->flash('action_message', 
+            '<div class="alert alert-warning">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
-            session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+            $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+
+            if($insert) {
+                session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
+                return redirect()->to(route('additional-order.index'));
+            } else {
+                session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+            }
+        }
+
+    }
+
+    private function updateModelTypeColour($apiModelRepository, $apiTypeModelRepository, $apiColorRepository)
+    {
+        foreach($this->detailData as $key => $detailData) {
+            // Model Name
+            $cacheModel = 'data-model-getById-'.$this->detailData[$key]['id_model'];
+            $dataModel = Cache::remember($cacheModel, 10, function () use($apiModelRepository, $key) {
+                return $apiModelRepository->getById($this->detailData[$key]['id_model']);
+            });
+
+            $this->detailData[$key]['model_name'] = $dataModel['data']['nm_model'];
+
+            // Type Model Name
+            $cacheType = 'data-type-model-getById-'.$this->detailData[$key]['id_type'];
+            $dataModel = Cache::remember($cacheType, 10, function () use($apiTypeModelRepository, $key) {
+                return $apiTypeModelRepository->getById($this->detailData[$key]['id_type']);
+            });
+
+            $this->detailData[$key]['type_name'] = $dataModel['data']['nm_type'];
+
+            // Model Colour
+            $cacheModelColor = 'data-model-color-getById-'.$this->detailData[$key]['id_colour'];
+            $dataModel = Cache::remember($cacheModelColor, 10, function () use($apiColorRepository, $key) {
+                return $apiColorRepository->getById($this->detailData[$key]['id_colour']);
+            });
+
+            $this->detailData[$key]['colour_name'] = $dataModel['data']['nm_color_global'];
+            
         }
     }
 }

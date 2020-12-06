@@ -8,6 +8,8 @@
                 {!! session('action_message') !!}
                 @endif
 
+                @dump($detailData)
+
                 <form id="form-add" class="section" wire:submit.prevent="addProcess">
                     <div class="info">
                         <h5 class="mb-4">{{ $pageTitle }}</h5>
