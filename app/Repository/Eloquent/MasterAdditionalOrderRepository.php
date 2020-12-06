@@ -12,6 +12,11 @@ class MasterAdditionalOrderRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    public function getByIdDealer($id)
+    {
+        return $this->model->where(['status' => '1', 'id_dealer' => $id])->get();
+    }
+
     public function createDealerOrder($dataMaster, $dataDetail)
     {
         $insert = DB::transaction(function () use($dataMaster, $dataDetail) {

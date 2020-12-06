@@ -11,15 +11,18 @@ class DatatablesController extends Controller
 {
     public function additionalOrderJson(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
-        $datas = Cache::remember('datatable-additionalOrderJson', 10, function () use($masterAdditionalOrderRepository){
+        $idDealer = session()->get('user')['id_dealer'];
+        $datas = Cache::remember('datatable-additionalOrderJson-idDealer-'.$idDealer, 10, 
+        function () use($masterAdditionalOrderRepository, $idDealer){
             return $masterAdditionalOrderRepository->allActive();
         });
 
         return Datatables::of($datas)
-        // ->addColumn('action', function($data) {
-        //     return '<input type="checkbox" class="new-control-input" data-id='.$data->id.' 
-        //     wire:key='.$data->id.' wire:click="updateId('.$data->id.')">';
-        // })
+        ->addColumn('action', function($data) {
+            return '<input type="checkbox" class="new-control-input checkId" 
+            onclick="updateEditId('.$data->id_master_additional_order_unit.')" 
+            id="'.$data->id_master_additional_order_unit.'">';
+        })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
         })

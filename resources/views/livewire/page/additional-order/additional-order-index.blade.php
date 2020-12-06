@@ -10,11 +10,14 @@
 
                 <a class="btn btn-primary mr-4" id="addButton" href="{{route('additional-order.add')}}">Add</a>
 
+                <button type="button" class="btn btn-success mr-4" id="editButton" href="#" disabled>Edit</button>
+
                 <div class="table-responsive mt-4">
                     <table class="table table-striped table-bordered" id="master-additional-table">
                         <thead>
                             <tr>
                                 <th></th>
+                                <th>Action</th>
                                 <th>No Order Dealer</th>
                                 <th>No Order ATPM</th>
                                 <th>Date Save</th>
@@ -49,7 +52,7 @@ tr.shown td.details-control {
 <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
 <script src="https://datatables.yajrabox.com/js/handlebars.js"></script>
 <script id="details-template" type="text/x-handlebars-template">
-        <h5 class="mt-4 text-center">Detail order</h5>
+        <!-- <h5 class="mt-4 text-center">Detail order</h5> -->
         <table class="table details-table" id="detail">
             <thead>
             <tr>
@@ -64,6 +67,21 @@ tr.shown td.details-control {
     </script>
 <script>
     
+    function updateEditId(id) {
+        var count = document.querySelectorAll('.checkId:checked').length
+        var editButtonEl = document.getElementById('editButton')
+        editButtonEl.href = '{!! route('additional-order.add') !!}/'+id
+
+        if(count == 0 || count > 1) {
+            editButtonEl.removeAttribute('disabled')
+            
+        } else {
+            editButtonEl.setAttribute('disabled', false)
+        }
+
+        console.log(count)
+    }
+
     document.addEventListener('livewire:load', function() {
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#master-additional-table').DataTable({
@@ -82,13 +100,8 @@ tr.shown td.details-control {
         serverSide: true,
         ajax: '{!! url('datatable/additionalOrderJson') !!}',
         columns: [
-            {
-                "className":      'details-control',
-                "orderable":      false,
-                "searchable":      false,
-                "data":           null,
-                "defaultContent": ''
-            },
+            { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
+            { data: 'action', name: 'action', searchable: false, orderable: false },
             { data: 'no_order_dealer', name: 'no_order_dealer' },
             { data: 'no_order_atpm', name: 'no_order_atpm' },
             { data: 'date_save_order', name: 'date_save_order' },
