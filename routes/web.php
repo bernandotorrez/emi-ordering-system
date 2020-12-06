@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DatatablesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
@@ -53,7 +54,11 @@ Route::middleware('user.session')->group(function() {
     // Additional Order
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
     Route::get('/sales/dealer/additional-order/add', AdditionalOrderAdd::class)->name('additional-order.add');
+});
 
+Route::middleware('user.session')->prefix('datatable')->group(function() {   
+    Route::get('additionalOrderJson', [DatatablesController::class, 'additionalOrderJson']);
+    Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

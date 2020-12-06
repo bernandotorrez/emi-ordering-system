@@ -106,9 +106,9 @@ class BaseRepository implements BaseInterface
 
     /**
      * Get Data By ID
-     * @param int $id
+     * @param $id
      */
-    public function getById(int $id)
+    public function getById($id)
     {
         return $this->model->where($this->primaryKey, $id)->get()->first();
     }

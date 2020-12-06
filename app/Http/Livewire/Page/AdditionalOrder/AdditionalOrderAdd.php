@@ -46,9 +46,9 @@ class AdditionalOrderAdd extends Component
         $data = array(
             'no' => 1,
             'id_model' => '',
-            'model_name',
+            'model_name' => '',
             'id_type' => '',
-            'type_name',
+            'type_name' => '',
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,
@@ -67,9 +67,9 @@ class AdditionalOrderAdd extends Component
         $data = array(
             'no' => floatval($end['no'] + 1),
             'id_model' => '',
-            'model_name',
+            'model_name' => '',
             'id_type' => '',
-            'type_name',
+            'type_name' => '',
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,

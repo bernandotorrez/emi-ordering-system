@@ -19,6 +19,8 @@
     <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 
+    @stack('css')
+
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     @if(Request::is('login') || Request::is('logout') || Request::is('register'))

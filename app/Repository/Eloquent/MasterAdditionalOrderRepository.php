@@ -18,6 +18,7 @@ class MasterAdditionalOrderRepository extends BaseRepository
             $insertMaster = $this->model->create($dataMaster);
             if($insertMaster) {
                 $insertDetail = $insertMaster->detailAdditionalOrderUnit()->createMany($dataDetail);
+                
             }
 
             return $insertMaster;
