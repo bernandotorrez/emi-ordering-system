@@ -123,21 +123,17 @@ class AdditionalOrderAdd extends Component
         
     }
 
-    public function render(
-        ApiModelRepository $apiModelRepository,
-        ApiDealerRepository $apiDealerRepository
-    )
+    public function render(ApiModelRepository $apiModelRepository)
     {
-        $dealerName = Cache::remember('dealer-name'.session()->get('user')['id_dealer'], 60, function () use($apiDealerRepository) {
-            return $apiDealerRepository->getById(session()->get('user')['id_dealer']);
-        });
 
+        $dealerName = session()->get('dealer')['nm_dealer'] ? session()->get('dealer')['nm_dealer'] : 'Admin';
+        
         $dataModel = Cache::remember('data-model', 30, function () use($apiModelRepository) {
             return $apiModelRepository->all();
         });
 
         return view('livewire.page.additional-order.additional-order-add', [
-            'dealerName' => ($dealerName['count'] > 0) ? $dealerName['data']['nm_dealer'] : 'Admin',
+            'dealerName' => $dealerName,
             'dataModel' => ($dataModel['count'] > 0) ? $dataModel['data'] : [],
         ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
