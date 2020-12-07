@@ -10,7 +10,10 @@
 
                 <a class="btn btn-primary mr-4" id="addButton" href="{{route('additional-order.add')}}">Add</a>
 
-                <button type="button" class="btn btn-success mr-4" id="editButton" href="#" disabled>Edit</button>
+                <button type="button" class="btn btn-success mr-4" id="editButton"
+                wire:click.prevent="goTo($event.target.value)" value="" disabled>Edit</button>
+
+                <button type="button" class="btn btn-danger mr-4" id="deleteButton"disabled>Delete</button>
 
                 <div class="table-responsive mt-4">
                     <table class="table table-striped table-bordered" id="master-additional-table">
@@ -33,26 +36,10 @@
 
 </div>
 
-@push('css')
-<link rel="stylesheet" type="text/css" href="{{asset('plugins/table/datatable/datatables.css')}}">
-<link rel="stylesheet" type="text/css" href="{{asset('plugins/table/datatable/dt-global_style.css')}}">
-<style>
-  td.details-control {
-    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
-    cursor: pointer;
-}
-tr.shown td.details-control {
-    background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
-}
-</style>
-@endpush
 
 @push('scripts')
-
-<script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
-<script src="https://datatables.yajrabox.com/js/handlebars.js"></script>
 <script id="details-template" type="text/x-handlebars-template">
-        <!-- <h5 class="mt-4 text-center">Detail order</h5> -->
+        <h5 class="mt-2 text-center">Detail order</h5>
         <table class="table details-table" id="detail">
             <thead>
             <tr>
@@ -70,16 +57,24 @@ tr.shown td.details-control {
     function updateEditId(id) {
         var count = document.querySelectorAll('.checkId:checked').length
         var editButtonEl = document.getElementById('editButton')
-        editButtonEl.href = '{!! route('additional-order.add') !!}/'+id
 
         if(count == 0 || count > 1) {
-            editButtonEl.removeAttribute('disabled')
-            
+            editButtonEl.setAttribute('disabled', true)
         } else {
-            editButtonEl.setAttribute('disabled', false)
+            editButtonEl.removeAttribute('disabled')
+            editButtonEl.value = '{!! route('additional-order.edit') !!}/'+id
         }
+    }
 
-        console.log(count)
+    function updateDeleteId(id) {
+        var count = document.querySelectorAll('.checkId:checked').length
+        var deleteButtonEl = document.getElementById('deleteButton')
+
+        if(count == 0) {
+            deleteButtonEl.setAttribute('disabled', true) 
+        } else {
+            deleteButtonEl.removeAttribute('disabled')
+        }
     }
 
     document.addEventListener('livewire:load', function() {
@@ -131,19 +126,13 @@ tr.shown td.details-control {
 
     function initTable(tableId, data) {
         $('#' + tableId).DataTable({
-            "oLanguage": {
-                "oPaginate": {
-                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
-                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
-                },
-                "sInfo": "Showing page _PAGE_ of _PAGES_",
-                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
-                "sSearchPlaceholder": "Search...",
-                "sLengthMenu": "Results :  _MENU_",
-            },
+            paging: false,
             "stripeClasses": [],
             processing: true,
             serverSide: true,
+            searching: false,
+            "ordering": false,
+            "info":     false,
             ajax: data.details_url,
             columns: [
                 { data: 'model_name', name: 'model_name' },

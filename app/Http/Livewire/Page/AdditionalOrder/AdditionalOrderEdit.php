@@ -6,20 +6,22 @@ use App\Repository\Api\ApiColorRepository;
 use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
+use App\Repository\Eloquent\DetailAdditionalOrderRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
-class AdditionalOrderAdd extends Component
+class AdditionalOrderEdit extends Component
 {
     use WithWrsApi;
 
-    public $pageTitle = 'Additional Order - Add';
+    public $pageTitle = 'Additional Order - Edit';
     public array $detailData = [];
     public $totalQty = 0;
     
     public array $bind = [
+        'id_master_additional_order_unit' => '',
         'order_number_dealer' => ''
     ];
 
@@ -40,23 +42,48 @@ class AdditionalOrderAdd extends Component
         'detailData.*.qty.max' => 'Please input Quantity at Max :max',
     ];
     
-    public function mount()
+    public function mount($id, 
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        DetailAdditionalOrderRepository $detailAdditionalOrderRepository,
+        ApiTypeModelRepository $apiTypeModelRepository,
+        ApiModelColorRepository $apiModelColorRepository
+    )
     {
-        $data = array(
-            'no' => 1,
-            'id_model' => '',
-            'model_name' => '',
-            'id_type' => '',
-            'type_name' => '',
-            'id_colour' => '',
-            'colour_name' => '',
-            'qty' => 0,
-            'year_production' => date('Y'),
-            'data_type' => [],
-            'data_colour' => []
-        );
+        $dataMaster = $masterAdditionalOrderRepository->getById($id);
+        $this->bind['id_master_additional_order_unit'] = $dataMaster->id_master_additional_order_unit;
+        $this->bind['order_number_dealer'] = $dataMaster->no_order_dealer;
+        $this->totalQty = $dataMaster->total_qty;
 
-        array_push($this->detailData, $data);
+        $dataDetail = $detailAdditionalOrderRepository->getByIdMaster($id);
+
+        foreach($dataDetail as $key => $detailOrder) {
+            $dataType = Cache::remember('data-type-with-id-model-'.$detailOrder->id_model, 10, 
+            function () use($detailOrder, $apiTypeModelRepository) {
+                return $apiTypeModelRepository->getByIdModel($detailOrder->id_model);
+            });
+
+            $dataColor = Cache::remember('data-color-with-id-model-'.$detailOrder->id_model, 10, 
+            function () use($detailOrder, $apiModelColorRepository) {
+                return $apiModelColorRepository->getByIdModel($detailOrder->id_model);
+            });
+
+            $data = array(
+                'id_detail_additional_order_unit' => $detailOrder->id_detail_additional_order_unit,
+                'id_model' => $detailOrder->id_model,
+                'model_name' => $detailOrder->model_name,
+                'id_type' => $detailOrder->id_type,
+                'type_name' => $detailOrder->type_name,
+                'id_colour' => $detailOrder->id_colour,
+                'colour_name' => $detailOrder->colour_name,
+                'qty' => $detailOrder->qty,
+                'year_production' => $detailOrder->year_production,
+                'data_type' => $dataType['data'],
+                'data_colour' => $dataColor['data']
+            );
+    
+            array_push($this->detailData, $data);
+        }
+        
     }
 
     public function addDetail()
@@ -64,7 +91,7 @@ class AdditionalOrderAdd extends Component
         $end = end($this->detailData);
 
         $data = array(
-            'no' => floatval($end['no'] + 1),
+            'id_detail_additional_order_unit' => '',
             'id_model' => '',
             'model_name' => '',
             'id_type' => '',
@@ -138,14 +165,14 @@ class AdditionalOrderAdd extends Component
             return $apiModelRepository->all();
         });
 
-        return view('livewire.page.additional-order.additional-order-add', [
+        return view('livewire.page.additional-order.additional-order-edit', [
             'dealerName' => $dealerName,
             'dataModel' => ($dataModel['count'] > 0) ? $dataModel['data'] : [],
         ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
     }
 
-    public function addProcess(
+    public function editProcess(
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
         ApiModelRepository $apiModelRepository,
         ApiTypeModelRepository $apiTypeModelRepository,
@@ -171,15 +198,19 @@ class AdditionalOrderAdd extends Component
 
         $where = array('no_order_dealer' => $this->bind['order_number_dealer']);
 
-        $count = $masterAdditionalOrderRepository->findDuplicate($where);
+        $count = $masterAdditionalOrderRepository->findDuplicateEdit($where, $this->bind['id_master_additional_order_unit']);
 
         if($count > 0) {
             session()->flash('action_message', 
             '<div class="alert alert-warning">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
-            $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+            $update = $masterAdditionalOrderRepository->updateDealerOrder(
+                $this->bind['id_master_additional_order_unit'],
+                $dataMaster, 
+                $this->detailData
+            );
 
-            if($insert) {
+            if($update) {
                 session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {

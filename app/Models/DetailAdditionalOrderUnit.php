@@ -23,6 +23,17 @@ class DetailAdditionalOrderUnit extends Model
         'qty',
         'year_production',
     ];
+    protected $fillable = [
+        'id_master_additional_order_unit',
+        'id_model',
+        'model_name',
+        'id_type',
+        'type_name',
+        'id_colour',
+        'colour_name',
+        'qty',
+        'year_production',
+    ];
     protected $guarded = ['id_detail_additional_order_unit'];
 
     public function getSearchableColumn()
