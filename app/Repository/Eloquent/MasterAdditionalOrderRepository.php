@@ -65,4 +65,9 @@ class MasterAdditionalOrderRepository extends BaseRepository
 
         return $update;
     }
+
+    public function getWaitingApprovalDealerPrinciple()
+    {
+        return $this->model->where(['status' => '1', 'flag_send_approval_dealer' => '1'])->get();
+    }
 }

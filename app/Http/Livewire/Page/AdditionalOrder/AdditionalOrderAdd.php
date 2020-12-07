@@ -178,15 +178,15 @@ class AdditionalOrderAdd extends Component
 
         if($count > 0) {
             session()->flash('action_message', 
-            '<div class="alert alert-warning">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
+            '<div class="alert alert-warning" role="alert">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
             $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
 
             if($insert) {
-                session()->flash('action_message', '<div class="alert alert-info">Insert Data Success!</div>');
+                session()->flash('action_message', '<div class="alert alert-primary" role="alert">Insert Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {
-                session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger" role="alert">Insert Data Failed!</div>');
             }
         }
 

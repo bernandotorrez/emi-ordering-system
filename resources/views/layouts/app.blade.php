@@ -18,8 +18,11 @@
     <link href="{{ asset('assets/css/elements/custom-pagination.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="{{asset('plugins/table/datatable/datatables.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('plugins/table/datatable/dt-global_style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/elements/alert.css') }}">
+    <link href="{{ asset('assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
     <style>
     td.details-control {
         background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -73,7 +76,7 @@
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
     @endif -->
 
-    <!-- <script src="{{ asset('assets/js/custom.js') }}"></script> -->
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
@@ -83,6 +86,7 @@
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
     <script src="{{ asset('assets/js/handlebars.js') }}"></script>
+    <script src="{{ asset('plugins/highlight/highlight.pack.js') }}"></script>
 
     @stack('scripts')
     <script>

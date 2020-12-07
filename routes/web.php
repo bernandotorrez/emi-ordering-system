@@ -62,6 +62,7 @@ Route::middleware('user.session')->group(function() {
 Route::middleware('user.session')->prefix('datatable')->group(function() {   
     Route::get('additionalOrderJson', [DatatablesController::class, 'additionalOrderJson']);
     Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
+    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {
