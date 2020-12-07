@@ -33,6 +33,9 @@ class AdditionalOrderAdd extends Component
     ];
 
     protected $messages = [
+        'bind.order_number_dealer.required' => 'Please fill Order Number Dealer',
+        'bind.order_number_dealer.min' => 'Please fill Order Number Minimal :min Character',
+        'bind.order_number_dealer.max' => 'Please fill Order Number Maximal :max Characters',
         'detailData.*.id_model.required' => 'Please Choose Model Name!',
         'detailData.*.id_type.required' => 'Please Choose Type Name!',
         'detailData.*.id_colour.required' => 'Please Choose Colour!',
@@ -180,7 +183,7 @@ class AdditionalOrderAdd extends Component
             $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
 
             if($insert) {
-                session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
+                session()->flash('action_message', '<div class="alert alert-info">Insert Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {
                 session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');

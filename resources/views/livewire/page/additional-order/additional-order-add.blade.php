@@ -76,10 +76,8 @@
                                     <th><font class="text-danger">Model Name *</font></th>
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Colour *</font></th>
-                                    <th><font class="text-danger">Qty *</font></th>
                                     <th><font class="text-danger">Year *</font></th>
-                                    <!-- <th>Total Qty</th>
-                                <th>Prod Year</th> -->
+                                    <th><font class="text-danger">Qty *</font></th>
                                     <th><button class="btn btn-success" wire:click.prevent="addDetail">+</button></th>
                                 </tr>
                             </thead>
@@ -124,13 +122,6 @@
                                             class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
-                                    <td>
-                                        <input type="number" class="form-control text-center"
-                                            wire:model.lazy="detailData.{{$key}}.qty" placeholder="Qty"
-                                            onkeypress="return isQtyKey(event)">
-                                        @error('detailData.'.$key.'.qty') <span class="error">{{ $message }}</span>
-                                        @enderror
-                                    </td>
 
                                     <td>
                                         <select class="form-control" id="year_production" name="year_production"
@@ -142,6 +133,14 @@
                                             @endfor
                                         </select>
                                         @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+
+                                    <td>
+                                        <input type="number" class="form-control text-center"
+                                            wire:model.lazy="detailData.{{$key}}.qty" placeholder="Qty"
+                                            onkeypress="return isQtyKey(event)">
+                                        @error('detailData.'.$key.'.qty') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
 
@@ -159,9 +158,10 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-11 text-right">
-                        <a class="btn btn-warning mt-3 mr-4" href="{{route('additional-order.index')}}">Back</a>
-                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    <div class="col-md-11 text-left">
+                        <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
+                        <a class="btn btn-warning mt-3" href="{{route('additional-order.index')}}">Back</a>
+                        
                     </div>
                     
                 </form>
