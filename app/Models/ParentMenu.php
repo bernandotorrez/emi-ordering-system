@@ -11,12 +11,21 @@ class ParentMenu extends Model
 
     protected $table = 'tbl_parent_menu';
     protected $primaryKey = 'id_parent_menu';
-    protected $fillable = ['parent_position', 'nama_parent_menu', 'url', 'icon'];
-    protected $visible = ['id_parent_menu', 'parent_position', 'nama_parent_menu', 'url', 'icon'];
-    protected $searchableColumn =  ['parent_position', 'nama_parent_menu', 'url', 'icon'];
+    protected $searchableColumn =  ['parent_position', 'prefix', 'nama_parent_menu', 'url', 'icon', 'nama_group'];
+    protected $guarded = ['id_parent_menu'];
 
     public function getSearchableColumn()
     {
         return $this->searchableColumn;
+    }
+
+    public function childsMenu()
+    {
+        return $this->hasMany(ChildMenu::class, 'id_parent_menu');
+    }
+
+    public function menuUserGroup()
+    {
+        return $this->belongsTo(MenuUserGroup::class, 'id_parent_menu');
     }
 }

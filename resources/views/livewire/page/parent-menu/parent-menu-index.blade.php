@@ -5,31 +5,19 @@
             <div class="widget-one">
 
                 @if(session()->has('action_message'))
-                    {!! session('action_message') !!}
+                {!! session('action_message') !!}
                 @endif
 
-                <button type="button" 
-                class="btn btn-primary mr-4" 
-                id="addButton"
-                wire:click.prevent="addForm"> Add
+                <button type="button" class="btn btn-primary mr-4" id="addButton" wire:click.prevent="addForm"> Add
+                </button>
+              
+                <button type="button" class="btn btn-success mr-4" id="editButton" wire:click.prevent="editForm"
+                    @if(count($checked) !=1) disabled @endif> Edit
                 </button>
 
-                <button type="button" 
-                class="btn btn-success mr-4" 
-                id="editButton"
-                wire:click.prevent="editForm"
-                @if(count($checked) != 1) disabled @endif
-                > Edit
+                <button type="button" class="btn btn-danger" id="deleteButton"
+                    wire:click.prevent="$emit('triggerDelete')" @if(count($checked) <=0 ) disabled @endif> Delete
                 </button>
-
-                <button type="button" 
-                class="btn btn-danger" 
-                id="deleteButton"
-                wire:click.prevent="$emit('triggerDelete')"
-                @if(count($checked) <= 0 ) disabled @endif
-                > Delete
-                </button>
-
                 <!-- @dump($checked) -->
 
                 <!-- Modal -->
@@ -52,8 +40,24 @@
 
                                 <form>
                                     @if(session()->has('message_duplicate'))
-                                     {!! session('message_duplicate') !!}
+                                    {!! session('message_duplicate') !!}
                                     @endif
+
+                                    <div class="form-group mb-4">
+                                        <label for="id_user_group">User Group</label>
+                                        <select type="text" class="form-control" id="id_user_group" 
+                                        wire:model.lazy="bind.id_user_group">
+                                            <option value="">- Choose User Group -</option>
+
+                                            @foreach($dataUserGroup as $userGroup)
+                                            <option value="{{$userGroup->id_user_group}}">
+                                            {{$userGroup->nama_group}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @error('bind.id_user_group') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
                                     <div class="form-group mb-4">
                                         <label for="parent_position">Parent Position</label>
@@ -68,6 +72,14 @@
                                         <input type="text" class="form-control" id="nama_parent_menu" maxlength="100"
                                             placeholder="Example : Sales Order" wire:model.lazy="bind.nama_parent_menu">
                                         @error('bind.nama_parent_menu') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="form-group mb-4">
+                                        <label for="prefix">Prefix</label>
+                                        <input type="text" class="form-control" id="prefix" maxlength="100"
+                                            placeholder="Example : sales" wire:model.lazy="bind.prefix">
+                                        @error('bind.prefix') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -97,9 +109,8 @@
                                     wire:click.prevent="editProcess" wire:offline.attr="disabled"> Update </button>
                                 @else
                                 <button type="button" class="btn btn-primary" id="submit"
-                                    wire:click.prevent="addProcess" 
-                                    wire:offline.attr="disabled"
-                                    @error('bind.*') disabled @enderror> Submit </button>
+                                    wire:click.prevent="addProcess" wire:offline.attr="disabled" @error('bind.*')
+                                    disabled @enderror> Submit </button>
                                 @endif
                             </div>
                         </div>
@@ -125,15 +136,20 @@
                             <input type="text" class="form-control" wire:model="search" placeholder="Search...">
                         </div>
                     </div>
+
+
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                <input type="checkbox"
-                                class="new-control-input"
-                                wire:model="allChecked"
-                                wire:click="allChecked">
+                                <input type="checkbox" class="new-control-input" wire:model="allChecked"
+                                    wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
+                            <th wire:click="sortBy('nama_group')">
+                                <a href="javascript:void(0);">User Group
+                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('parent_position')">
                                 <a href="javascript:void(0);">Parent Position
                                     @include('livewire.datatable-icon', ['field' => 'parent_position'])
@@ -142,6 +158,11 @@
                             <th wire:click="sortBy('nama_parent_menu')">
                                 <a href="javascript:void(0);">Nama Parent Menu
                                     @include('livewire.datatable-icon', ['field' => 'nama_parent_menu'])
+                                </a>
+                            </th>
+                            <th wire:click="sortBy('prefix')">
+                                <a href="javascript:void(0);">Prefix
+                                    @include('livewire.datatable-icon', ['field' => 'prefix'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('url')">
@@ -159,14 +180,14 @@
                             @foreach($dataParentMenu as $data)
                             <tr>
                                 <td>
-                                    <input type="checkbox" 
-                                    value="{{ $data->id_parent_menu }}" 
-                                    class="new-control-input"
-                                    wire:model="checked">
+                                    <input type="checkbox" value="{{ $data->id_parent_menu }}" class="new-control-input"
+                                        wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->nama_group }}</td>
                                 <td>{{ $data->parent_position }}</td>
                                 <td>{{ $data->nama_parent_menu  }}</td>
+                                <td>{{ $data->prefix  }}</td>
                                 <td>{{ $data->url  }}</td>
                                 <td>{{ $data->icon  }}</td>
                             </tr>
@@ -179,7 +200,6 @@
                     </div>
 
                 </div>
-
             </div>
         </div>
     </div>
@@ -204,5 +224,6 @@
             }
         });
     });
+
 </script>
 @endpush

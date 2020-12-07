@@ -16,7 +16,7 @@ class BaseRepository implements BaseInterface
         $this->model = $model;
         $this->primaryKey = (new $model)->getKeyName();
         $this->searchableColumn = (new $model)->getSearchableColumn();
-        $this->visibleColumn = (new $model)->getVisible();
+        //$this->visibleColumn = (new $model)->getVisible();
     }
 
     /**
@@ -26,12 +26,26 @@ class BaseRepository implements BaseInterface
      */
     public function all()
     {
-        return $this->model->all($this->visibleColumn);
+        return $this->model->all();
     }
 
+    /**
+     * Get All Data Active (Status = 1)
+     * @return Collection
+     */
     public function allActive()
     {
-        return $this->model->where('status', '1')->get($this->visibleColumn);
+        return $this->model->where('status', '1')->get();
+    }
+
+    /**
+     * Get All Data Active (Status = 1)
+     * @param array $with
+     * @return Collection
+     */
+    public function allActiveWithRelation(array $with)
+    {
+        return $this->model->where('status', '1')->with($with)->get();
     }
 
     /**
@@ -40,7 +54,7 @@ class BaseRepository implements BaseInterface
      */
     public function create(array $data)
     {
-        return $this->model->firstOrCreate($data);
+        return $this->model->create($data);
     }
 
     /**
@@ -49,7 +63,7 @@ class BaseRepository implements BaseInterface
      */
     public function findDuplicate(array $where)
     {
-        return $this->model->where($where)->count();
+        return $this->model->where($where)->where('status', '1')->count();
     }
 
     /**
@@ -59,7 +73,7 @@ class BaseRepository implements BaseInterface
      */
     public function findDuplicateEdit(array $where, $id)
     {
-        return $this->model->where($where)->where($this->primaryKey, '!=', $id)->count();
+        return $this->model->where($where)->where('status', '1')->where($this->primaryKey, '!=', $id)->count();
     }
 
     /**

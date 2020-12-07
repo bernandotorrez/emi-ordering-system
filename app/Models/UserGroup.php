@@ -13,9 +13,8 @@ class UserGroup extends Model
 
     protected $table = 'tbl_user_group';
     protected $primaryKey = 'id_user_group';
-    protected $fillable = ['nama_group'];
-    protected $visible = ['id_user_group', 'nama_group', 'status'];
     protected $searchableColumn = ['nama_group'];
+    protected $guarded = ['id_user_group'];
 
     public function getSearchableColumn()
     {

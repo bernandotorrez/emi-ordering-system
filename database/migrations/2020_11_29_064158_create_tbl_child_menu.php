@@ -17,6 +17,8 @@ class CreateTblChildMenu extends Migration
             Schema::create('tbl_child_menu', function (Blueprint $table) {
                 $table->id('id_child_menu');
                 $table->bigInteger('id_parent_menu');
+                $table->bigInteger('id_user_group');
+                $table->integer('child_position');
                 $table->string('nama_child_menu', 100);
                 $table->text('url');
                 $table->string('icon', 100);

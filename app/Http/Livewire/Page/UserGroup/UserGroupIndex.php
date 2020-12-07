@@ -176,7 +176,7 @@ class UserGroupIndex extends Component
                 
                 session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
             } else {
-                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
         

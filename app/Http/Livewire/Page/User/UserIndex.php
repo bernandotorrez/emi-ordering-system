@@ -25,7 +25,7 @@ class UserIndex extends Component
     public string $pageTitle = "User";
     public bool $isEdit = false, $allChecked = false;
     public array $checked = [];
-    protected array $relation = ['userGroup'];
+    protected string $view = 'view_user';
     
     protected $queryString = [
         'search' => ['except' => ''],
@@ -101,12 +101,12 @@ class UserIndex extends Component
 
         $dataUser = Cache::remember($cache_name, 60, function () use($userRepository, $cache_name) {
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
-            return $userRepository->paginationWithRelation(
+            return $userRepository->viewPagination(
+                $this->view,
                 $this->search,
                 $this->sortBy,
                 $this->sortDirection,
-                $this->perPageSelected,
-                $this->relation
+                $this->perPageSelected
             );
         });
 
@@ -119,7 +119,8 @@ class UserIndex extends Component
 
     public function allChecked(UserRepository $userRepository)
     {
-        $datas = $userRepository->checked(
+        $datas = $userRepository->viewChecked(
+            $this->view,
             $this->search,
             $this->sortBy,
             $this->sortDirection,
@@ -231,7 +232,7 @@ class UserIndex extends Component
                 
                 session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
             } else {
-                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
     }

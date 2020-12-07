@@ -156,7 +156,7 @@
                         <div class="ml-auto p-2 text-center alert alert-info" wire:loading
                             wire:target="car_model_paginate">Loading ... </div>
                         <div class="ml-auto p-2">
-                            <input type="text" class="form-control" wire:model="search" placeholder="Search...">
+                            <input type="text" class="form-control" wire:model.debounce.500ms="search" placeholder="Search...">
                         </div>
                     </div>
                     <table class="table table-striped table-bordered" id="users-table">
@@ -168,6 +168,11 @@
                                 wire:click="allChecked">
                             </th>
                             <th width="10%">No</th>
+                            <th wire:click="sortBy('kd_user_wrs')">
+                                <a href="javascript:void(0);">Kode WRS
+                                    @include('livewire.datatable-icon', ['field' => 'kd_user_wrs'])
+                                </a>
+                            </th>
                             <th wire:click="sortBy('username')">
                                 <a href="javascript:void(0);">Username
                                     @include('livewire.datatable-icon', ['field' => 'username'])
@@ -183,9 +188,9 @@
                                     @include('livewire.datatable-icon', ['field' => 'email'])
                                 </a>
                             </th>
-                            <th wire:click="sortBy('id_user_group')">
+                            <th wire:click="sortBy('nama_group')">
                                 <a href="javascript:void(0);">User Group
-                                    @include('livewire.datatable-icon', ['field' => 'id_user_group'])
+                                    @include('livewire.datatable-icon', ['field' => 'nama_group'])
                                 </a>
                             </th>
                             <th wire:click="sortBy('level_access')">
@@ -209,10 +214,11 @@
                                     wire:model="checked">
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->kd_user_wrs }}</td>
                                 <td>{{ $data->username }}</td>
                                 <td>{{ $data->nama_user }}</td>
                                 <td>{{ $data->email }}</td>
-                                <td>{{ $data->userGroup->nama_group }}</td>
+                                <td>{{ $data->nama_group }}</td>
                                 <td>{{ $data->level_access }}</td>
                                 <td>{{ $data->status_atpm }}</td>
                             </tr>

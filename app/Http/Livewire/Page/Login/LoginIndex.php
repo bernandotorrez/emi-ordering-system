@@ -71,7 +71,7 @@ class LoginIndex extends Component
             if(!$login) {
                 session()->flash('login_failed', 'Username or Password is wrong!');
             } else {
-                session(['user' => $login, 'level_access' => $login->level_access]);
+                session(['user' => $login->toArray(), 'level_access' => $login->level_access]);
                 return redirect()->route('home.index');
             }
         } else {
@@ -122,7 +122,9 @@ class LoginIndex extends Component
                     }
                 }
 
-                session(['user' => $response['data'], 'level_access' => 4]);
+                $loginData = User::where(['username' => $this->username])->first();
+
+                session(['user' => $loginData->toArray(), 'level_access' => $loginData->level_access]);
                 return redirect()->route('home.index');
             }
         }
