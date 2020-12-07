@@ -20,8 +20,9 @@ class DatatablesController extends Controller
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
             return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateEditId('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'">';
+            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+            id="'.$data->id_master_additional_order_unit.'" 
+            value="'.$data->id_master_additional_order_unit.'">';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);

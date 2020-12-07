@@ -29,6 +29,7 @@ class AdditionalOrderAdd extends Component
         'detailData.*.id_type' => 'required',
         'detailData.*.id_colour' => 'required',
         'detailData.*.qty' => 'required|numeric|min:1|max:99999',
+        'detailData.*.year_production' => 'required',
     ];
 
     protected $messages = [
@@ -38,12 +39,12 @@ class AdditionalOrderAdd extends Component
         'detailData.*.qty.required' => 'Quantity cant be Empty!',
         'detailData.*.qty.min' => 'Please input Quantity at Least :min',
         'detailData.*.qty.max' => 'Please input Quantity at Max :max',
+        'detailData.*.year_production.required' => 'Please Choose Year Production!',
     ];
     
     public function mount()
     {
         $data = array(
-            'no' => 1,
             'id_model' => '',
             'model_name' => '',
             'id_type' => '',
@@ -51,7 +52,7 @@ class AdditionalOrderAdd extends Component
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,
-            'year_production' => date('Y'),
+            'year_production' => '',
             'data_type' => [],
             'data_colour' => []
         );
@@ -64,7 +65,6 @@ class AdditionalOrderAdd extends Component
         $end = end($this->detailData);
 
         $data = array(
-            'no' => floatval($end['no'] + 1),
             'id_model' => '',
             'model_name' => '',
             'id_type' => '',
@@ -72,7 +72,7 @@ class AdditionalOrderAdd extends Component
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,
-            'year_production' => date('Y'),
+            'year_production' => '',
             'data_type' => [],
             'data_colour' => []
         );

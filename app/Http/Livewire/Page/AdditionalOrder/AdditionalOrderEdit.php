@@ -88,8 +88,6 @@ class AdditionalOrderEdit extends Component
 
     public function addDetail()
     {
-        $end = end($this->detailData);
-
         $data = array(
             'id_detail_additional_order_unit' => '',
             'id_model' => '',

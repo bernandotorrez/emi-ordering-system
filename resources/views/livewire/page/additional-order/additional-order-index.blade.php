@@ -8,19 +8,20 @@
                 {!! session('action_message') !!}
                 @endif
 
-                <a class="btn btn-primary mr-4" id="addButton" href="{{route('additional-order.add')}}">Add</a>
+                <a class="btn btn-primary mr-2" id="addButton" href="{{route('additional-order.add')}}">Add</a>
 
-                <button type="button" class="btn btn-success mr-4" id="editButton"
-                wire:click.prevent="goTo($event.target.value)" value="" disabled>Edit</button>
+                <button type="button" class="btn btn-success mr-2" id="editButton"
+                wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button>
 
-                <button type="button" class="btn btn-danger mr-4" id="deleteButton"disabled>Delete</button>
+                <button type="button" class="btn btn-danger mr-2" id="deleteButton"
+                onclick="deleteProcess()" disabled>Delete</button>
 
                 <div class="table-responsive mt-4">
                     <table class="table table-striped table-bordered" id="master-additional-table">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Action</th>
+                                <th><input type="checkbox" class="new-control-input"></th>
                                 <th>No Order Dealer</th>
                                 <th>No Order ATPM</th>
                                 <th>Date Save</th>
@@ -39,7 +40,7 @@
 
 @push('scripts')
 <script id="details-template" type="text/x-handlebars-template">
-        <h5 class="mt-2 text-center">Detail order</h5>
+        <h5 class="mt-2 text-center">Detail Order</h5>
         <table class="table details-table" id="detail">
             <thead>
             <tr>
@@ -54,7 +55,7 @@
     </script>
 <script>
     
-    function updateEditId(id) {
+    function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
         var editButtonEl = document.getElementById('editButton')
 
@@ -64,16 +65,21 @@
             editButtonEl.removeAttribute('disabled')
             editButtonEl.value = '{!! route('additional-order.edit') !!}/'+id
         }
-    }
 
-    function updateDeleteId(id) {
-        var count = document.querySelectorAll('.checkId:checked').length
         var deleteButtonEl = document.getElementById('deleteButton')
 
         if(count == 0) {
             deleteButtonEl.setAttribute('disabled', true) 
         } else {
             deleteButtonEl.removeAttribute('disabled')
+        }
+    }
+
+    function deleteProcess() {
+        var check = document.querySelectorAll('.checkId:checked')
+        var arrayId = [];
+        for(var i = 0;i==count;i++) {
+            arrayId.push(check[i-1].value)
         }
     }
 
@@ -131,7 +137,7 @@
             processing: true,
             serverSide: true,
             searching: false,
-            "ordering": false,
+            "ordering": true,
             "info":     false,
             ajax: data.details_url,
             columns: [

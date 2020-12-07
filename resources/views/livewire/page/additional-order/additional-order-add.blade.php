@@ -32,7 +32,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="order_no_dealer">
-                                                <font class="text-danger">PO Number Dealer *</font>
+                                                <font class="text-danger">Order Number Dealer *</font>
                                             </label>
                                             <input type="text" class="form-control mb-4" id="order_number_dealer"
                                                 placeholder="PO Number Dealer"
@@ -77,6 +77,7 @@
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Colour *</font></th>
                                     <th><font class="text-danger">Qty *</font></th>
+                                    <th><font class="text-danger">Year *</font></th>
                                     <!-- <th>Total Qty</th>
                                 <th>Prod Year</th> -->
                                     <th><button class="btn btn-success" wire:click.prevent="addDetail">+</button></th>
@@ -131,12 +132,25 @@
                                         @enderror
                                     </td>
 
+                                    <td>
+                                        <select class="form-control" id="year_production" name="year_production"
+                                        wire:model.lazy="detailData.{{$key}}.year_production">
+                                            <option value="">- Choose Year Production -</option>
+
+                                            @for ($i = 0; $i <= 2; $i++)
+                                                <option value="{{date('Y')-$i}}">{{date('Y')-$i}}</option>
+                                            @endfor
+                                        </select>
+                                        @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+
                                     <td><button class="btn btn-danger" wire:click.prevent="deleteDetail({{$key}})"
                                             @if(count($detailData)==1) disabled @endif>-</button></td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="4" align="right">Total Order Qty : </td>
+                                    <td colspan="5" align="right">Total Order Qty : </td>
                                     <td colspan="1">
                                         <input type="text" class="form-control text-center" id="total_qty"
                                             wire:model.lazy="totalQty" readonly>
