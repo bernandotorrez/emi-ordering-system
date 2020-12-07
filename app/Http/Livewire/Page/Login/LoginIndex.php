@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Page\Login;
 
 use App\Models\User;
+use App\Repository\Api\ApiAtpmUserRepository;
+use App\Repository\Api\ApiDealerUserRepository;
 use App\Repository\Eloquent\UserRepository;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +56,10 @@ class LoginIndex extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function login()
+    public function login(
+        ApiDealerUserRepository $apiDealerUserRepository,
+        ApiAtpmUserRepository $apiAtpmUserRepository
+    )
     {
         $this->validate();
 
@@ -71,26 +76,22 @@ class LoginIndex extends Component
             if(!$login) {
                 session()->flash('login_failed', 'Username or Password is wrong!');
             } else {
-                session(['user' => $login->toArray(), 'level_access' => $login->level_access]);
+                session(['user' => $login->toArray(), 'dealer' => array('nm_dealer' => 'Admin'), 'level_access' => $login->level_access]);
                 return redirect()->route('home.index');
             }
         } else {
             if($this->loginAs == 'atpm') {
-                $response = Http::post($this->wrsApi.'/atpm-user/login', [
-                    'username' => $this->username,
-                    'password' => $this->password
-                ]);
+                $response = $apiAtpmUserRepository->login($this->username, $this->password);
 
                 $status_atpm = 'atpm';
+                $dataDealer = array('nm_dealer' => 'ATPM');
             } else {
-                $response = Http::post($this->wrsApi.'/dealer-user/login', [
-                    'username' => $this->username,
-                    'password' => $this->password
-                ]);
+                $response = $apiDealerUserRepository->login($this->username, $this->password);
 
                 $status_atpm = 'dealer';
+                $dataDealer = $response['data']['dealer'];
             }
-    
+     
             if($response['message'] != 'success') {
                 session()->flash('login_failed', 'Username or Password is wrong!');
             } else {
@@ -124,7 +125,7 @@ class LoginIndex extends Component
 
                 $loginData = User::where(['username' => $this->username])->first();
 
-                session(['user' => $loginData->toArray(), 'level_access' => $loginData->level_access]);
+                session(['user' => $loginData->toArray(), 'dealer' => $dataDealer, 'level_access' => $loginData->level_access]);
                 return redirect()->route('home.index');
             }
         }

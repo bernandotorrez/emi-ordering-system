@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\DatatablesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderAdd;
+use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderEdit;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
@@ -53,7 +55,13 @@ Route::middleware('user.session')->group(function() {
     // Additional Order
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
     Route::get('/sales/dealer/additional-order/add', AdditionalOrderAdd::class)->name('additional-order.add');
+    Route::get('/sales/dealer/additional-order/edit/{id?}', AdditionalOrderEdit::class)->name('additional-order.edit');
+});
 
+// Datatable Json
+Route::middleware('user.session')->prefix('datatable')->group(function() {   
+    Route::get('additionalOrderJson', [DatatablesController::class, 'additionalOrderJson']);
+    Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

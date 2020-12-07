@@ -81,7 +81,7 @@ class BaseRepository implements BaseInterface
      * @param string $id
      * @param array $data
      */
-    public function update(string $id, array $data)
+    public function update($id, array $data)
     {
         return $this->model->where($this->primaryKey, $id)->update($data);
     }
@@ -106,9 +106,9 @@ class BaseRepository implements BaseInterface
 
     /**
      * Get Data By ID
-     * @param int $id
+     * @param $id
      */
-    public function getById(int $id)
+    public function getById($id)
     {
         return $this->model->where($this->primaryKey, $id)->get()->first();
     }

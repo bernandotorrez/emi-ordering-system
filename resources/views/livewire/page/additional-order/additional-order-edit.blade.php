@@ -8,7 +8,7 @@
                 {!! session('action_message') !!}
                 @endif
 
-                <form id="form-add" class="section" wire:submit.prevent="addProcess">
+                <form id="form-add" class="section" wire:submit.prevent="editProcess">
                     <div class="info">
                         <h5 class="mb-4">{{ $pageTitle }}</h5>
                         <div class="row">
@@ -32,11 +32,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="order_no_dealer">
-                                                <font class="text-danger">Order Number Dealer *</font>
+                                                <font class="text-danger">PO Number Dealer *</font>
                                             </label>
                                             <input type="text" class="form-control mb-4" id="order_number_dealer"
                                                 placeholder="PO Number Dealer"
-                                                wire:model.lazy="bind.order_number_dealer" autofocus>
+                                                wire:model.lazy="bind.order_number_dealer" readonly autofocus>
                                                 @error('bind.order_number_dealer') <span class="error">{{ $message }}</span>
                                                 @enderror
                                         </div>
@@ -76,8 +76,9 @@
                                     <th><font class="text-danger">Model Name *</font></th>
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Colour *</font></th>
-                                    <th><font class="text-danger">Year *</font></th>
                                     <th><font class="text-danger">Qty *</font></th>
+                                    <!-- <th>Total Qty</th>
+                                <th>Prod Year</th> -->
                                     <th><button class="btn btn-success" wire:click.prevent="addDetail">+</button></th>
                                 </tr>
                             </thead>
@@ -122,20 +123,6 @@
                                             class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
-
-                                    <td>
-                                        <select class="form-control" id="year_production" name="year_production"
-                                        wire:model.lazy="detailData.{{$key}}.year_production">
-                                            <option value="">- Choose Year Production -</option>
-
-                                            @for ($i = 0; $i <= 2; $i++)
-                                                <option value="{{date('Y')-$i}}">{{date('Y')-$i}}</option>
-                                            @endfor
-                                        </select>
-                                        @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-
                                     <td>
                                         <input type="number" class="form-control text-center"
                                             wire:model.lazy="detailData.{{$key}}.qty" placeholder="Qty"
@@ -149,7 +136,7 @@
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="5" align="right">Total Order Qty : </td>
+                                    <td colspan="4" align="right">Total Order Qty : </td>
                                     <td colspan="1">
                                         <input type="text" class="form-control text-center" id="total_qty"
                                             wire:model.lazy="totalQty" readonly>
@@ -158,10 +145,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-11 text-left">
-                        <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
-                        <a class="btn btn-warning mt-3" href="{{route('additional-order.index')}}">Back</a>
-                        
+                    <div class="col-md-11 text-right">
+                        <a class="btn btn-warning mt-3 mr-4" href="{{route('additional-order.index')}}">Back</a>
+                        <button type="submit" class="btn btn-success mt-3">Update</button>
                     </div>
                     
                 </form>

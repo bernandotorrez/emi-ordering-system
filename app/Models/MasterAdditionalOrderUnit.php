@@ -10,7 +10,7 @@ class MasterAdditionalOrderUnit extends Model
     use HasFactory;
 
     protected $table = 'tbl_master_additional_order_unit';
-    protected $primaryKey = 'id_additional_order_unit';
+    protected $primaryKey = 'id_master_additional_order_unit';
     protected $searchableColumn =  [
         'id_oder',
         'order_no_atpm',
@@ -28,10 +28,15 @@ class MasterAdditionalOrderUnit extends Model
         'year_order',
         'total_qty',
     ];
-    protected $guarded = ['id_additional_order_unit'];
+    protected $guarded = ['id_master_additional_order_unit'];
 
     public function getSearchableColumn()
     {
         return $this->searchableColumn;
+    }
+
+    public function detailAdditionalOrderUnit()
+    {
+        return $this->hasMany(DetailAdditionalOrderUnit::class, $this->primaryKey);
     }
 }
