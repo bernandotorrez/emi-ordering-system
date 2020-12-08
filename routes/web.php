@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DatatablesController;
+use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
@@ -66,6 +67,11 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
     Route::get('additionalOrderJsonSubmittedATPM', [DatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
     Route::get('additionalOrderJsonATPMAllocation', [DatatablesController::class, 'additionalOrderJsonATPMAllocation']);
     Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
+});
+
+// Sweet Alert
+Route::middleware('user.session')->prefix('sweetalert')->group(function() {
+    Route::post('additionalOrder/sendToApproval', [SweetAlertController::class, 'sendToApproval']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

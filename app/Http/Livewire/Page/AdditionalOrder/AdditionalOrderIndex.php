@@ -15,4 +15,5 @@ class AdditionalOrderIndex extends Component
     {
         return view('livewire.page.additional-order.additional-order-index');
     }
+
 }

@@ -21,25 +21,43 @@
                             <a class="nav-link" id="animated-underline-profile-tab" data-toggle="tab"
                                 href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile"
                                 aria-selected="false">
-                                <i class="fas fa-user-clock"></i> Waiting Approval Dealer Principle</a>
+                                <i class="fas fa-user-clock"></i> Waiting Approval</a>
                         </li>
                         <li class="nav-item" onclick="showTableTab('approval_dealer_principle')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
-                                <i class="fas fa-user-check"></i> Approval Dealer Principle</a>
+                                <i class="fas fa-user-check"></i> Approved</a>
+                        </li>
+                        <li class="nav-item" onclick="showTableTab('cancel_approval')">
+                            <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
+                                href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
+                                aria-selected="false">
+                                <i class="fas fa-user-times"></i> Cancel Approval</a>
                         </li>
                         <li class="nav-item" onclick="showTableTab('submitted_atpm')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
-                                <i class="fas fa-file-import"></i> Submited ATPM</a>
+                                <i class="fas fa-file-import"></i> Submitted</a>
+                        </li>
+                        <li class="nav-item" onclick="showTableTab('cancel_submit')">
+                            <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
+                                href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
+                                aria-selected="false">
+                                <i class="fas fa-user-times"></i> Cancel Submit</a>
                         </li>
                         <li class="nav-item" onclick="showTableTab('atpm_allocation')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
-                                <i class="fas fa-shipping-fast"></i> ATPM Allocation</a>
+                                <i class="fas fa-shipping-fast"></i> Allocated</a>
+                        </li>
+                        <li class="nav-item" onclick="showTableTab('cancel_allocation')">
+                            <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
+                                href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
+                                aria-selected="false">
+                                <i class="fas fa-user-times"></i> Cancel Allocation</a>
                         </li>
                     </ul>
 
@@ -50,7 +68,7 @@
 
                     <button type="button" class="btn btn-primary mr-2" id="sendApprovalButton"
                         onclick="sendApprovalToPrinciple()"
-                        disabled>Send to Dealer Principle</button>
+                        disabled>Send to Approval</button>
 
                     <!-- <button type="button" class="btn btn-danger mr-2" id="deleteButton" onclick="deleteProcess()"
                         disabled>Delete</button> -->
@@ -122,8 +140,45 @@
         }
     }
 
-    function sendApprovalToPrinciple() {
-        alert('tes')
+    function allChecked() {
+        alert('all checked')
+    }
+
+    function sendApprovalToPrinciple(id) {
+        Swal.fire({
+            title: "Send Approval?",
+            text: "Please ensure and then confirm!",
+            type: "info",
+            icon: 'question',
+            showCancelButton: true,
+            reverseButtons: false,
+            showLoaderOnConfirm: true,
+        }).then(function (e) {
+
+            if (e.value === true) {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{url('additionalOrder/sendToApproval')}}",
+                    data: {_token: CSRF_TOKEN},
+                    dataType: 'JSON',
+                    success: function (results) {
+                        if (results.success === true) {
+                            Swal.fire("Done!", results.success, "success");
+                        } else {
+                            Swal.fire("Error!", results.success, "error");
+                        }
+                    }
+                });
+
+            } else {
+                e.dismiss;
+            }
+
+        }, function (dismiss) {
+            return false;
+        })
     }
 
     function deleteProcess() {
@@ -172,7 +227,7 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', title: 'Action', searchable: false, orderable: false },
+                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input" onclick="allChecked()">', searchable: false, orderable: false },
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 { data: 'date_save_order', name: 'date_save_order', title: 'Date Draft' },
@@ -260,7 +315,7 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', title: 'Action', searchable: false, orderable: false },
+                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input">', searchable: false, orderable: false },
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 { data: 'date_save_order', name: 'date_save_order', title: 'Date Draft' },
