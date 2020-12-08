@@ -74,9 +74,9 @@
                                 <tr align="center">
                                     <th>No</th>
                                     <th><font class="text-danger">Model Name *</font></th>
+                                    <th><font class="text-danger">Year *</font></th>
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Colour *</font></th>
-                                    <th><font class="text-danger">Year *</font></th>
                                     <th><font class="text-danger">Qty *</font></th>
                                     <th><button class="btn btn-success" wire:click.prevent="addDetail">+</button></th>
                                 </tr>
@@ -98,6 +98,20 @@
                                         @error('detailData.'.$key.'.id_model') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
+
+                                    <td>
+                                        <select class="form-control" id="year_production" name="year_production"
+                                        wire:model.lazy="detailData.{{$key}}.year_production">
+                                            <option value="">- Choose Year Production -</option>
+
+                                            @for ($i = 0; $i <= 2; $i++)
+                                                <option value="{{date('Y')-$i}}">{{date('Y')-$i}}</option>
+                                            @endfor
+                                        </select>
+                                        @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+
                                     <td>
                                         <select class="form-control" wire:model.lazy="detailData.{{$key}}.id_type">
                                             <option value="" selected>- Choose Type -</option>
@@ -120,19 +134,6 @@
                                         </select>
                                         @error('detailData.'.$key.'.id_colour') <span
                                             class="error">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-
-                                    <td>
-                                        <select class="form-control" id="year_production" name="year_production"
-                                        wire:model.lazy="detailData.{{$key}}.year_production">
-                                            <option value="">- Choose Year Production -</option>
-
-                                            @for ($i = 0; $i <= 2; $i++)
-                                                <option value="{{date('Y')-$i}}">{{date('Y')-$i}}</option>
-                                            @endfor
-                                        </select>
-                                        @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
 

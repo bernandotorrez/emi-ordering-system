@@ -35,7 +35,7 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                     <input id="username" name="username" type="text" class="form-control" maxlength="50"
-                                        placeholder="e.g Bernand.Hermawan" wire:model.lazy="username">
+                                        placeholder="e.g Bernand.Hermawan" autocomplete="off" wire:model.lazy="username">
                                         @error('username') <span class="error">{{ $message }}</span> @enderror
                                 </div>
 
@@ -50,7 +50,7 @@
                                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                     </svg>
                                     <input id="password" name="password" type="password" class="form-control"
-                                        maxlength="50" placeholder="Password" wire:model.lazy="password">
+                                        maxlength="50" placeholder="Password" autocomplete="off" wire:model.lazy="password">
                                         @error('password') <span class="error">{{ $message }}</span> @enderror
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
