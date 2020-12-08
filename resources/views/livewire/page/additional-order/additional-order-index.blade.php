@@ -23,19 +23,19 @@
                                 aria-selected="false">
                                 <i class="fas fa-user-clock"></i> Waiting Approval Dealer Principle</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" onclick="showTableTab('approval_dealer_principle')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
                                 <i class="fas fa-user-check"></i> Approval Dealer Principle</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" onclick="showTableTab('submitted_atpm')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
                                 <i class="fas fa-file-import"></i> Submited ATPM</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" onclick="showTableTab('atpm_allocation')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
@@ -127,9 +127,15 @@
 
     function getUrlAjax(status) {
         if(status == 'draft') {
-            return '{!! url('datatable/additionalOrderJson') !!}'
+            return '{!! url('datatable/additionalOrderJsonDraft') !!}'
         } else if(status == 'waiting_approval_dealer_principle') {
             return '{!! url('datatable/additionalOrderJsonWaitingApprovalDealerPrinciple') !!}'
+        } else if(status == 'approval_dealer_principle') {
+            return '{!! url('datatable/additionalOrderJsonApprovalDealerPrinciple') !!}'
+        } else if(status == 'submitted_atpm') {
+            return '{!! url('datatable/additionalOrderJsonSubmittedATPM') !!}'
+        } else if(status == 'atpm_allocation') {
+            return '{!! url('datatable/additionalOrderJsonATPMAllocation') !!}'
         }
     }
 
