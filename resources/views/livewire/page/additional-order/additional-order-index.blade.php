@@ -144,7 +144,14 @@
         alert('all checked')
     }
 
-    function sendApprovalToPrinciple(id) {
+    function sendApprovalToPrinciple() {
+        var arrayChecked = document.querySelectorAll('.checkId:checked');
+        var arrayId = [];
+
+        arrayChecked.forEach(function(check) {
+            arrayId.push(check.value)
+        })
+
         Swal.fire({
             title: "Send Approval?",
             text: "Please ensure and then confirm!",
@@ -160,14 +167,18 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{url('additionalOrder/sendToApproval')}}",
-                    data: {_token: CSRF_TOKEN},
+                    url: "{{url('sweetalert/additionalOrder/sendToApproval')}}",
+                    data: {
+                        _token: CSRF_TOKEN,
+                        id: arrayId
+                    },
                     dataType: 'JSON',
                     success: function (results) {
-                        if (results.success === true) {
-                            Swal.fire("Done!", results.success, "success");
+                        if (results.status == 'success') {
+                            Swal.fire("Done!", results.status, "success");
+                            showTable('draft')
                         } else {
-                            Swal.fire("Error!", results.success, "error");
+                            Swal.fire("Error!", results.status, "error");
                         }
                     }
                 });

@@ -31,15 +31,20 @@ class AdditionalOrderEdit extends Component
         'detailData.*.id_type' => 'required',
         'detailData.*.id_colour' => 'required',
         'detailData.*.qty' => 'required|numeric|min:1|max:99999',
+        'detailData.*.year_production' => 'required',
     ];
 
     protected $messages = [
+        'bind.order_number_dealer.required' => 'Please fill Order Number Dealer',
+        'bind.order_number_dealer.min' => 'Please fill Order Number Minimal :min Character',
+        'bind.order_number_dealer.max' => 'Please fill Order Number Maximal :max Characters',
         'detailData.*.id_model.required' => 'Please Choose Model Name!',
         'detailData.*.id_type.required' => 'Please Choose Type Name!',
         'detailData.*.id_colour.required' => 'Please Choose Colour!',
         'detailData.*.qty.required' => 'Quantity cant be Empty!',
         'detailData.*.qty.min' => 'Please input Quantity at Least :min',
         'detailData.*.qty.max' => 'Please input Quantity at Max :max',
+        'detailData.*.year_production.required' => 'Please Choose Year Production!',
     ];
     
     public function mount($id, 
@@ -97,7 +102,7 @@ class AdditionalOrderEdit extends Component
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,
-            'year_production' => date('Y'),
+            'year_production' => '',
             'data_type' => [],
             'data_colour' => []
         );

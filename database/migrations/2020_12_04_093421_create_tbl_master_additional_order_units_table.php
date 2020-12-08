@@ -29,10 +29,10 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
                 $table->string('user_approval', 50)->nullable();
                 $table->string('month_order', 25);
                 $table->string('year_order', 4);
-                $table->tinyInteger('flag_approval_dealer', 1)->default(0);
-                $table->tinyInteger('flag_send_approval_dealer', 1)->default(0);
-                $table->tinyInteger('flag_submit_to_atpm', 1)->default(0);
-                $table->tinyInteger('flag_allocation', 1)->default(0);
+                $table->tinyInteger('flag_approval_dealer')->default(0);
+                $table->tinyInteger('flag_send_approval_dealer')->default(0);
+                $table->tinyInteger('flag_submit_to_atpm')->default(0);
+                $table->tinyInteger('flag_allocation')->default(0);
                 $table->text('remarks')->nullable(true);
                 $table->integer('total_qty')->default(0);
                 $table->enum('status', ['0', '1'])->default(1);

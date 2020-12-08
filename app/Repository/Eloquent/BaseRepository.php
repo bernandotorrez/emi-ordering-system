@@ -87,6 +87,16 @@ class BaseRepository implements BaseInterface
     }
 
     /**
+     * Update Data
+     * @param array $id
+     * @param array $data
+     */
+    public function massUpdate(array $id, array $data)
+    {
+        return $this->model->whereIn($this->primaryKey, $id)->update($data);
+    }
+
+    /**
      * Delete One Data
      * @param int $id
      */

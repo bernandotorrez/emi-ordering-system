@@ -65,8 +65,6 @@ class AdditionalOrderAdd extends Component
 
     public function addDetail()
     {
-        $end = end($this->detailData);
-
         $data = array(
             'id_model' => '',
             'model_name' => '',
