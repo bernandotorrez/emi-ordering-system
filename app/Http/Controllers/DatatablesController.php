@@ -14,7 +14,7 @@ class DatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $datas = Cache::remember('datatable-additionalOrderJsonDraft-idDealer-'.$idDealer, 10, 
         function () use($masterAdditionalOrderRepository, $idDealer){
-            return $masterAdditionalOrderRepository->getDraft();
+            return $masterAdditionalOrderRepository->getDraft($idDealer);
         });
 
         return Datatables::of($datas)
@@ -35,7 +35,7 @@ class DatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $datas = Cache::remember('datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idDealer-'.$idDealer, 10, 
         function () use($masterAdditionalOrderRepository, $idDealer){
-            return $masterAdditionalOrderRepository->getWaitingApprovalDealerPrinciple();
+            return $masterAdditionalOrderRepository->getWaitingApprovalDealerPrinciple($idDealer);
         });
 
         return Datatables::of($datas)
@@ -56,7 +56,7 @@ class DatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $datas = Cache::remember('datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-'.$idDealer, 10, 
         function () use($masterAdditionalOrderRepository, $idDealer){
-            return $masterAdditionalOrderRepository->getApprovalDealerPrinciple();
+            return $masterAdditionalOrderRepository->getApprovalDealerPrinciple($idDealer);
         });
 
         return Datatables::of($datas)
@@ -77,7 +77,7 @@ class DatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $datas = Cache::remember('datatable-additionalOrderJsonSubmittedATPM-idDealer-'.$idDealer, 10, 
         function () use($masterAdditionalOrderRepository, $idDealer){
-            return $masterAdditionalOrderRepository->getApprovalDealerPrinciple();
+            return $masterAdditionalOrderRepository->getApprovalDealerPrinciple($idDealer);
         });
 
         return Datatables::of($datas)
@@ -98,7 +98,7 @@ class DatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $datas = Cache::remember('datatable-additionalOrderJsonATPMAllocation-idDealer-'.$idDealer, 10, 
         function () use($masterAdditionalOrderRepository, $idDealer){
-            return $masterAdditionalOrderRepository->getATPMAllocation();
+            return $masterAdditionalOrderRepository->getATPMAllocation($idDealer);
         });
 
         return Datatables::of($datas)
