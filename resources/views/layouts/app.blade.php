@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Eurokars DMS @isset($title) - {{ $title }} @endisset</title>
+    <title>EMI Dealer Management System @isset($title) - {{ $title }} @endisset</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('icon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('icon/favicon-32x32.png') }}"> 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icon/favicon-16x16.png') }}"> 
@@ -30,6 +30,10 @@
     }
     tr.shown td.details-control {
         background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
+
+    .dataTables_scrollHead {
+        height: 37px;
     }
     </style>
 

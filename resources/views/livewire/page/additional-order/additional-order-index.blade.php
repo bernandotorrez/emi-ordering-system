@@ -43,15 +43,17 @@
                         </li>
                     </ul>
 
-
-
                     <a class="btn btn-primary mr-2" id="addButton" href="{{route('additional-order.add')}}">Add</a>
 
                     <button type="button" class="btn btn-success mr-2" id="editButton"
                         wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button>
 
-                    <button type="button" class="btn btn-danger mr-2" id="deleteButton" onclick="deleteProcess()"
-                        disabled>Delete</button>
+                    <button type="button" class="btn btn-primary mr-2" id="sendApprovalButton"
+                        onclick="sendApprovalToPrinciple()"
+                        disabled>Send to Dealer Principle</button>
+
+                    <!-- <button type="button" class="btn btn-danger mr-2" id="deleteButton" onclick="deleteProcess()"
+                        disabled>Delete</button> -->
 
                     <div class="table-responsive mt-4">
                         <table class="table table-striped table-bordered table-hover" id="master-additional-table">
@@ -79,7 +81,7 @@
 @push('scripts')
 <script id="details-template" type="text/x-handlebars-template">
         <h5 class="mt-2 text-center">Detail Order</h5>
-        <table class="table table-hover table-dark details-table" id="detail">
+        <table class="table table-hover details-table" id="detail">
             <thead>
             <tr>
                 <th>Model Name</th>
@@ -104,13 +106,24 @@
             editButtonEl.value = '{!! route('additional-order.edit') !!}/'+id
         }
 
-        var deleteButtonEl = document.getElementById('deleteButton')
+        // var deleteButtonEl = document.getElementById('deleteButton')
 
+        // if(count == 0) {
+        //     deleteButtonEl.setAttribute('disabled', true) 
+        // } else {
+        //     deleteButtonEl.removeAttribute('disabled')
+        // }
+
+        var sendButtonEl = document.getElementById('sendApprovalButton')
         if(count == 0) {
-            deleteButtonEl.setAttribute('disabled', true) 
+            sendButtonEl.setAttribute('disabled', true) 
         } else {
-            deleteButtonEl.removeAttribute('disabled')
+            sendButtonEl.removeAttribute('disabled')
         }
+    }
+
+    function sendApprovalToPrinciple() {
+        alert('tes')
     }
 
     function deleteProcess() {
@@ -155,15 +168,16 @@
             "stripeClasses": [],
             processing: true,
             serverSide: true,
+            destroy: true,
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', searchable: false, orderable: false },
-                { data: 'no_order_dealer', name: 'no_order_dealer' },
-                { data: 'no_order_atpm', name: 'no_order_atpm' },
-                { data: 'date_save_order', name: 'date_save_order' },
-                { data: 'user_order', name: 'user_order' },
-                { data: 'total_qty', name: 'total_qty' }
+                { data: 'action', name: 'action', title: 'Action', searchable: false, orderable: false },
+                { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
+                { data: 'date_save_order', name: 'date_save_order', title: 'Date Draft' },
+                { data: 'user_order', name: 'user_order', title: 'User Order' },
+                { data: 'total_qty', name: 'total_qty', title: 'Total Qty' }
             ]
         });
 
@@ -186,29 +200,47 @@
             }
         });
 
-        function initTable(tableId, data) {
-            $('#' + tableId).DataTable({
-                paging: false,
-                "stripeClasses": [],
-                processing: true,
-                serverSide: true,
-                searching: false,
-                "ordering": true,
-                "info":     false,
-                ajax: data.details_url,
-                columns: [
-                    { data: 'model_name', name: 'model_name' },
-                    { data: 'type_name', name: 'type_name' },
-                    { data: 'colour_name', name: 'colour_name' },
-                    { data: 'year_production', name: 'year_production' },
-                    { data: 'qty', name: 'qty' },
-                ]
-            })
-        }
+    }
+
+    function initTable(tableId, data) {
+        $('#' + tableId).DataTable({
+            paging: false,
+            "stripeClasses": [],
+            processing: true,
+            serverSide: true,
+            searching: false,
+            "ordering": true,
+            "info": false,
+            destroy: true,
+            ajax: data.details_url,
+            columns: [{
+                    data: 'model_name',
+                    name: 'model_name'
+                },
+                {
+                    data: 'type_name',
+                    name: 'type_name'
+                },
+                {
+                    data: 'colour_name',
+                    name: 'colour_name'
+                },
+                {
+                    data: 'year_production',
+                    name: 'year_production'
+                },
+                {
+                    data: 'qty',
+                    name: 'qty'
+                },
+            ]
+        })
     }
 
     function showTableTab(status) {
-        $('#master-additional-table').DataTable().clear().destroy();
+        $('#master-additional-table').DataTable().destroy(); 
+        $('#master-additional-table').html('');
+        
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -224,15 +256,16 @@
             "stripeClasses": [],
             processing: true,
             serverSide: true,
+            destroy: true,
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', searchable: false, orderable: false },
-                { data: 'no_order_dealer', name: 'no_order_dealer' },
-                { data: 'no_order_atpm', name: 'no_order_atpm' },
-                { data: 'date_save_order', name: 'date_save_order' },
-                { data: 'user_order', name: 'user_order' },
-                { data: 'total_qty', name: 'total_qty' }
+                { data: 'action', name: 'action', title: 'Action', searchable: false, orderable: false },
+                { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
+                { data: 'date_save_order', name: 'date_save_order', title: 'Date Draft' },
+                { data: 'user_order', name: 'user_order', title: 'User Order' },
+                { data: 'total_qty', name: 'total_qty', title: 'Total Qty' }
             ]
         });
 
@@ -254,26 +287,6 @@
                 tr.next().find('td').addClass('no-padding bg-gray');
             }
         });
-
-        function initTable(tableId, data) {
-            $('#' + tableId).DataTable({
-                paging: false,
-                "stripeClasses": [],
-                processing: true,
-                serverSide: true,
-                searching: false,
-                "ordering": true,
-                "info":     false,
-                ajax: data.details_url,
-                columns: [
-                    { data: 'model_name', name: 'model_name' },
-                    { data: 'type_name', name: 'type_name' },
-                    { data: 'colour_name', name: 'colour_name' },
-                    { data: 'year_production', name: 'year_production' },
-                    { data: 'qty', name: 'qty' },
-                ]
-            })
-        }
     }
 </script>
 @endpush
