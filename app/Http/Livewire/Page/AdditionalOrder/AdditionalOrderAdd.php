@@ -8,6 +8,7 @@ use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithWrsApi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
@@ -65,8 +66,6 @@ class AdditionalOrderAdd extends Component
 
     public function addDetail()
     {
-        $end = end($this->detailData);
-
         $data = array(
             'id_model' => '',
             'model_name' => '',
@@ -108,8 +107,7 @@ class AdditionalOrderAdd extends Component
     public function updateDataType($key, $value, 
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiModelColorRepository $apiModelColorRepository
-    )
-    {
+    ) {
         if($this->detailData[$key]['id_model'] != '') {
             $dataType = Cache::remember('data-type-with-id-model-'.$value, 30, function () use($value, $apiTypeModelRepository) {
                 return $apiTypeModelRepository->getByIdModel($value);
@@ -153,19 +151,18 @@ class AdditionalOrderAdd extends Component
         ApiModelRepository $apiModelRepository,
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiColorRepository $apiColorRepository
-    )
-    {
+    ) {
         $this->validate();
 
         $dataMaster = array(
             'no_order_atpm' => '',
             'no_order_dealer' => $this->bind['order_number_dealer'],
-            'date_save_order' => date('Y-m-d H:i:s'),
+            'date_save_order' => Carbon::now(),
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'month_order' => date('m'),
-            'year_order' => date('Y'),
+            'month_order' => Carbon::now()->month,
+            'year_order' => Carbon::now()->year,
             'total_qty' => $this->totalQty,
             'status' => '1'
         );

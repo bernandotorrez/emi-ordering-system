@@ -89,7 +89,7 @@ class LoginIndex extends Component
                 $response = $apiDealerUserRepository->login($this->username, $this->password);
                 
                 $status_atpm = 'dealer';
-                $dataDealer = $response['data']['dealer'];
+                $dataDealer = ($response['message'] == 'success') ? $response['data']['dealer'] : array('nm_dealer' => 'Dealer');
             }
      
             if($response['message'] != 'success') {

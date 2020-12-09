@@ -12,15 +12,15 @@
 
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
                         <li class="nav-item" onclick="showTableTab('draft')">
-                            <a class="nav-link active" id="animated-underline-home-tab" data-toggle="tab"
+                            <a class="nav-link" id="animated-underline-home-tab" data-toggle="tab"
                                 href="#animated-underline-home" role="tab" aria-controls="animated-underline-home"
-                                aria-selected="true">
+                                aria-selected="false">
                                 <i class="far fa-edit"></i> Draft</a>
                         </li>
-                        <li class="nav-item" onclick="showTableTab('waiting_approval_dealer_principle')">
-                            <a class="nav-link" id="animated-underline-profile-tab" data-toggle="tab"
+                        <li class="nav-item active" onclick="showTableTab('waiting_approval_dealer_principle')">
+                            <a class="nav-link active" id="animated-underline-profile-tab" data-toggle="tab"
                                 href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile"
-                                aria-selected="false">
+                                aria-selected="true">
                                 <i class="fas fa-user-clock"></i> Waiting Approval</a>
                         </li>
                         <li class="nav-item" onclick="showTableTab('approval_dealer_principle')">
@@ -63,12 +63,12 @@
 
                     <a class="btn btn-primary mr-2" id="addButton" href="{{route('additional-order.add')}}">Add</a>
 
-                    <button type="button" class="btn btn-success mr-2" id="editButton"
-                        wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button>
+                    <!-- <button type="button" class="btn btn-success mr-2" id="editButton"
+                        wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button> -->
 
                     <button type="button" class="btn btn-primary mr-2" id="sendApprovalButton"
                         onclick="sendApproval()"
-                        disabled>Send to Approval</button>
+                        disabled>Approve</button>
 
                     <!-- <button type="button" class="btn btn-danger mr-2" id="deleteButton" onclick="deleteProcess()"
                         disabled>Delete</button> -->
@@ -123,14 +123,14 @@
     
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
-        var editButtonEl = document.getElementById('editButton')
+        // var editButtonEl = document.getElementById('editButton')
 
-        if(count == 0 || count > 1) {
-            editButtonEl.setAttribute('disabled', true)
-        } else {
-            editButtonEl.removeAttribute('disabled')
-            editButtonEl.value = "{!! route('additional-order.edit') !!}/"+id
-        }
+        // if(count == 0 || count > 1) {
+        //     editButtonEl.setAttribute('disabled', true)
+        // } else {
+        //     editButtonEl.removeAttribute('disabled')
+        //     editButtonEl.value = "{!! route('additional-order.edit') !!}/"+id
+        // }
 
         // var deleteButtonEl = document.getElementById('deleteButton')
 
@@ -153,7 +153,7 @@
         arrayChecked.forEach(function(check) {
             check.checked = status
         })
-        
+
         updateCheck('')
     }
 
@@ -165,7 +165,7 @@
             arrayId.push(check.value)
         })
 
-        var url = "{{url('sweetalert/additionalOrder/sendToApproval')}}"
+        var url = "{{url('sweetalert/additionalOrder/approvedBM')}}"
         var data = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             id: arrayId
@@ -189,7 +189,7 @@
                     success: function(response) {
                         if(response.status == 'success') {
                             Swal.fire("Success!", "", "success")
-                            showTable('draft')
+                            showTable('waiting_approval_dealer_principle')
                         } else {
                             Swal.fire("Failed", "", "error")
                         }
@@ -222,7 +222,7 @@
     }
 
     document.addEventListener('livewire:load', function() {
-        showTable('draft')
+        showTable('waiting_approval_dealer_principle')
     });
 
     function getUrlAjax(status) {
@@ -275,7 +275,7 @@
         return dataStatusProgress
     }
 
-    function showTable(status) {
+    function showTable(status) {   
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -362,10 +362,9 @@
 
     function showTableTab(status) {
         showHideSendApprovalButton(status)
-        showHideEditButton(status)
+        //showHideEditButton(status)
         $('#master-additional-table').DataTable().destroy(); 
         $('#master-additional-table').html('');
-
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -417,7 +416,7 @@
     function showHideSendApprovalButton(status) {
         // Show Hide Send to Approval Button
         var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
-        if(status == 'draft') {
+        if(status == 'waiting_approval_dealer_principle') {
             sendButtonApprovalEl.style.visibility = 'visible'
         } else {
             sendButtonApprovalEl.style.visibility = 'hidden'
@@ -427,7 +426,7 @@
     function showHideEditButton(status) {
         // Show Hide Send to Approval Button
         var sendButtonApprovalEl = document.getElementById('editButton')
-        if(status == 'draft') {
+        if(status == 'waiting_approval_dealer_principle') {
             sendButtonApprovalEl.style.visibility = 'visible'
         } else {
             sendButtonApprovalEl.style.visibility = 'hidden'

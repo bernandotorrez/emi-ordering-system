@@ -100,12 +100,11 @@
                                     </td>
 
                                     <td>
-                                        <select class="form-control" id="year_production" name="year_production"
-                                        wire:model.lazy="detailData.{{$key}}.year_production">
-                                            <option value="">- Choose Year Production -</option>
+                                        <select class="form-control" wire:model.lazy="detailData.{{$key}}.year_production">
+                                            <option value="" selected>- Choose Year -</option>
 
-                                            @for ($i = 0; $i <= 2; $i++)
-                                                <option value="{{date('Y')-$i}}">{{date('Y')-$i}}</option>
+                                            @for($i = 0;$i <= 2;$i++)
+                                            <option value="{{(date('Y')-$i)}}">{{(date('Y')-$i)}}</option>
                                             @endfor
                                         </select>
                                         @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
