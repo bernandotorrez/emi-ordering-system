@@ -17,6 +17,8 @@
                                 aria-selected="false">
                                 <i class="far fa-edit"></i> Draft</a>
                         </li>
+
+                        <!-- TODO: harus di pindahin Active nya dan aria-selected = true -->
                         <li class="nav-item active" onclick="showTableTab('waiting_approval_dealer_principle')">
                             <a class="nav-link active" id="animated-underline-profile-tab" data-toggle="tab"
                                 href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile"
@@ -61,7 +63,7 @@
                         </li>
                     </ul>
 
-                    <a class="btn btn-primary mr-2" id="addButton" href="{{route('additional-order.add')}}">Add</a>
+                    <!-- <a class="btn btn-primary mr-2" id="addButton" href="{{route('additional-order.add')}}">Add</a> -->
 
                     <!-- <button type="button" class="btn btn-success mr-2" id="editButton"
                         wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button> -->
@@ -165,7 +167,7 @@
             arrayId.push(check.value)
         })
 
-        var url = "{{url('sweetalert/additionalOrder/approvedBM')}}"
+        var url = "{{url('sweetalert/additionalOrder/approvedBM')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
         var data = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             id: arrayId
@@ -222,7 +224,7 @@
     }
 
     document.addEventListener('livewire:load', function() {
-        showTable('waiting_approval_dealer_principle')
+        showTable('waiting_approval_dealer_principle') // TODO: harus di rubah
     });
 
     function getUrlAjax(status) {
@@ -273,6 +275,28 @@
         }
 
         return dataStatusProgress
+    }
+
+    function getAction(status) {
+        if(status == 'waiting_approval_dealer_principle') { // TODO: harus di rubah
+            var dataAction = {
+                data: 'action',
+                name: 'action',
+                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                searchable: false,
+                orderable: false
+            }
+        } else {
+            var dataAction = {
+                data: null,
+                name: null,
+                title: '',
+                searchable: false,
+                orderable: false,
+                defaultContent: ''
+            }
+        }
+        return dataAction
     }
 
     function showTable(status) {   
@@ -361,8 +385,7 @@
     }
 
     function showTableTab(status) {
-        showHideSendApprovalButton(status)
-        //showHideEditButton(status)
+        showHideButton(status)
         $('#master-additional-table').DataTable().destroy(); 
         $('#master-additional-table').html('');
         var template = Handlebars.compile($("#details-template").html());
@@ -384,7 +407,7 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">', searchable: false, orderable: false },
+                getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
@@ -413,24 +436,27 @@
         });
     }
 
-    function showHideSendApprovalButton(status) {
-        // Show Hide Send to Approval Button
+    function showHideButton(status) {
         var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
-        if(status == 'waiting_approval_dealer_principle') {
-            sendButtonApprovalEl.style.visibility = 'visible'
+        if(status == 'waiting_approval_dealer_principle') { // TODO: harus di rubah
+            sendButtonApprovalEl.style.display = 'inline-flex'
         } else {
-            sendButtonApprovalEl.style.visibility = 'hidden'
+            sendButtonApprovalEl.style.display = 'none'
         }
-    }
 
-    function showHideEditButton(status) {
-        // Show Hide Send to Approval Button
-        var sendButtonApprovalEl = document.getElementById('editButton')
-        if(status == 'waiting_approval_dealer_principle') {
-            sendButtonApprovalEl.style.visibility = 'visible'
-        } else {
-            sendButtonApprovalEl.style.visibility = 'hidden'
-        }
+        // var editButtonEl = document.getElementById('editButton')
+        // if(status == 'draft') {
+        //     editButtonEl.style.display = 'inline-flex'
+        // } else {
+        //     editButtonEl.style.display = 'none'
+        // }
+
+        // var addButtonEl = document.getElementById('addButton')
+        // if(status == 'waiting_approval_dealer_principle') {
+        //     addButtonEl.style.display = 'inline-flex'
+        // } else {
+        //     addButtonEl.style.display = 'none'
+        // }
     }
 </script>
 @endpush

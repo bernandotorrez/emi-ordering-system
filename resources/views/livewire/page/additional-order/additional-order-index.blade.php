@@ -275,6 +275,28 @@
         return dataStatusProgress
     }
 
+    function getAction(status) {
+        if(status == 'draft') {
+            var dataAction = {
+                data: 'action',
+                name: 'action',
+                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                searchable: false,
+                orderable: false
+            }
+        } else {
+            var dataAction = {
+                data: null,
+                name: null,
+                title: '',
+                searchable: false,
+                orderable: false,
+                defaultContent: ''
+            }
+        }
+        return dataAction
+    }
+
     function showTable(status) {
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
@@ -295,7 +317,7 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">', searchable: false, orderable: false },
+                getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
@@ -361,8 +383,7 @@
     }
 
     function showTableTab(status) {
-        showHideSendApprovalButton(status)
-        showHideEditButton(status)
+        showHideButton(status)
         $('#master-additional-table').DataTable().destroy(); 
         $('#master-additional-table').html('');
 
@@ -385,7 +406,7 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">', searchable: false, orderable: false },
+                getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
@@ -414,23 +435,26 @@
         });
     }
 
-    function showHideSendApprovalButton(status) {
-        // Show Hide Send to Approval Button
+    function showHideButton(status) {
         var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
         if(status == 'draft') {
-            sendButtonApprovalEl.style.visibility = 'visible'
+            sendButtonApprovalEl.style.display = 'inline-flex'
         } else {
-            sendButtonApprovalEl.style.visibility = 'hidden'
+            sendButtonApprovalEl.style.display = 'none'
         }
-    }
 
-    function showHideEditButton(status) {
-        // Show Hide Send to Approval Button
-        var sendButtonApprovalEl = document.getElementById('editButton')
+        var editButtonEl = document.getElementById('editButton')
         if(status == 'draft') {
-            sendButtonApprovalEl.style.visibility = 'visible'
+            editButtonEl.style.display = 'inline-flex'
         } else {
-            sendButtonApprovalEl.style.visibility = 'hidden'
+            editButtonEl.style.display = 'none'
+        }
+
+        var addButtonEl = document.getElementById('addButton')
+        if(status == 'draft') {
+            addButtonEl.style.display = 'inline-flex'
+        } else {
+            addButtonEl.style.display = 'none'
         }
     }
 </script>
