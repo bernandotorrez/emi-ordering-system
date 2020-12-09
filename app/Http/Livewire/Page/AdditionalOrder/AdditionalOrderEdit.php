@@ -9,6 +9,7 @@ use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\DetailAdditionalOrderRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithWrsApi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
@@ -187,12 +188,12 @@ class AdditionalOrderEdit extends Component
         $dataMaster = array(
             'no_order_atpm' => '',
             'no_order_dealer' => $this->bind['order_number_dealer'],
-            'date_save_order' => date('Y-m-d H:i:s'),
+            'date_save_order' => Carbon::now(),
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'month_order' => date('m'),
-            'year_order' => date('Y'),
+            'month_order' => Carbon::now()->month,
+            'year_order' => Carbon::now()->year,
             'total_qty' => $this->totalQty,
             'status' => '1'
         );

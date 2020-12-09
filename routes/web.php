@@ -8,6 +8,7 @@ use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderAdd;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderEdit;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderIndex;
+use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
@@ -59,6 +60,11 @@ Route::middleware('user.session')->group(function() {
     Route::get('/sales/dealer/additional-order/edit/{id?}', AdditionalOrderEdit::class)->name('additional-order.edit');
 });
 
+// Approval BM
+Route::middleware(['user.session', 'bm.session'])->group(function() {
+    Route::get('/sales/dealer/approval-bm', ApprovalBMIndex::class)->name('approval-bm.index');
+});
+
 // Datatable Json
 Route::middleware('user.session')->prefix('datatable')->group(function() {   
     Route::get('additionalOrderJsonDraft', [DatatablesController::class, 'additionalOrderJsonDraft']);
@@ -72,6 +78,7 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
 // Sweet Alert
 Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/sendToApproval', [SweetAlertController::class, 'sendToApproval']);
+    Route::post('additionalOrder/approvedBM', [SweetAlertController::class, 'approvedBM']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

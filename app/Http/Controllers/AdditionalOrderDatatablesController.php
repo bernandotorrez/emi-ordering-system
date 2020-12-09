@@ -7,12 +7,12 @@ use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use Illuminate\Support\Facades\Cache;
 use Yajra\Datatables\Datatables;
 
-class DatatablesController extends Controller
+class AdditionalOrderDatatablesController extends Controller
 {
     public function additionalOrderJsonDraft(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonDraft-idDealer-'.$idDealer, 10, 
+        $datas = Cache::remember('datatable-additionalOrderJsonDraft-idDealer-'.$idDealer, 60, 
         function () use($masterAdditionalOrderRepository, $idDealer){
             return $masterAdditionalOrderRepository->getDraft($idDealer);
         });
