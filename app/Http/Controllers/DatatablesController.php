@@ -12,7 +12,7 @@ class DatatablesController extends Controller
     public function additionalOrderJsonDraft(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonDraft-idDealer-'.$idDealer, 10, 
+        $datas = Cache::remember('datatable-additionalOrderJsonDraft-idDealer-'.$idDealer, 60, 
         function () use($masterAdditionalOrderRepository, $idDealer){
             return $masterAdditionalOrderRepository->getDraft($idDealer);
         });

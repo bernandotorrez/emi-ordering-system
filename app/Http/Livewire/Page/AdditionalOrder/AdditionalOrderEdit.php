@@ -214,10 +214,10 @@ class AdditionalOrderEdit extends Component
             );
 
             if($update) {
-                session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
+                session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {
-                session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
 

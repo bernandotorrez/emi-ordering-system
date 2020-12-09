@@ -77,7 +77,7 @@
                         <table class="table table-striped table-bordered table-hover" id="master-additional-table">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th class="checkbox-column"></th>
                                     <th><input type="checkbox" class="new-control-input"></th>
                                     <th>No Order Dealer</th>
                                     <th>No Order ATPM</th>
@@ -95,8 +95,16 @@
 
 </div>
 
+@push('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
+@endpush
 
 @push('scripts')
+<script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
+<script src="{{ asset('assets/js/handlebars.js') }}"></script>
+
 <script id="details-template" type="text/x-handlebars-template">
         <h5 class="mt-2 text-center">Detail Order</h5>
         <table class="table table-hover details-table" id="detail">
@@ -152,6 +160,12 @@
             arrayId.push(check.value)
         })
 
+        var url = "{{url('sweetalert/additionalOrder/sendToApproval')}}"
+        var data = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id: arrayId
+        }
+
         Swal.fire({
             title: "Send Approval?",
             text: "Please ensure and then confirm!",
@@ -160,36 +174,79 @@
             showCancelButton: true,
             reverseButtons: false,
             showLoaderOnConfirm: true,
-        }).then(function (e) {
-
-            if (e.value === true) {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('sweetalert/additionalOrder/sendToApproval')}}",
-                    data: {
-                        _token: CSRF_TOKEN,
-                        id: arrayId
-                    },
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
                     dataType: 'JSON',
-                    success: function (results) {
-                        if (results.status == 'success') {
-                            Swal.fire("Done!", results.status, "success");
+                    cache: false,
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            Swal.fire("Success!", "", "success")
                             showTable('draft')
                         } else {
-                            Swal.fire("Error!", results.status, "error");
+                            Swal.fire("Failed", "", "error")
                         }
-                    }
+                    },
+                    statusCode: {
+                        500: function() {
+                            Swal.fire("Oops, Something went Wrong", "", "error")
+                        }
+                    },
+                    failure: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                    error: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
                 });
-
-            } else {
-                e.dismiss;
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.status == 'ok') {
+                Swal.fire('', '', 'success')
+                showTable('draft')
             }
-
-        }, function (dismiss) {
-            return false;
         })
+        // Swal.fire({
+        //     title: "Send Approval?",
+        //     text: "Please ensure and then confirm!",
+        //     type: "info",
+        //     icon: 'question',
+        //     showCancelButton: true,
+        //     reverseButtons: false,
+        //     showLoaderOnConfirm: true,
+        // }).then(function (e) {
+
+        //     if (e.value === true) {
+        //         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        //         $.ajax({
+        //             type: 'POST',
+        //             url: "{{url('sweetalert/additionalOrder/sendToApproval')}}",
+        //             data: {
+        //                 _token: CSRF_TOKEN,
+        //                 id: arrayId
+        //             },
+        //             dataType: 'JSON',
+        //             success: function (results) {
+        //                 if (results.status == 'success') {
+        //                     Swal.fire("Done!", results.status, "success");
+        //                     showTable('draft')
+        //                 } else {
+        //                     Swal.fire("Error!", results.status, "error");
+        //                 }
+        //             }
+        //         });
+
+        //     } else {
+        //         e.dismiss;
+        //     }
+
+        // }, function (dismiss) {
+        //     return false;
+        // })
     }
 
     function deleteProcess() {
@@ -206,15 +263,15 @@
 
     function getUrlAjax(status) {
         if(status == 'draft') {
-            return '{!! url('datatable/additionalOrderJsonDraft') !!}'
+            return "{{ url('datatable/additionalOrderJsonDraft') }}"
         } else if(status == 'waiting_approval_dealer_principle') {
-            return '{!! url('datatable/additionalOrderJsonWaitingApprovalDealerPrinciple') !!}'
+            return "{{ url('datatable/additionalOrderJsonWaitingApprovalDealerPrinciple') }}"
         } else if(status == 'approval_dealer_principle') {
-            return '{!! url('datatable/additionalOrderJsonApprovalDealerPrinciple') !!}'
+            return "{{ url('datatable/additionalOrderJsonApprovalDealerPrinciple') }}"
         } else if(status == 'submitted_atpm') {
-            return '{!! url('datatable/additionalOrderJsonSubmittedATPM') !!}'
+            return "{{ url('datatable/additionalOrderJsonSubmittedATPM') }}"
         } else if(status == 'atpm_allocation') {
-            return '{!! url('datatable/additionalOrderJsonATPMAllocation') !!}'
+            return "{{ url('datatable/additionalOrderJsonATPMAllocation') }}"
         }
     }
 
@@ -304,9 +361,10 @@
     }
 
     function showTableTab(status) {
+        showHideSendApprovalButton(status)
         $('#master-additional-table').DataTable().destroy(); 
         $('#master-additional-table').html('');
-        
+
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -353,6 +411,16 @@
                 tr.next().find('td').addClass('no-padding bg-gray');
             }
         });
+    }
+
+    function showHideSendApprovalButton(status) {
+        // Show Hide Send to Approval Button
+        var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
+        if(status == 'draft') {
+            sendButtonApprovalEl.style.visibility = 'visible'
+        } else {
+            sendButtonApprovalEl.style.visibility = 'hidden'
+        }
     }
 </script>
 @endpush

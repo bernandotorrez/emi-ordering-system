@@ -106,8 +106,7 @@ class AdditionalOrderAdd extends Component
     public function updateDataType($key, $value, 
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiModelColorRepository $apiModelColorRepository
-    )
-    {
+    ) {
         if($this->detailData[$key]['id_model'] != '') {
             $dataType = Cache::remember('data-type-with-id-model-'.$value, 30, function () use($value, $apiTypeModelRepository) {
                 return $apiTypeModelRepository->getByIdModel($value);
@@ -151,8 +150,7 @@ class AdditionalOrderAdd extends Component
         ApiModelRepository $apiModelRepository,
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiColorRepository $apiColorRepository
-    )
-    {
+    ) {
         $this->validate();
 
         $dataMaster = array(

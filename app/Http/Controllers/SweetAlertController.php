@@ -4,10 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class SweetAlertController extends Controller
 {
+    private array $cache = [
+        'send_to_approval' => 'datatable-additionalOrderJsonDraft-idDealer-',
+        'waiting_approval_dealer_principle' => 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idDealer-',
+        'approval_dealer_principle' => 'datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-',
+        'submitted_atpm' => 'datatable-additionalOrderJsonSubmittedATPM-idDealer-',
+        'atpm_allocation' => 'datatable-additionalOrderJsonATPMAllocation-idDealer-',
+    ];
+
     public function sendToApproval(
         Request $request,
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository
@@ -27,6 +36,8 @@ class SweetAlertController extends Controller
             $callback = array(
                 'status' => 'success',
             );
+
+            $this->deleteCache('send_to_approval');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -34,5 +45,10 @@ class SweetAlertController extends Controller
         }
 
         return $callback;
+    }
+
+    private function deleteCache($status) {
+        $idDealer = session()->get('user')['id_dealer'];
+        Cache::forget($this->cache[$status].$idDealer);
     }
 }
