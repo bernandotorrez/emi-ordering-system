@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\DatatablesController;
 use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,6 @@ use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Livewire\Page\SubChildMenu\SubChildMenuIndex;
-use App\Http\Livewire\Page\SubmitAtpm\SubmitAtpmIndex;
 use App\Http\Livewire\Page\SubSubChildMenu\SubSubChildMenuIndex;
 use App\Http\Livewire\Page\UserGroup\UserGroupIndex;
 use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
@@ -69,12 +69,12 @@ Route::middleware(['user.session', 'bm.session'])->group(function() {
 
 // Datatable Json
 Route::middleware('user.session')->prefix('datatable')->group(function() {
-    Route::get('additionalOrderJsonDraft', [DatatablesController::class, 'additionalOrderJsonDraft']);
-    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
-    Route::get('additionalOrderJsonApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
-    Route::get('additionalOrderJsonSubmittedATPM', [DatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
-    Route::get('additionalOrderJsonATPMAllocation', [DatatablesController::class, 'additionalOrderJsonATPMAllocation']);
-    Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
+    Route::get('additionalOrderJsonDraft', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonDraft']);
+    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
+    Route::get('additionalOrderJsonApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
+    Route::get('additionalOrderJsonSubmittedATPM', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
+    Route::get('additionalOrderJsonATPMAllocation', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonATPMAllocation']);
+    Route::get('detailAdditionalOrderJson/{id}', [AdditionalOrderDatatablesController::class, 'detailAdditionalOrderJson']);
 });
 
 // Sweet Alert
@@ -82,6 +82,7 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/sendToApproval', [SweetAlertController::class, 'sendToApproval']);
     Route::post('additionalOrder/approvedBM', [SweetAlertController::class, 'approvedBM']);
     Route::post('additionalOrder/submittedBM', [SweetAlertController::class, 'submittedBM']);
+
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {
