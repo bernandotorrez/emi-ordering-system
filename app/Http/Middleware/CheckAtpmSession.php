@@ -16,10 +16,6 @@ class CheckAtpmSession
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!$request->session()->exists('user')) {
-            return redirect('/');
-        }
-
         if($request->session()->get('user')['status_atpm'] != 'atpm') {
             return redirect('/home');
         }

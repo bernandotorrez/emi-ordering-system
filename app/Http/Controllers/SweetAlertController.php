@@ -164,6 +164,36 @@ class SweetAlertController extends Controller
         return $callback;
     }
 
+    public function submittedAtpm(
+        Request $request,
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+    ) {
+        $id = $request->post('id');
+
+        $data = array(
+            'flag_allocation' => '1',
+            'date_allocation_atpm' => Carbon::now()
+        );
+        
+        $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
+            return $masterAdditionalOrderRepository->massUpdate($id, $data);
+        });
+
+        if($update) {
+            $callback = array(
+                'status' => 'success',
+            );
+
+            $this->deleteCache('submitted_atpm');
+        } else {
+            $callback = array(
+                'status' => 'fail',
+            );
+        }
+
+        return $callback;
+    }
+
     private function deleteCache($status) {
         $idUser = session()->get('user')['id_user'];
         Cache::forget($this->cache[$status].$idUser);

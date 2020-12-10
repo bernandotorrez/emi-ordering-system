@@ -88,9 +88,9 @@ class AdditionalOrderDatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $cache_name = 'datatable-additionalOrderJsonSubmittedATPM-idUser-'.$idUser;
         $datas = Cache::remember($cache_name, 10, 
-        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+        function () use($masterAdditionalOrderRepository, $idUser, $cache_name){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
-            return $masterAdditionalOrderRepository->getSubmittedATPM($idDealer);
+            return $masterAdditionalOrderRepository->getSubmittedATPM();
         });
 
         return Datatables::of($datas)
@@ -112,9 +112,9 @@ class AdditionalOrderDatatablesController extends Controller
         $idDealer = session()->get('user')['id_dealer'];
         $cache_name = 'datatable-additionalOrderJsonATPMAllocation-idUser-'.$idUser;
         $datas = Cache::remember($cache_name, 10, 
-        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+        function () use($masterAdditionalOrderRepository, $idUser, $cache_name){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
-            return $masterAdditionalOrderRepository->getATPMAllocation($idDealer);
+            return $masterAdditionalOrderRepository->getATPMAllocation();
         });
 
         return Datatables::of($datas)

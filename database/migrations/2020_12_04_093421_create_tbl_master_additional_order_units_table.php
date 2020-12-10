@@ -24,7 +24,7 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
                 $table->dateTime('date_revise')->nullable();
                 $table->dateTime('date_submit_atpm_order')->nullable();
                 $table->dateTime('date_cancel')->nullable();
-                $table->dateTime('date_alocation_atpm')->nullable();
+                $table->dateTime('date_allocation_atpm')->nullable();
                 $table->bigInteger('id_dealer');
                 $table->bigInteger('id_user');
                 $table->string('user_order', 50);

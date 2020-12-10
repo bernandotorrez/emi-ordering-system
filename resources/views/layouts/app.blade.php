@@ -194,8 +194,8 @@
                 }
             } else if (status == 'atpm_allocation') {
                 var dataStatusProgress = {
-                    data: 'date_alocation_atpm',
-                    name: 'date_alocation_atpm',
+                    data: 'date_allocation_atpm',
+                    name: 'date_allocation_atpm',
                     title: 'Date Allocatation'
                 }
             } else if (status == 'canceled') {

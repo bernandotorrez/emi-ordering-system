@@ -122,7 +122,7 @@ class MasterAdditionalOrderRepository extends BaseRepository
             ->get();
     }
 
-    public function getSubmittedATPM($idDealer)
+    public function getSubmittedATPM()
     {
         return $this->model
             ->where('flag_send_approval_dealer', '1')
@@ -130,11 +130,10 @@ class MasterAdditionalOrderRepository extends BaseRepository
             ->where('flag_submit_to_atpm', '1')
             ->where('flag_allocation', '0')
             ->where('status', '1')
-            ->where('id_dealer', $idDealer)
             ->get();
     }
 
-    public function getATPMAllocation($idDealer)
+    public function getATPMAllocation()
     {
         return $this->model
             ->where('flag_send_approval_dealer', '1')
@@ -142,7 +141,6 @@ class MasterAdditionalOrderRepository extends BaseRepository
             ->where('flag_submit_to_atpm', '1')
             ->where('flag_allocation', '1')
             ->where('status', '1')
-            ->where('id_dealer', $idDealer)
             ->get();
     }
 
