@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\DB;
 class SweetAlertController extends Controller
 {
     private array $cache = [
-        'send_to_approval' => 'datatable-additionalOrderJsonDraft-idUser-',
-        'waiting_approval_dealer_principle' => 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idUser-',
-        'approval_dealer_principle' => 'datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-',
-        'submitted_atpm' => 'datatable-additionalOrderJsonSubmittedATPM-idUser-',
-        'atpm_allocation' => 'datatable-additionalOrderJsonATPMAllocation-idUser-',
+        'send_to_approval' => 'datatable-additionalOrderJsonDraft-idDealer-',
+        'waiting_approval_dealer_principle' => 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idDealer-',
+        'approval_dealer_principle' => 'datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-',
+        'submitted_atpm' => 'datatable-additionalOrderJsonSubmittedATPM-idDealer-',
+        'atpm_allocation' => 'datatable-additionalOrderJsonATPMAllocation-idDealer-',
     ];
 
     public function sendToApproval(
@@ -28,7 +28,7 @@ class SweetAlertController extends Controller
             'flag_send_approval_dealer' => '1',
             'date_send_approval' => Carbon::now()
         );
-        
+
         $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
@@ -48,17 +48,17 @@ class SweetAlertController extends Controller
         return $callback;
     }
 
-    public function approvedBM(
+    public function submittedBM(
         Request $request,
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository
     ) {
         $id = $request->post('id');
 
         $data = array(
-            'flag_approval_dealer' => '1',
-            'date_approval' => Carbon::now()
+            'flag_submit_to_atpm' => '1',
+            'date_submit_atpm_order' => Carbon::now()
         );
-        
+
         $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
@@ -68,7 +68,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('waiting_approval_dealer_principle');
+            $this->deleteCache('approval_dealer_principle');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -78,8 +78,9 @@ class SweetAlertController extends Controller
         return $callback;
     }
 
+
     private function deleteCache($status) {
-        $idUser = session()->get('user')['id_user'];
-        Cache::forget($this->cache[$status].$idUser);
+        $idDealer = session()->get('user')['id_dealer'];
+        Cache::forget($this->cache[$status].$idDealer);
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\DatatablesController;
 use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +15,7 @@ use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
 use App\Http\Livewire\Page\Register\RegisterIndex;
 use App\Http\Livewire\Page\SubChildMenu\SubChildMenuIndex;
+use App\Http\Livewire\Page\SubmitAtpm\SubmitAtpmIndex;
 use App\Http\Livewire\Page\SubSubChildMenu\SubSubChildMenuIndex;
 use App\Http\Livewire\Page\UserGroup\UserGroupIndex;
 use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
@@ -44,12 +44,12 @@ Route::get('/logout', function() {
     return redirect()->route('login.index');
 })->name('logout');
 
-Route::middleware('user.session')->group(function() {   
+Route::middleware('user.session')->group(function() {
     Route::get('/home', HomeIndex::class)->name('home.index');
     Route::get('/about', AboutIndex::class)->name('about.index');
 
     //Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
-    
+
     Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
     //Contoh Menu privilege
@@ -64,22 +64,24 @@ Route::middleware('user.session')->group(function() {
 // Approval BM
 Route::middleware(['user.session', 'bm.session'])->group(function() {
     Route::get('/sales/dealer/approval-bm', ApprovalBMIndex::class)->name('approval-bm.index');
+    Route::get('/sales/dealer/submit-atpm', SubmitAtpmIndex::class)->name('submit-atpm.index');
 });
 
 // Datatable Json
-Route::middleware('user.session')->prefix('datatable')->group(function() {   
-    Route::get('additionalOrderJsonDraft', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonDraft']);
-    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
-    Route::get('additionalOrderJsonApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
-    Route::get('additionalOrderJsonSubmittedATPM', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
-    Route::get('additionalOrderJsonATPMAllocation', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonATPMAllocation']);
-    Route::get('detailAdditionalOrderJson/{id}', [AdditionalOrderDatatablesController::class, 'detailAdditionalOrderJson']);
+Route::middleware('user.session')->prefix('datatable')->group(function() {
+    Route::get('additionalOrderJsonDraft', [DatatablesController::class, 'additionalOrderJsonDraft']);
+    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
+    Route::get('additionalOrderJsonApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
+    Route::get('additionalOrderJsonSubmittedATPM', [DatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
+    Route::get('additionalOrderJsonATPMAllocation', [DatatablesController::class, 'additionalOrderJsonATPMAllocation']);
+    Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
 });
 
 // Sweet Alert
 Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/sendToApproval', [SweetAlertController::class, 'sendToApproval']);
     Route::post('additionalOrder/approvedBM', [SweetAlertController::class, 'approvedBM']);
+    Route::post('additionalOrder/submittedBM', [SweetAlertController::class, 'submittedBM']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {
