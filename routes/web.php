@@ -75,7 +75,7 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
     Route::get('additionalOrderJsonApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
     Route::get('additionalOrderJsonSubmittedATPM', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
     Route::get('additionalOrderJsonATPMAllocation', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonATPMAllocation']);
-    Route::get('additionalOrderJsonCanceled', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonCanceled']);
+    Route::get('additionalOrderJsonCanceled/{idCancel?}', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonCanceled']);
     Route::get('detailAdditionalOrderJson/{id}', [AdditionalOrderDatatablesController::class, 'detailAdditionalOrderJson']);
 });
 

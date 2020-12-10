@@ -64,6 +64,19 @@
 
                     <div class="table-responsive mt-4">
                         <table class="table table-striped table-bordered table-hover" id="master-additional-table">
+
+                            <div class="form-group col-md-3 mb-4" id="dropdown_cancel_status">
+                                <label for="parent_position">Cancel Status</label>
+                                <select name="cancel_status" id="cancel_status" class="form-control"
+                                    onchange="showTableCancel('canceled', this.value)">
+                                        <option value="">- Choose Cancel Status -</option>
+                                    @foreach($dataCancelStatus as $key => $cancelStatus)
+                                        <option value="{{$cancelStatus->id_cancel_status}}">
+                                            {{$cancelStatus->nama_cancel_status}} {{$key}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <thead>
                                 <tr>
                                     <th class="checkbox-column"></th>
@@ -237,6 +250,7 @@
     }
 
     function showTable(status) {
+        showHideButton(status)
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -374,6 +388,60 @@
         });
     }
 
+    function showTableCancel(status, id) {
+        showHideButton(status)
+        $('#master-additional-table').DataTable().destroy(); 
+        $('#master-additional-table').html('');
+        var ajaxUrl = getUrlAjax(status)+'/'+id
+
+        var template = Handlebars.compile($("#details-template").html());
+        var table = $('#master-additional-table').DataTable({
+            "oLanguage": {
+                "oPaginate": {
+                    "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                    "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                },
+                "sInfo": "Showing page _PAGE_ of _PAGES_",
+                "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                "sSearchPlaceholder": "Search...",
+                "sLengthMenu": "Results :  _MENU_",
+            },
+            "stripeClasses": [],
+            processing: true,
+            serverSide: true,
+            destroy: true,
+            ajax: ajaxUrl,
+            columns: [
+                { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
+                getAction(status),
+                { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
+                getDataStatusProgress(status),
+                { data: 'user_order', name: 'user_order', title: 'User Order' },
+                { data: 'total_qty', name: 'total_qty', title: 'Total Qty' }
+            ]
+        });
+
+        // Add event listener for opening and closing details
+        $('#master-additional-table tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var tableId = 'detail';
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                // Open this row
+                row.child(template(row.data())).show();
+                initTable(tableId, row.data());
+                tr.addClass('shown');
+                tr.next().find('td').addClass('no-padding bg-gray');
+            }
+        });
+    }
+
     function showHideButton(status) {
         var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
         if(status == 'draft') {
@@ -394,6 +462,13 @@
             addButtonEl.style.display = 'inline-flex'
         } else {
             addButtonEl.style.display = 'none'
+        }
+
+        var cancelStatus = document.getElementById('dropdown_cancel_status')
+        if(status == 'canceled') {
+            cancelStatus.style.display = 'block'
+        } else {
+            cancelStatus.style.display = 'none'
         }
     }
 </script>

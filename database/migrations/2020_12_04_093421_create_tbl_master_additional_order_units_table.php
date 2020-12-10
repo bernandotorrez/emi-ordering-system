@@ -35,6 +35,7 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
                 $table->tinyInteger('flag_approval_dealer')->default(0);
                 $table->tinyInteger('flag_submit_to_atpm')->default(0);
                 $table->tinyInteger('flag_allocation')->default(0);
+                $table->bigInteger('id_cancel_status')->default(0);
                 $table->text('remarks')->nullable(true);
                 $table->integer('total_qty')->default(0);
                 $table->enum('status', ['0', '1'])->default(1);

@@ -130,15 +130,17 @@ class AdditionalOrderDatatablesController extends Controller
         ->make(true);
     }
 
-    public function additionalOrderJsonCanceled(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
-    {
+    public function additionalOrderJsonCanceled(
+        $idCancel = null,
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+    ) {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $cache_name = 'datatable-additionalOrderJsonCanceled-idUser-'.$idUser;
+        $cache_name = 'datatable-additionalOrderJsonCanceled-idUser-'.$idUser.'-idCancel-'.$idCancel;
         $datas = Cache::remember($cache_name, 10, 
-        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $idCancel, $cache_name){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
-            return $masterAdditionalOrderRepository->getCanceledAdditionalOrder($idDealer);
+            return $masterAdditionalOrderRepository->getCanceledAdditionalOrder($idDealer, $idCancel);
         });
 
         return Datatables::of($datas)

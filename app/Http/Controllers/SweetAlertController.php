@@ -17,7 +17,6 @@ class SweetAlertController extends Controller
         'approval_dealer_principle' => 'datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-',
         'submitted_atpm' => 'datatable-additionalOrderJsonSubmittedATPM-idUser-',
         'atpm_allocation' => 'datatable-additionalOrderJsonATPMAllocation-idUser-',
-        'canceled' => 'datatable-additionalOrderJsonCanceled-idUser-',
     ];
 
     public function sendToApproval(
