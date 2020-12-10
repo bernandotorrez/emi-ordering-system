@@ -162,6 +162,8 @@
                 return "{{ url('datatable/additionalOrderJsonSubmittedATPM') }}"
             } else if (status == 'atpm_allocation') {
                 return "{{ url('datatable/additionalOrderJsonATPMAllocation') }}"
+            } else if (status == 'canceled') {
+                return "{{ url('datatable/additionalOrderJsonCanceled') }}"
             }
         }
 
@@ -195,6 +197,12 @@
                     data: 'date_alocation_atpm',
                     name: 'date_alocation_atpm',
                     title: 'Date Allocatation'
+                }
+            } else if (status == 'canceled') {
+                var dataStatusProgress = {
+                    data: 'date_cancel',
+                    name: 'date_cancel',
+                    title: 'Date Cancel'
                 }
             }
 
