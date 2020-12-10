@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user.session' => \App\Http\Middleware\CheckUserSession::class,
         'admin.session' => \App\Http\Middleware\CheckAdminSession::class,
-        'bm.session' => \App\Http\Middleware\CheckBMDealerSession::class
+        'bm.session' => \App\Http\Middleware\CheckBMDealerSession::class,
+        'atpm.session' => \App\Http\Middleware\CheckAtpmSession::class
     ];
 }
