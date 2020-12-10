@@ -72,7 +72,7 @@
                                         <option value="">- Choose Cancel Status -</option>
                                     @foreach($dataCancelStatus as $key => $cancelStatus)
                                         <option value="{{$cancelStatus->id_cancel_status}}">
-                                            {{$cancelStatus->nama_cancel_status}} {{$key}}</option>
+                                            {{$cancelStatus->nama_cancel_status}}</option>
                                     @endforeach
                                 </select>
                             </div>

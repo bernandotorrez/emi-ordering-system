@@ -112,7 +112,7 @@ class SweetAlertController extends Controller
         $data = array(
             'flag_approval_dealer' => '0',
             'flag_send_approval_dealer' => '2',
-            'date_revise_dealer' => Carbon::now()
+            'date_revise' => Carbon::now()
         );
         
         $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
@@ -142,7 +142,7 @@ class SweetAlertController extends Controller
 
         $data = array(
             'status' => '0',
-            'date_cancel_dealer' => Carbon::now(),
+            'date_cancel' => Carbon::now(),
         );
         
         $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
