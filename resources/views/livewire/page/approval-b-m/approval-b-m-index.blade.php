@@ -227,56 +227,6 @@
         showTable('waiting_approval_dealer_principle') // TODO: harus di rubah
     });
 
-    function getUrlAjax(status) {
-        if(status == 'draft') {
-            return "{{ url('datatable/additionalOrderJsonDraft') }}"
-        } else if(status == 'waiting_approval_dealer_principle') {
-            return "{{ url('datatable/additionalOrderJsonWaitingApprovalDealerPrinciple') }}"
-        } else if(status == 'approval_dealer_principle') {
-            return "{{ url('datatable/additionalOrderJsonApprovalDealerPrinciple') }}"
-        } else if(status == 'submitted_atpm') {
-            return "{{ url('datatable/additionalOrderJsonSubmittedATPM') }}"
-        } else if(status == 'atpm_allocation') {
-            return "{{ url('datatable/additionalOrderJsonATPMAllocation') }}"
-        }
-    }
-
-    function getDataStatusProgress(status) {
-        if(status == 'draft') { // di Dealer
-            var dataStatusProgress = {
-                data: 'date_save_order', 
-                name: 'date_save_order', 
-                title: 'Date Draft'
-            }
-        } else if(status == 'waiting_approval_dealer_principle') { // di BM
-            var dataStatusProgress = {
-                data: 'date_send_approval', 
-                name: 'date_send_approval', 
-                title: 'Date Send Approval'
-            }
-        } else if(status == 'approval_dealer_principle') {
-            var dataStatusProgress = {
-                data: 'date_approval', 
-                name: 'date_approval', 
-                title: 'Date Approval'
-            }
-        } else if(status == 'submitted_atpm') { // di ATPM
-            var dataStatusProgress = {
-                data: 'date_submit_atpm_order', 
-                name: 'date_submit_atpm_order', 
-                title: 'Date Submit ATPM'
-            }
-        } else if(status == 'atpm_allocation') {
-            var dataStatusProgress = {
-                data: 'date_alocation_atpm', 
-                name: 'date_alocation_atpm', 
-                title: 'Date Allocatation'
-            }
-        }
-
-        return dataStatusProgress
-    }
-
     function getAction(status) {
         if(status == 'waiting_approval_dealer_principle') { // TODO: harus di rubah
             var dataAction = {

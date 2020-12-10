@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\DatatablesController;
 use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
@@ -67,12 +68,12 @@ Route::middleware(['user.session', 'bm.session'])->group(function() {
 
 // Datatable Json
 Route::middleware('user.session')->prefix('datatable')->group(function() {   
-    Route::get('additionalOrderJsonDraft', [DatatablesController::class, 'additionalOrderJsonDraft']);
-    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
-    Route::get('additionalOrderJsonApprovalDealerPrinciple', [DatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
-    Route::get('additionalOrderJsonSubmittedATPM', [DatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
-    Route::get('additionalOrderJsonATPMAllocation', [DatatablesController::class, 'additionalOrderJsonATPMAllocation']);
-    Route::get('detailAdditionalOrderJson/{id}', [DatatablesController::class, 'detailAdditionalOrderJson']);
+    Route::get('additionalOrderJsonDraft', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonDraft']);
+    Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
+    Route::get('additionalOrderJsonApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
+    Route::get('additionalOrderJsonSubmittedATPM', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonSubmittedATPM']);
+    Route::get('additionalOrderJsonATPMAllocation', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonATPMAllocation']);
+    Route::get('detailAdditionalOrderJson/{id}', [AdditionalOrderDatatablesController::class, 'detailAdditionalOrderJson']);
 });
 
 // Sweet Alert

@@ -8,6 +8,8 @@ use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\DetailAdditionalOrderRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
+use App\Traits\WithDeleteCache;
+use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -16,6 +18,8 @@ use Livewire\Component;
 class AdditionalOrderEdit extends Component
 {
     use WithWrsApi;
+    use WithGoTo;
+    use WithDeleteCache;
 
     public $pageTitle = 'Additional Order - Edit';
     public array $detailData = [];
@@ -215,6 +219,7 @@ class AdditionalOrderEdit extends Component
             );
 
             if($update) {
+                $this->deleteCache();
                 session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {

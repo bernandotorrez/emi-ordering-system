@@ -6,14 +6,18 @@ use App\Repository\Eloquent\DetailAdditionalOrderRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use Illuminate\Support\Facades\Cache;
 use Yajra\Datatables\Datatables;
+use App\Models\Cache as CacheModel;
 
 class AdditionalOrderDatatablesController extends Controller
 {
     public function additionalOrderJsonDraft(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
+        $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonDraft-idDealer-'.$idDealer, 60, 
-        function () use($masterAdditionalOrderRepository, $idDealer){
+        $cache_name = 'datatable-additionalOrderJsonDraft-idUser-'.$idUser;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
             return $masterAdditionalOrderRepository->getDraft($idDealer);
         });
 
@@ -32,9 +36,12 @@ class AdditionalOrderDatatablesController extends Controller
 
     public function additionalOrderJsonWaitingApprovalDealerPrinciple(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
+        $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idDealer-'.$idDealer, 10, 
-        function () use($masterAdditionalOrderRepository, $idDealer){
+        $cache_name = 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idUser-'.$idUser;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
             return $masterAdditionalOrderRepository->getWaitingApprovalDealerPrinciple($idDealer);
         });
 
@@ -53,9 +60,12 @@ class AdditionalOrderDatatablesController extends Controller
 
     public function additionalOrderJsonApprovalDealerPrinciple(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
+        $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-'.$idDealer, 10, 
-        function () use($masterAdditionalOrderRepository, $idDealer){
+        $cache_name = 'datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-'.$idUser;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
             return $masterAdditionalOrderRepository->getApprovalDealerPrinciple($idDealer);
         });
 
@@ -74,9 +84,12 @@ class AdditionalOrderDatatablesController extends Controller
 
     public function additionalOrderJsonSubmittedATPM(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
+        $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonSubmittedATPM-idDealer-'.$idDealer, 10, 
-        function () use($masterAdditionalOrderRepository, $idDealer){
+        $cache_name = 'datatable-additionalOrderJsonSubmittedATPM-idDealer-'.$idUser;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
             return $masterAdditionalOrderRepository->getApprovalDealerPrinciple($idDealer);
         });
 
@@ -95,9 +108,12 @@ class AdditionalOrderDatatablesController extends Controller
 
     public function additionalOrderJsonATPMAllocation(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
     {
+        $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = Cache::remember('datatable-additionalOrderJsonATPMAllocation-idDealer-'.$idDealer, 10, 
-        function () use($masterAdditionalOrderRepository, $idDealer){
+        $cache_name = 'datatable-additionalOrderJsonATPMAllocation-idDealer-'.$idUser;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
             return $masterAdditionalOrderRepository->getATPMAllocation($idDealer);
         });
 
@@ -116,7 +132,9 @@ class AdditionalOrderDatatablesController extends Controller
 
     public function detailAdditionalOrderJson($id, DetailAdditionalOrderRepository $detailAdditionalOrderRepository)
     {
-        $data = Cache::remember('datatable-detail-additionalOrderJson-id-'.$id, 10, function () use($detailAdditionalOrderRepository, $id){
+        $cache_name = 'datatable-detail-additionalOrderJson-id-'.$id;
+        $data = Cache::remember($cache_name, 10, function () use($detailAdditionalOrderRepository, $id, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => session()->get('user')['id_user']]);
             return $detailAdditionalOrderRepository->getByIdMaster($id);
         });
 

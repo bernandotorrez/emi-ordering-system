@@ -157,9 +157,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-11 text-right">
-                        <a class="btn btn-warning mt-3 mr-4" href="{{route('additional-order.index')}}">Back</a>
-                        <button type="submit" class="btn btn-success mt-3">Update</button>
+                    <div class="col-md-11 text-left">
+                        <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
+                        <button class="btn btn-warning mt-3" 
+                            wire:click.prevent="goTo('{{route('additional-order.index')}}')">Back</a>
+                        
                     </div>
                     
                 </form>

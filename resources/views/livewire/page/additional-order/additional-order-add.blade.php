@@ -160,7 +160,8 @@
                     </div>
                     <div class="col-md-11 text-left">
                         <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
-                        <a class="btn btn-warning mt-3" href="{{route('additional-order.index')}}">Back</a>
+                        <button class="btn btn-warning mt-3" 
+                            wire:click.prevent="goTo('{{route('additional-order.index')}}')">Back</a>
                         
                     </div>
                     

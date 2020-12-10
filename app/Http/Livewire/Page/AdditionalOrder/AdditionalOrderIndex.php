@@ -2,14 +2,12 @@
 
 namespace App\Http\Livewire\Page\AdditionalOrder;
 
+use App\Traits\WithGoTo;
 use Livewire\Component;
 
 class AdditionalOrderIndex extends Component
 {
-    public function goTo($value)
-    {
-        return redirect()->to(url($value));
-    }
+    use WithGoTo;
     
     public function render()
     {
