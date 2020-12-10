@@ -9,6 +9,7 @@ use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderAdd;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderEdit;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderIndex;
+use App\Http\Livewire\Page\AllocatedAtpm\AllocatedAtpmIndex;
 use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ApprovedBM\ApprovedBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
@@ -72,6 +73,7 @@ Route::middleware(['user.session', 'bm.session'])->group(function() {
 // APproval ATPM
 Route::middleware(['user.session', 'atpm.session'])->group(function() {
     Route::get('/sales/atpm/submit-atpm', SubmitAtpmIndex::class)->name('submit-atpm.index');
+    Route::get('/sales/atpm/allocated-atpm', AllocatedAtpmIndex::class)->name('allocated-atpm.index');
 });
 
 // Datatable Json
@@ -93,6 +95,8 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/reviseBMDealer', [SweetAlertController::class, 'reviseBMDealer']);
     Route::post('additionalOrder/cancelBMDealer', [SweetAlertController::class, 'cancelBMDealer']);
     Route::post('additionalOrder/submittedAtpm', [SweetAlertController::class, 'submittedAtpm']);
+    Route::post('additionalOrder/cancelSubmitATPM', [SweetAlertController::class, 'cancelSubmitATPM']);
+    Route::post('additionalOrder/cancelAllocatedATPM', [SweetAlertController::class, 'cancelAllocatedATPM']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

@@ -237,7 +237,7 @@
             arrayId.push(check.value)
         })
 
-        var url = "{{url('sweetalert/additionalOrder/cancelBMDealer')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
+        var url = "{{url('sweetalert/additionalOrder/cancelSubmitATPM')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
         var data = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             id: arrayId
@@ -524,6 +524,13 @@
             cancelStatus.style.display = 'block'
         } else {
             cancelStatus.style.display = 'none'
+        }
+
+        var sendCancelButtonEl = document.getElementById('sendCancelButton')
+        if(status == 'submitted_atpm') { // TODO: harus di rubah
+            sendCancelButtonEl.style.display = 'inline-flex'
+        } else {
+            sendCancelButtonEl.style.display = 'none'
         }
 
         // var sendReviseButtonEl = document.getElementById('sendReviseButton')

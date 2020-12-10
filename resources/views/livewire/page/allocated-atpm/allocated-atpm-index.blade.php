@@ -60,6 +60,10 @@
                         onclick="sendApproval()"
                         disabled>Approve</button> -->
 
+                    <button type="button" class="btn btn-danger mr-2" id="sendCancelButton"
+                        onclick="sendCancel()"
+                        disabled>Cancel</button>
+
                     <!-- <button type="button" class="btn btn-success mr-2" id="sendReviseButton"
                         onclick="sendRevision()"
                         disabled>Revise</button> -->
@@ -130,6 +134,13 @@
     
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
+
+        var sendCancelButtonEl = document.getElementById('sendCancelButton')
+        if(count == 0) {
+            sendCancelButtonEl.setAttribute('disabled', true) 
+        } else {
+            sendCancelButtonEl.removeAttribute('disabled')
+        }
     }
 
     function allChecked(status) {
@@ -139,6 +150,62 @@
         })
 
         updateCheck('')
+    }
+
+    function sendCancel() {
+        var arrayChecked = document.querySelectorAll('.checkId:checked');
+        var arrayId = [];
+
+        arrayChecked.forEach(function(check) {
+            arrayId.push(check.value)
+        })
+
+        var url = "{{url('sweetalert/additionalOrder/cancelAllocatedATPM')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
+        var data = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id: arrayId
+        }
+
+        Swal.fire({
+            title: "Cancel this Order?",
+            text: "Please ensure and then confirm!",
+            type: "info",
+            icon: 'question',
+            showCancelButton: true,
+            reverseButtons: false,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    dataType: 'JSON',
+                    cache: false,
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            Swal.fire("Success!", "", "success")
+                            showTable('approval_dealer_principle')
+                        } else {
+                            Swal.fire("Failed", "", "error")
+                        }
+                    },
+                    statusCode: {
+                        500: function() {
+                            Swal.fire("Oops, Something went Wrong", "", "error")
+                        }
+                    },
+                    failure: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                    error: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            
+        })
     }
 
     function deleteProcess() {
@@ -368,13 +435,6 @@
     }
 
     function showHideButton(status) {
-        // var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
-        // if(status == 'atpm_allocation') { // TODO: harus di rubah
-        //     sendButtonApprovalEl.style.display = 'inline-flex'
-        // } else {
-        //     sendButtonApprovalEl.style.display = 'none'
-        // }
-
         var cancelStatus = document.getElementById('dropdown_cancel_status')
         if(status == 'canceled') {
             cancelStatus.style.display = 'block'
@@ -382,26 +442,12 @@
             cancelStatus.style.display = 'none'
         }
 
-        // var sendReviseButtonEl = document.getElementById('sendReviseButton')
-        // if(status == 'waiting_approval_dealer_principle') { // TODO: harus di rubah
-        //     sendReviseButtonEl.style.display = 'inline-flex'
-        // } else {
-        //     sendReviseButtonEl.style.display = 'none'
-        // }
-
-        // var editButtonEl = document.getElementById('editButton')
-        // if(status == 'draft') {
-        //     editButtonEl.style.display = 'inline-flex'
-        // } else {
-        //     editButtonEl.style.display = 'none'
-        // }
-
-        // var addButtonEl = document.getElementById('addButton')
-        // if(status == 'waiting_approval_dealer_principle') {
-        //     addButtonEl.style.display = 'inline-flex'
-        // } else {
-        //     addButtonEl.style.display = 'none'
-        // }
+        var sendCancelButtonEl = document.getElementById('sendCancelButton')
+        if(status == 'atpm_allocation') { // TODO: harus di rubah
+            sendCancelButtonEl.style.display = 'inline-flex'
+        } else {
+            sendCancelButtonEl.style.display = 'none'
+        }
     }
 </script>
 @endpush

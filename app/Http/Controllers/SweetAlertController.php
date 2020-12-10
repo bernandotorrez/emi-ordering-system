@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repository\Eloquent\KodeTahunRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
+use App\Traits\WithDeleteCache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 class SweetAlertController extends Controller
 {
+    use WithDeleteCache;
+
     private array $cache = [
         'send_to_approval' => 'datatable-additionalOrderJsonDraft-idUser-',
         'waiting_approval_dealer_principle' => 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idUser-',
@@ -39,7 +42,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('send_to_approval');
+            $this->deleteCaches('send_to_approval');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -69,7 +72,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('waiting_approval_dealer_principle');
+            $this->deleteCaches('waiting_approval_dealer_principle');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -93,7 +96,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('approval_dealer_principle');
+            $this->deleteCaches('approval_dealer_principle');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -124,7 +127,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('approval_dealer_principle');
+            $this->deleteCaches('approval_dealer_principle');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -142,6 +145,7 @@ class SweetAlertController extends Controller
 
         $data = array(
             'status' => '0',
+            'id_cancel_status' => '1',
             'date_cancel' => Carbon::now(),
         );
         
@@ -154,7 +158,8 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('approval_dealer_principle');
+            $this->deleteCaches('approval_dealer_principle');
+            $this->deleteCache();
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -184,7 +189,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCache('submitted_atpm');
+            $this->deleteCaches('submitted_atpm');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -194,7 +199,71 @@ class SweetAlertController extends Controller
         return $callback;
     }
 
-    private function deleteCache($status) {
+    public function cancelSubmitATPM(
+        Request $request,
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+    ) {
+        $id = $request->post('id');
+
+        $data = array(
+            'status' => '0',
+            'id_cancel_status' => '2',
+            'date_cancel' => Carbon::now(),
+        );
+        
+        $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
+            return $masterAdditionalOrderRepository->massUpdate($id, $data);
+        });
+
+        if($update) {
+            $callback = array(
+                'status' => 'success',
+            );
+
+            $this->deleteCaches('submitted_atpm');
+            $this->deleteCache();
+        } else {
+            $callback = array(
+                'status' => 'fail',
+            );
+        }
+
+        return $callback;
+    }
+
+    public function cancelAllocatedATPM(
+        Request $request,
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+    ) {
+        $id = $request->post('id');
+
+        $data = array(
+            'status' => '0',
+            'id_cancel_status' => '3',
+            'date_cancel' => Carbon::now(),
+        );
+        
+        $update = DB::transaction(function () use($masterAdditionalOrderRepository, $id, $data) {
+            return $masterAdditionalOrderRepository->massUpdate($id, $data);
+        });
+
+        if($update) {
+            $callback = array(
+                'status' => 'success',
+            );
+
+            $this->deleteCaches('atpm_allocation');
+            $this->deleteCache();
+        } else {
+            $callback = array(
+                'status' => 'fail',
+            );
+        }
+
+        return $callback;
+    }
+
+    private function deleteCaches($status) {
         $idUser = session()->get('user')['id_user'];
         Cache::forget($this->cache[$status].$idUser);
     }

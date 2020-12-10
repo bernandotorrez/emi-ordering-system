@@ -147,17 +147,30 @@ class MasterAdditionalOrderRepository extends BaseRepository
     // TODO: tambahkan query where
     public function getCanceledAdditionalOrder($idDealer, $idCancel)
     {
-        if($idCancel) {
-            return $this->model
-                ->where('status', '0')
-                ->where('id_dealer', $idDealer)
-                ->where('id_cancel_status', $idCancel)
-                ->get();
+        if(session()->get('user')['status_atpm'] == 'atpm') {
+            if($idCancel) {
+                return $this->model
+                    ->where('status', '0')
+                    ->where('id_cancel_status', $idCancel)
+                    ->get();
+            } else {
+                return $this->model
+                    ->where('status', '0')
+                    ->get();
+            }
         } else {
-            return $this->model
-                ->where('status', '0')
-                ->where('id_dealer', $idDealer)
-                ->get();
+            if($idCancel) {
+                return $this->model
+                    ->where('status', '0')
+                    ->where('id_dealer', $idDealer)
+                    ->where('id_cancel_status', $idCancel)
+                    ->get();
+            } else {
+                return $this->model
+                    ->where('status', '0')
+                    ->where('id_dealer', $idDealer)
+                    ->get();
+            }
         }
         
     }
