@@ -12,11 +12,13 @@
 
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
                         <li class="nav-item" onclick="showTableTab('draft')">
-                            <a class="nav-link active" id="animated-underline-home-tab" data-toggle="tab"
+                            <a class="nav-link" id="animated-underline-home-tab" data-toggle="tab"
                                 href="#animated-underline-home" role="tab" aria-controls="animated-underline-home"
-                                aria-selected="true">
+                                aria-selected="false">
                                 <i class="far fa-edit"></i> Draft</a>
                         </li>
+
+                        <!-- TODO: harus di pindahin Active nya dan aria-selected = true -->
                         <li class="nav-item" onclick="showTableTab('waiting_approval_dealer_principle')">
                             <a class="nav-link" id="animated-underline-profile-tab" data-toggle="tab"
                                 href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile"
@@ -24,10 +26,16 @@
                                 <i class="fas fa-user-clock"></i> Waiting Approval</a>
                         </li>
                         <li class="nav-item" onclick="showTableTab('approval_dealer_principle')">
+                            <a class="nav-link active" id="animated-underline-contact-tab" data-toggle="tab"
+                                href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
+                                aria-selected="true">
+                                <i class="fas fa-user-check"></i> Approved</a>
+                        </li>
+                        <li class="nav-item" onclick="showTableTab('cancel_approval')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
-                                <i class="fas fa-user-check"></i> Approved</a>
+                                <i class="fas fa-user-times"></i> Cancel Approval</a>
                         </li>
                         <li class="nav-item" onclick="showTableTab('submitted_atpm')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
@@ -35,29 +43,42 @@
                                 aria-selected="false">
                                 <i class="fas fa-file-import"></i> Submitted</a>
                         </li>
+                        <li class="nav-item" onclick="showTableTab('cancel_submit')">
+                            <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
+                                href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
+                                aria-selected="false">
+                                <i class="fas fa-user-times"></i> Cancel Submit</a>
+                        </li>
                         <li class="nav-item" onclick="showTableTab('atpm_allocation')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
                                 <i class="fas fa-shipping-fast"></i> Allocated</a>
                         </li>
-                        <li class="nav-item" onclick="showTableTab('canceled')">
+                        <li class="nav-item" onclick="showTableTab('cancel_allocation')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
-                                <i class="fas fa-user-times"></i> Canceled</a>
+                                <i class="fas fa-user-times"></i> Cancel Allocation</a>
                         </li>
                     </ul>
 
-                    <button class="btn btn-primary mr-2" id="addButton" 
-                    wire:click.prevent="goTo('{{route('additional-order.add')}}')" >Add</button>
+                    <!-- <a class="btn btn-primary mr-2" id="addButton" href="{{route('additional-order.add')}}">Add</a> -->
 
-                    <button type="button" class="btn btn-success mr-2" id="editButton"
-                        wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button>
+                    <!-- <button type="button" class="btn btn-success mr-2" id="editButton"
+                        wire:click.prevent="goTo($event.target.value)" value="" disabled>Amend</button> -->
 
                     <button type="button" class="btn btn-primary mr-2" id="sendApprovalButton"
                         onclick="sendApproval()"
-                        disabled>Send to Approval</button>
+                        disabled>Submit to ATPM</button>
+
+                    <button type="button" class="btn btn-success mr-2" id="sendReviseButton"
+                        onclick="sendRevision()"
+                        disabled>Revise</button>
+
+                    <button type="button" class="btn btn-danger mr-2" id="sendCancelButton"
+                        onclick="sendCancel()"
+                        disabled>Cancel</button>
 
                     <!-- <button type="button" class="btn btn-danger mr-2" id="deleteButton" onclick="deleteProcess()"
                         disabled>Delete</button> -->
@@ -112,28 +133,26 @@
     
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
-        var editButtonEl = document.getElementById('editButton')
-
-        if(count == 0 || count > 1) {
-            editButtonEl.setAttribute('disabled', true)
-        } else {
-            editButtonEl.removeAttribute('disabled')
-            editButtonEl.value = "{!! route('additional-order.edit') !!}/"+id
-        }
-
-        // var deleteButtonEl = document.getElementById('deleteButton')
-
-        // if(count == 0) {
-        //     deleteButtonEl.setAttribute('disabled', true) 
-        // } else {
-        //     deleteButtonEl.removeAttribute('disabled')
-        // }
-
+ 
         var sendButtonEl = document.getElementById('sendApprovalButton')
         if(count == 0) {
             sendButtonEl.setAttribute('disabled', true) 
         } else {
             sendButtonEl.removeAttribute('disabled')
+        }
+
+        var sendReviseButtonEl = document.getElementById('sendReviseButton')
+        if(count == 0) {
+            sendReviseButtonEl.setAttribute('disabled', true) 
+        } else {
+            sendReviseButtonEl.removeAttribute('disabled')
+        }
+
+        var sendCancelButtonEl = document.getElementById('sendCancelButton')
+        if(count == 0) {
+            sendCancelButtonEl.setAttribute('disabled', true) 
+        } else {
+            sendCancelButtonEl.removeAttribute('disabled')
         }
     }
 
@@ -142,7 +161,7 @@
         arrayChecked.forEach(function(check) {
             check.checked = status
         })
-        
+
         updateCheck('')
     }
 
@@ -154,14 +173,14 @@
             arrayId.push(check.value)
         })
 
-        var url = "{{url('sweetalert/additionalOrder/sendToApproval')}}"
+        var url = "{{url('sweetalert/additionalOrder/submitToAtpm')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
         var data = {
             _token: $('meta[name="csrf-token"]').attr('content'),
             id: arrayId
         }
 
         Swal.fire({
-            title: "Send Approval?",
+            title: "Submit to ATPM?",
             text: "Please ensure and then confirm!",
             type: "info",
             icon: 'question',
@@ -178,7 +197,119 @@
                     success: function(response) {
                         if(response.status == 'success') {
                             Swal.fire("Success!", "", "success")
-                            showTable('draft')
+                            showTable('approval_dealer_principle')
+                        } else {
+                            Swal.fire("Failed", "", "error")
+                        }
+                    },
+                    statusCode: {
+                        500: function() {
+                            Swal.fire("Oops, Something went Wrong", "", "error")
+                        }
+                    },
+                    failure: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                    error: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            
+        })
+    }
+
+    function sendRevision() {
+        var arrayChecked = document.querySelectorAll('.checkId:checked');
+        var arrayId = [];
+
+        arrayChecked.forEach(function(check) {
+            arrayId.push(check.value)
+        })
+
+        var url = "{{url('sweetalert/additionalOrder/reviseBMDealer')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
+        var data = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id: arrayId
+        }
+
+        Swal.fire({
+            title: "Revise this Order?",
+            text: "Please ensure and then confirm!",
+            type: "info",
+            icon: 'question',
+            showCancelButton: true,
+            reverseButtons: false,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    dataType: 'JSON',
+                    cache: false,
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            Swal.fire("Success!", "", "success")
+                            showTable('approval_dealer_principle')
+                        } else {
+                            Swal.fire("Failed", "", "error")
+                        }
+                    },
+                    statusCode: {
+                        500: function() {
+                            Swal.fire("Oops, Something went Wrong", "", "error")
+                        }
+                    },
+                    failure: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                    error: function (response) {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    },
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            
+        })
+    }
+
+    function sendCancel() {
+        var arrayChecked = document.querySelectorAll('.checkId:checked');
+        var arrayId = [];
+
+        arrayChecked.forEach(function(check) {
+            arrayId.push(check.value)
+        })
+
+        var url = "{{url('sweetalert/additionalOrder/cancelBMDealer')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
+        var data = {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            id: arrayId
+        }
+
+        Swal.fire({
+            title: "Cancel this Order?",
+            text: "Please ensure and then confirm!",
+            type: "info",
+            icon: 'question',
+            showCancelButton: true,
+            reverseButtons: false,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    dataType: 'JSON',
+                    cache: false,
+                    success: function(response) {
+                        if(response.status == 'success') {
+                            Swal.fire("Success!", "", "success")
+                            showTable('approval_dealer_principle')
                         } else {
                             Swal.fire("Failed", "", "error")
                         }
@@ -211,11 +342,11 @@
     }
 
     document.addEventListener('livewire:load', function() {
-        showTable('draft')
+        showTable('approval_dealer_principle') // TODO: harus di rubah
     });
 
     function getAction(status) {
-        if(status == 'draft') {
+        if(status == 'approval_dealer_principle') { // TODO: harus di rubah
             var dataAction = {
                 data: 'action',
                 name: 'action',
@@ -236,7 +367,7 @@
         return dataAction
     }
 
-    function showTable(status) {
+    function showTable(status) {   
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -256,7 +387,7 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                getAction(status),
+                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">', searchable: false, orderable: false },
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
@@ -325,7 +456,6 @@
         showHideButton(status)
         $('#master-additional-table').DataTable().destroy(); 
         $('#master-additional-table').html('');
-
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -376,25 +506,39 @@
 
     function showHideButton(status) {
         var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
-        if(status == 'draft') {
+        if(status == 'approval_dealer_principle') { // TODO: harus di rubah
             sendButtonApprovalEl.style.display = 'inline-flex'
         } else {
             sendButtonApprovalEl.style.display = 'none'
         }
 
-        var editButtonEl = document.getElementById('editButton')
-        if(status == 'draft') {
-            editButtonEl.style.display = 'inline-flex'
+        var sendReviseButtonEl = document.getElementById('sendReviseButton')
+        if(status == 'approval_dealer_principle') { // TODO: harus di rubah
+            sendReviseButtonEl.style.display = 'inline-flex'
         } else {
-            editButtonEl.style.display = 'none'
+            sendReviseButtonEl.style.display = 'none'
         }
 
-        var addButtonEl = document.getElementById('addButton')
-        if(status == 'draft') {
-            addButtonEl.style.display = 'inline-flex'
+        var sendCancelButtonEl = document.getElementById('sendCancelButton')
+        if(status == 'approval_dealer_principle') { // TODO: harus di rubah
+            sendCancelButtonEl.style.display = 'inline-flex'
         } else {
-            addButtonEl.style.display = 'none'
+            sendCancelButtonEl.style.display = 'none'
         }
+
+        // var editButtonEl = document.getElementById('editButton')
+        // if(status == 'draft') {
+        //     editButtonEl.style.display = 'inline-flex'
+        // } else {
+        //     editButtonEl.style.display = 'none'
+        // }
+
+        // var addButtonEl = document.getElementById('addButton')
+        // if(status == 'waiting_approval_dealer_principle') {
+        //     addButtonEl.style.display = 'inline-flex'
+        // } else {
+        //     addButtonEl.style.display = 'none'
+        // }
     }
 </script>
 @endpush

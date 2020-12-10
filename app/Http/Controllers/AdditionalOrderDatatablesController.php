@@ -62,7 +62,7 @@ class AdditionalOrderDatatablesController extends Controller
     {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $cache_name = 'datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-'.$idUser;
+        $cache_name = 'datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser;
         $datas = Cache::remember($cache_name, 10, 
         function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
@@ -86,11 +86,11 @@ class AdditionalOrderDatatablesController extends Controller
     {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $cache_name = 'datatable-additionalOrderJsonSubmittedATPM-idDealer-'.$idUser;
+        $cache_name = 'datatable-additionalOrderJsonSubmittedATPM-idUser-'.$idUser;
         $datas = Cache::remember($cache_name, 10, 
         function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
-            return $masterAdditionalOrderRepository->getApprovalDealerPrinciple($idDealer);
+            return $masterAdditionalOrderRepository->getSubmittedATPM($idDealer);
         });
 
         return Datatables::of($datas)
@@ -110,11 +110,35 @@ class AdditionalOrderDatatablesController extends Controller
     {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $cache_name = 'datatable-additionalOrderJsonATPMAllocation-idDealer-'.$idUser;
+        $cache_name = 'datatable-additionalOrderJsonATPMAllocation-idUser-'.$idUser;
         $datas = Cache::remember($cache_name, 10, 
         function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
             return $masterAdditionalOrderRepository->getATPMAllocation($idDealer);
+        });
+
+        return Datatables::of($datas)
+        ->addColumn('action', function($data) {
+            return '<input type="checkbox" class="new-control-input checkId" 
+            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+            id="'.$data->id_master_additional_order_unit.'" 
+            value="'.$data->id_master_additional_order_unit.'">';
+        })
+        ->addColumn('details_url', function($data) {
+            return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
+        })
+        ->make(true);
+    }
+
+    public function additionalOrderJsonCanceled(MasterAdditionalOrderRepository $masterAdditionalOrderRepository)
+    {
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+        $cache_name = 'datatable-additionalOrderJsonCanceled-idUser-'.$idUser;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterAdditionalOrderRepository, $idUser, $idDealer, $cache_name){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
+            return $masterAdditionalOrderRepository->getCanceledAdditionalOrder($idDealer);
         });
 
         return Datatables::of($datas)

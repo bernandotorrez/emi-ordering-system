@@ -4,6 +4,7 @@ namespace App\Repository\Eloquent;
 
 use App\Models\DetailAdditionalOrderUnit;
 use App\Models\MasterAdditionalOrderUnit;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class MasterAdditionalOrderRepository extends BaseRepository
@@ -66,63 +67,91 @@ class MasterAdditionalOrderRepository extends BaseRepository
         return $update;
     }
 
+    public function updateSubmitAtpm(array $arrayId, $kodeTahunRepository)
+    {
+        foreach($arrayId as $id) {
+            $orderSequence = $kodeTahunRepository->getOrderSequence($id);
+            $data = array(
+                'flag_submit_to_atpm' => '1',
+                'date_submit_atpm_order' => Carbon::now(),
+                'no_order_atpm' => $orderSequence
+            );
+
+            $update = DB::transaction(function () use($id, $data) {
+                return $this->model->where($this->primaryKey, $id)->update($data);
+            });
+            
+        }
+
+        return $update;
+    }
+
     public function getDraft($idDealer)
     {
-        return $this->model->where([
-            'status' => '1', 
-            'flag_send_approval_dealer' => '0',
-            'flag_approval_dealer' => '0',
-            'flag_submit_to_atpm' => '0',
-            'flag_allocation' => '0',
-            'id_dealer' => $idDealer
-        ])->get();
+        return $this->model
+            ->whereIn('flag_send_approval_dealer', ['0', '2'])
+            ->where('flag_approval_dealer', '0')
+            ->where('flag_submit_to_atpm', '0')
+            ->where('flag_allocation', '0')
+            ->where('status', '1')
+            ->where('id_dealer', $idDealer)
+            ->get();
     }
 
     public function getWaitingApprovalDealerPrinciple($idDealer)
     {
-        return $this->model->where([
-            'status' => '1', 
-            'flag_send_approval_dealer' => '1',
-            'flag_approval_dealer' => '0',
-            'flag_submit_to_atpm' => '0',
-            'flag_allocation' => '0',
-            'id_dealer' => $idDealer
-        ])->get();
+        return $this->model
+            ->where('flag_send_approval_dealer', '1')
+            ->where('flag_approval_dealer', '0')
+            ->where('flag_submit_to_atpm', '0')
+            ->where('flag_allocation', '0')
+            ->where('status', '1')
+            ->where('id_dealer', $idDealer)
+            ->get();
     }
 
     public function getApprovalDealerPrinciple($idDealer)
     {
-        return $this->model->where([
-            'status' => '1', 
-            'flag_send_approval_dealer' => '1',
-            'flag_approval_dealer' => '1',
-            'flag_submit_to_atpm' => '0',
-            'flag_allocation' => '0',
-            'id_dealer' => $idDealer
-        ])->get();
+        return $this->model
+            ->where('flag_send_approval_dealer', '1')
+            ->where('flag_approval_dealer', '1')
+            ->where('flag_submit_to_atpm', '0')
+            ->where('flag_allocation', '0')
+            ->where('status', '1')
+            ->where('id_dealer', $idDealer)
+            ->get();
     }
 
     public function getSubmittedATPM($idDealer)
     {
-        return $this->model->where([
-            'status' => '1', 
-            'flag_send_approval_dealer' => '1',
-            'flag_approval_dealer' => '1',
-            'flag_submit_to_atpm' => '1',
-            'flag_allocation' => '0',
-            'id_dealer' => $idDealer
-        ])->get();
+        return $this->model
+            ->where('flag_send_approval_dealer', '1')
+            ->where('flag_approval_dealer', '1')
+            ->where('flag_submit_to_atpm', '1')
+            ->where('flag_allocation', '0')
+            ->where('status', '1')
+            ->where('id_dealer', $idDealer)
+            ->get();
     }
 
     public function getATPMAllocation($idDealer)
     {
-        return $this->model->where([
-            'status' => '1', 
-            'flag_send_approval_dealer' => '1',
-            'flag_approval_dealer' => '1',
-            'flag_submit_to_atpm' => '1',
-            'flag_allocation' => '1',
-            'id_dealer' => $idDealer
-        ])->get();
+        return $this->model
+            ->where('flag_send_approval_dealer', '1')
+            ->where('flag_approval_dealer', '1')
+            ->where('flag_submit_to_atpm', '1')
+            ->where('flag_allocation', '1')
+            ->where('status', '1')
+            ->where('id_dealer', $idDealer)
+            ->get();
+    }
+
+    // TODO: tambahkan query where
+    public function getCanceledAdditionalOrder($idDealer)
+    {
+        return $this->model
+            ->where('status', '0')
+            ->where('id_dealer', $idDealer)
+            ->get();
     }
 }
