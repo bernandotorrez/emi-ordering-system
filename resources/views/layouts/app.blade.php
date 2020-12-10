@@ -15,12 +15,9 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
     <link href="{{ asset('assets/css/elements/custom-pagination.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/elements/alert.css') }}">
     <link href="{{ asset('assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
@@ -85,8 +82,6 @@
     <script src="{{ asset('assets/js/turbolink/livewire-turbolinks.js') }}" data-turbolinks-eval="false"></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
-    <script src="{{ asset('assets/js/handlebars.js') }}"></script>
     <script src="{{ asset('plugins/highlight/highlight.pack.js') }}"></script>
 
     @stack('scripts')
@@ -116,46 +111,103 @@
             }
         })
 
-        
-    function formatRupiah(angka, prefix, id) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
+        function formatRupiah(angka, prefix, id) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            var callback = prefix == '' ? rupiah : (rupiah ? rupiah : '')
+
+            var element = document.getElementById('estimation-price.' + id)
+            element.value = callback;
+
+            return callback;
         }
 
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        var callback = prefix == '' ? rupiah : (rupiah ? rupiah : '')
+        function isNumberKey(e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if (charCode != 44 && charCode != 45 && charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
-        var element = document.getElementById('estimation-price.'+id)
-        element.value = callback;
+        function isQtyKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
 
-        return callback;
-    }
+            return true;
+        }
 
-    function isNumberKey(e) {
-    var charCode = (e.which) ? e.which : e.keyCode;
-		if (charCode != 44 && charCode != 45 && charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-			return false;
-		} else {
-			return true;
-		}
-    }
+        function getUrlAjax(status) {
+            if (status == 'draft') {
+                return "{{ url('datatable/additionalOrderJsonDraft') }}"
+            } else if (status == 'waiting_approval_dealer_principle') {
+                return "{{ url('datatable/additionalOrderJsonWaitingApprovalDealerPrinciple') }}"
+            } else if (status == 'approval_dealer_principle') {
+                return "{{ url('datatable/additionalOrderJsonApprovalDealerPrinciple') }}"
+            } else if (status == 'submitted_atpm') {
+                return "{{ url('datatable/additionalOrderJsonSubmittedATPM') }}"
+            } else if (status == 'atpm_allocation') {
+                return "{{ url('datatable/additionalOrderJsonATPMAllocation') }}"
+            } else if (status == 'canceled') {
+                return "{{ url('datatable/additionalOrderJsonCanceled') }}"
+            }
+        }
 
-    function isQtyKey(evt)
-      {
-         var charCode = (evt.which) ? evt.which : event.keyCode
-         if (charCode > 31 && (charCode < 48 || charCode > 57))
-            return false;
+        function getDataStatusProgress(status) {
+            if (status == 'draft') { // di Dealer
+                var dataStatusProgress = {
+                    data: 'date_save_order',
+                    name: 'date_save_order',
+                    title: 'Date Draft'
+                }
+            } else if (status == 'waiting_approval_dealer_principle') { // di BM
+                var dataStatusProgress = {
+                    data: 'date_send_approval',
+                    name: 'date_send_approval',
+                    title: 'Date Send Approval'
+                }
+            } else if (status == 'approval_dealer_principle') {
+                var dataStatusProgress = {
+                    data: 'date_approval',
+                    name: 'date_approval',
+                    title: 'Date Approval'
+                }
+            } else if (status == 'submitted_atpm') { // di ATPM
+                var dataStatusProgress = {
+                    data: 'date_submit_atpm_order',
+                    name: 'date_submit_atpm_order',
+                    title: 'Date Submit ATPM'
+                }
+            } else if (status == 'atpm_allocation') {
+                var dataStatusProgress = {
+                    data: 'date_allocation_atpm',
+                    name: 'date_allocation_atpm',
+                    title: 'Date Allocatation'
+                }
+            } else if (status == 'canceled') {
+                var dataStatusProgress = {
+                    data: 'date_cancel',
+                    name: 'date_cancel',
+                    title: 'Date Cancel'
+                }
+            }
 
-         return true;
-      }
+            return dataStatusProgress
+        }
     </script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 

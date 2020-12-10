@@ -1,21 +1,17 @@
 <?php
 
-namespace App\Http\Livewire\Page\AdditionalOrder;
+namespace App\Http\Livewire\Page\SubmitAtpm;
 
 use App\Repository\Eloquent\CancelStatusRepository;
-use App\Traits\WithGoTo;
 use Livewire\Component;
 
-class AdditionalOrderIndex extends Component
+class SubmitAtpmIndex extends Component
 {
-    use WithGoTo;
-    
     public function render(CancelStatusRepository $cancelStatusRepository)
     {
         $dataCancelStatus = $cancelStatusRepository->allActive();
-        return view('livewire.page.additional-order.additional-order-index', [
+        return view('livewire.page.submit-atpm.submit-atpm-index',[
             'dataCancelStatus' => $dataCancelStatus
-        ])->layout('layouts.app', ['title' => 'Additonal Order']);
+        ])->layout('layouts.app', ['title' => 'Submit ATPM']);
     }
-
 }

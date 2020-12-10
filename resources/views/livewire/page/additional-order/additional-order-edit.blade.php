@@ -74,6 +74,7 @@
                                 <tr align="center">
                                     <th>No</th>
                                     <th><font class="text-danger">Model Name *</font></th>
+                                    <th><font class="text-danger">Year *</font></th>
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Colour *</font></th>
                                     <th><font class="text-danger">Qty *</font></th>
@@ -97,6 +98,17 @@
                                             @endforeach
                                         </select>
                                         @error('detailData.'.$key.'.id_model') <span class="error">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+                                    <td>
+                                        <select class="form-control" wire:model.lazy="detailData.{{$key}}.year_production">
+                                            <option value="" selected>- Choose Year -</option>
+
+                                            @for($i = 0;$i <= 2;$i++)
+                                            <option value="{{(date('Y')-$i)}}">{{(date('Y')-$i)}}</option>
+                                            @endfor
+                                        </select>
+                                        @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
                                     <td>
@@ -136,7 +148,7 @@
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="4" align="right">Total Order Qty : </td>
+                                    <td colspan="5" align="right">Total Order Qty : </td>
                                     <td colspan="1">
                                         <input type="text" class="form-control text-center" id="total_qty"
                                             wire:model.lazy="totalQty" readonly>
@@ -145,9 +157,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-11 text-right">
-                        <a class="btn btn-warning mt-3 mr-4" href="{{route('additional-order.index')}}">Back</a>
-                        <button type="submit" class="btn btn-success mt-3">Update</button>
+                    <div class="col-md-11 text-left">
+                        <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
+                        <button class="btn btn-warning mt-3" 
+                            wire:click.prevent="goTo('{{route('additional-order.index')}}')">Back</a>
+                        
                     </div>
                     
                 </form>

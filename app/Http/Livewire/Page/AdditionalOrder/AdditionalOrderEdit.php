@@ -8,13 +8,18 @@ use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\DetailAdditionalOrderRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
+use App\Traits\WithDeleteCache;
+use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class AdditionalOrderEdit extends Component
 {
     use WithWrsApi;
+    use WithGoTo;
+    use WithDeleteCache;
 
     public $pageTitle = 'Additional Order - Edit';
     public array $detailData = [];
@@ -31,15 +36,20 @@ class AdditionalOrderEdit extends Component
         'detailData.*.id_type' => 'required',
         'detailData.*.id_colour' => 'required',
         'detailData.*.qty' => 'required|numeric|min:1|max:99999',
+        'detailData.*.year_production' => 'required',
     ];
 
     protected $messages = [
+        'bind.order_number_dealer.required' => 'Please fill Order Number Dealer',
+        'bind.order_number_dealer.min' => 'Please fill Order Number Minimal :min Character',
+        'bind.order_number_dealer.max' => 'Please fill Order Number Maximal :max Characters',
         'detailData.*.id_model.required' => 'Please Choose Model Name!',
         'detailData.*.id_type.required' => 'Please Choose Type Name!',
         'detailData.*.id_colour.required' => 'Please Choose Colour!',
         'detailData.*.qty.required' => 'Quantity cant be Empty!',
         'detailData.*.qty.min' => 'Please input Quantity at Least :min',
         'detailData.*.qty.max' => 'Please input Quantity at Max :max',
+        'detailData.*.year_production.required' => 'Please Choose Year Production!',
     ];
     
     public function mount($id, 
@@ -97,7 +107,7 @@ class AdditionalOrderEdit extends Component
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,
-            'year_production' => date('Y'),
+            'year_production' => '',
             'data_type' => [],
             'data_colour' => []
         );
@@ -182,12 +192,12 @@ class AdditionalOrderEdit extends Component
         $dataMaster = array(
             'no_order_atpm' => '',
             'no_order_dealer' => $this->bind['order_number_dealer'],
-            'date_save_order' => date('Y-m-d H:i:s'),
+            'date_save_order' => Carbon::now(),
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'month_order' => date('m'),
-            'year_order' => date('Y'),
+            'month_order' => Carbon::now()->month,
+            'year_order' => Carbon::now()->year,
             'total_qty' => $this->totalQty,
             'status' => '1'
         );
@@ -209,10 +219,11 @@ class AdditionalOrderEdit extends Component
             );
 
             if($update) {
-                session()->flash('action_message', '<div class="alert alert-success">Insert Data Success!</div>');
+                $this->deleteCache();
+                session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {
-                session()->flash('action_message', '<div class="alert alert-danger">Insert Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
 
