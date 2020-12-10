@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\DB;
 class SweetAlertController extends Controller
 {
     private array $cache = [
-        'send_to_approval' => 'datatable-additionalOrderJsonDraft-idDealer-',
-        'waiting_approval_dealer_principle' => 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idDealer-',
-        'approval_dealer_principle' => 'datatable-additionalOrderJsonApprovalDealerPrinciple-idDealer-',
-        'submitted_atpm' => 'datatable-additionalOrderJsonSubmittedATPM-idDealer-',
-        'atpm_allocation' => 'datatable-additionalOrderJsonATPMAllocation-idDealer-',
+        'send_to_approval' => 'datatable-additionalOrderJsonDraft-idUser-',
+        'waiting_approval_dealer_principle' => 'datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idUser-',
+        'approval_dealer_principle' => 'datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-',
+        'submitted_atpm' => 'datatable-additionalOrderJsonSubmittedATPM-idUser-',
+        'atpm_allocation' => 'datatable-additionalOrderJsonATPMAllocation-idUser-',
     ];
 
     public function sendToApproval(
@@ -79,7 +79,7 @@ class SweetAlertController extends Controller
     }
 
     private function deleteCache($status) {
-        $idDealer = session()->get('user')['id_dealer'];
-        Cache::forget($this->cache[$status].$idDealer);
+        $idUser = session()->get('user')['id_user'];
+        Cache::forget($this->cache[$status].$idUser);
     }
 }

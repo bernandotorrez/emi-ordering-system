@@ -7,6 +7,8 @@ use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
+use App\Traits\WithDeleteCache;
+use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -15,6 +17,8 @@ use Livewire\Component;
 class AdditionalOrderAdd extends Component
 {
     use WithWrsApi;
+    use WithGoTo;
+    use WithDeleteCache;
 
     public $pageTitle = 'Additional Order - Add';
     public array $detailData = [];
@@ -180,6 +184,7 @@ class AdditionalOrderAdd extends Component
             $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
 
             if($insert) {
+                $this->deleteCache();
                 session()->flash('action_message', '<div class="alert alert-primary" role="alert">Insert Data Success!</div>');
                 return redirect()->to(route('additional-order.index'));
             } else {
