@@ -86,15 +86,7 @@
 
 </div>
 
-@push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
-<link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
-@endpush
-
 @push('scripts')
-<script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
-<script src="{{ asset('assets/js/handlebars.js') }}"></script>
 
 <script id="details-template" type="text/x-handlebars-template">
         <h5 class="mt-2 text-center">Detail Order</h5>
