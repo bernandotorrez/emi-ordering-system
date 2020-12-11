@@ -112,15 +112,22 @@
     </script>
 <script>
     
+    document.addEventListener('livewire:load', function() {
+        showTable('atpm_allocation') // TODO: harus di rubah
+    });
+
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
 
         var sendCancelButtonEl = document.getElementById('sendCancelButton')
-        if(count == 0) {
-            sendCancelButtonEl.setAttribute('disabled', true) 
-        } else {
-            sendCancelButtonEl.removeAttribute('disabled')
+        if(sendCancelButtonEl != null) {
+            if(count == 0) {
+                sendCancelButtonEl.setAttribute('disabled', true) 
+            } else {
+                sendCancelButtonEl.removeAttribute('disabled')
+            }
         }
+        
     }
 
     function allChecked(status) {
@@ -197,10 +204,6 @@
             arrayId.push(check[i-1].value)
         }
     }
-
-    document.addEventListener('livewire:load', function() {
-        showTable('atpm_allocation') // TODO: harus di rubah
-    });
 
     function getAction(status) {
         if(status == 'atpm_allocation') { // TODO: harus di rubah
@@ -425,18 +428,23 @@
 
     function showHideButton(status) {
         var cancelStatus = document.getElementById('dropdown_cancel_status')
-        if(status == 'canceled') {
-            cancelStatus.style.display = 'block'
-        } else {
-            cancelStatus.style.display = 'none'
+        if(cancelStatus != null) {
+            if(status == 'canceled') {
+                cancelStatus.style.display = 'block'
+            } else {
+                cancelStatus.style.display = 'none'
+            }
         }
-
+        
         var sendCancelButtonEl = document.getElementById('sendCancelButton')
-        if(status == 'atpm_allocation') { // TODO: harus di rubah
-            sendCancelButtonEl.style.display = 'inline-flex'
-        } else {
-            sendCancelButtonEl.style.display = 'none'
+        if(sendCancelButtonEl != null) {
+            if(status == 'atpm_allocation') { // TODO: harus di rubah
+                sendCancelButtonEl.style.display = 'inline-flex'
+            } else {
+                sendCancelButtonEl.style.display = 'none'
+            }
         }
+        
     }
 </script>
 @endpush

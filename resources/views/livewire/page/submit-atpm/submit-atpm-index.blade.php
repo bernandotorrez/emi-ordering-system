@@ -97,7 +97,7 @@
 
 @push('scripts')
 <script id="details-template" type="text/x-handlebars-template">
-        <h5 class="mt-2 text-center">Detail Order</h5>
+    <h5 class="mt-2 text-center">Detail Order</h5>
         <table class="table table-hover details-table" id="detail">
             <thead>
             <tr>
@@ -109,39 +109,35 @@
             </tr>
             </thead>
         </table>
-    </script>
+</script>
 <script>
+
+    document.addEventListener('livewire:load', function() {
+        showTable('submitted_atpm') // TODO: harus di rubah
+    });
     
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
-        // var deleteButtonEl = document.getElementById('deleteButton')
 
-        // if(count == 0) {
-        //     deleteButtonEl.setAttribute('disabled', true) 
-        // } else {
-        //     deleteButtonEl.removeAttribute('disabled')
-        // }
 
         var sendButtonEl = document.getElementById('sendApprovalButton')
-        if(count == 0) {
-            sendButtonEl.setAttribute('disabled', true) 
-        } else {
-            sendButtonEl.removeAttribute('disabled')
+        if(sendButtonEl != null) {
+            if(count == 0) {
+                sendButtonEl.setAttribute('disabled', true) 
+            } else {
+                sendButtonEl.removeAttribute('disabled')
+            }
         }
-
-        // var sendReviseButtonEl = document.getElementById('sendReviseButton')
-        // if(count == 0) {
-        //     sendReviseButtonEl.setAttribute('disabled', true) 
-        // } else {
-        //     sendReviseButtonEl.removeAttribute('disabled')
-        // }
-
+        
         var sendCancelButtonEl = document.getElementById('sendCancelButton')
-        if(count == 0) {
-            sendCancelButtonEl.setAttribute('disabled', true) 
-        } else {
-            sendCancelButtonEl.removeAttribute('disabled')
+        if(sendCancelButtonEl != null) {
+            if(count == 0) {
+                sendCancelButtonEl.setAttribute('disabled', true) 
+            } else {
+                sendCancelButtonEl.removeAttribute('disabled')
+            }
         }
+        
     }
 
     function allChecked(status) {
@@ -274,10 +270,6 @@
             arrayId.push(check[i-1].value)
         }
     }
-
-    document.addEventListener('livewire:load', function() {
-        showTable('submitted_atpm') // TODO: harus di rubah
-    });
 
     function getAction(status) {
         if(status == 'submitted_atpm') { // TODO: harus di rubah
@@ -509,39 +501,23 @@
         }
 
         var cancelStatus = document.getElementById('dropdown_cancel_status')
-        if(status == 'canceled') {
-            cancelStatus.style.display = 'block'
-        } else {
-            cancelStatus.style.display = 'none'
+        if(cancelStatus != null) {
+            if(status == 'canceled') {
+                cancelStatus.style.display = 'block'
+            } else {
+                cancelStatus.style.display = 'none'
+            }
         }
-
+        
         var sendCancelButtonEl = document.getElementById('sendCancelButton')
-        if(status == 'submitted_atpm') { // TODO: harus di rubah
-            sendCancelButtonEl.style.display = 'inline-flex'
-        } else {
-            sendCancelButtonEl.style.display = 'none'
+        if(sendCancelButtonEl != null) {
+            if(status == 'submitted_atpm') { // TODO: harus di rubah
+                sendCancelButtonEl.style.display = 'inline-flex'
+            } else {
+                sendCancelButtonEl.style.display = 'none'
+            }
         }
-
-        // var sendReviseButtonEl = document.getElementById('sendReviseButton')
-        // if(status == 'waiting_approval_dealer_principle') { // TODO: harus di rubah
-        //     sendReviseButtonEl.style.display = 'inline-flex'
-        // } else {
-        //     sendReviseButtonEl.style.display = 'none'
-        // }
-
-        // var editButtonEl = document.getElementById('editButton')
-        // if(status == 'draft') {
-        //     editButtonEl.style.display = 'inline-flex'
-        // } else {
-        //     editButtonEl.style.display = 'none'
-        // }
-
-        // var addButtonEl = document.getElementById('addButton')
-        // if(status == 'waiting_approval_dealer_principle') {
-        //     addButtonEl.style.display = 'inline-flex'
-        // } else {
-        //     addButtonEl.style.display = 'none'
-        // }
+        
     }
 </script>
 @endpush
