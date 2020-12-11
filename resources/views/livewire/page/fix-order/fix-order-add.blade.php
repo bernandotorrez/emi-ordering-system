@@ -8,6 +8,42 @@
                 {!! session('action_message') !!}
                 @endif
 
+                <!-- Modal -->
+                <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg animated slideInUp custo-slideInUp" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{ $pageTitle }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                <form>
+
+                                    tes
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
+                                    Discard</button>
+                                <button type="button" class="btn btn-primary" id="submit"
+                                   > Submit </button>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+
                 <form id="form-add" class="section" wire:submit.prevent="addProcess">
                     <div class="info">
                         <h5 class="mb-4">{{ $pageTitle }}</h5>
@@ -74,10 +110,8 @@
                                 <tr align="center">
                                     <th>No</th>
                                     <th><font class="text-danger">Model Name *</font></th>
-                                    <th><font class="text-danger">Year *</font></th>
                                     <th><font class="text-danger">Type Name *</font></th>
-                                    <th><font class="text-danger">Colour *</font></th>
-                                    <th><font class="text-danger">Qty *</font></th>
+                                    <th><font class="text-danger">Qty *</font></th>   
                                     <th>
                                         <a href="#detail">
                                             <i class="fas fa-plus-circle fa-2x text-success"
@@ -106,18 +140,6 @@
                                     </td>
 
                                     <td>
-                                        <select class="form-control" wire:model.lazy="detailData.{{$key}}.year_production">
-                                            <option value="" selected>- Choose Year -</option>
-
-                                            @for($i = 0;$i <= 2;$i++)
-                                            <option value="{{(date('Y')-$i)}}">{{(date('Y')-$i)}}</option>
-                                            @endfor
-                                        </select>
-                                        @error('detailData.'.$key.'.year_production') <span class="error">{{ $message }}</span>
-                                        @enderror
-                                    </td>
-
-                                    <td>
                                         <select class="form-control" wire:model.lazy="detailData.{{$key}}.id_type">
                                             <option value="" selected>- Choose Type -</option>
 
@@ -128,29 +150,21 @@
                                         @error('detailData.'.$key.'.id_type') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
-                                    <td>
-                                        <select class="form-control" wire:model.lazy="detailData.{{$key}}.id_colour">
-                                            <option value="" selected>- Choose Colour -</option>
-
-                                            @foreach($detailData[$key]['data_colour'] as $colour)
-                                            <option value="{{$colour['color']['kd_color']}}">
-                                                {{$colour['color']['nm_color_global']}}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('detailData.'.$key.'.id_colour') <span
-                                            class="error">{{ $message }}</span>
-                                        @enderror
-                                    </td>
+                                    
 
                                     <td>
-                                        <input type="number" class="form-control text-center"
+                                        <input type="text" class="form-control text-center"
                                             wire:model.lazy="detailData.{{$key}}.qty" placeholder="Qty"
-                                            onkeypress="return isQtyKey(event)">
+                                            onkeypress="return isQtyKey(event)" readonly>
                                         @error('detailData.'.$key.'.qty') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </td>
 
                                     <td>
+                                        <a href="#detail">
+                                            <i class="fas fa-paint-brush fa-2x text-info mr-2" wire:click.prevent="addForm"></i>
+                                        </a>
+                                        
                                         <a href="#detail">
                                             <i class="fas fa-trash-alt fa-2x text-danger"
                                                 onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
@@ -162,10 +176,10 @@
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="5" align="right">Total Order Qty : </td>
+                                    <td colspan="3" align="right">Grand Total Order Qty : </td>
                                     <td colspan="1">
-                                        <input type="text" class="form-control text-center" id="total_qty"
-                                            wire:model.lazy="totalQty" readonly>
+                                        <input type="text" class="form-control text-center" id="grand_total_qty"
+                                            wire:model.lazy="grandTotalQty" readonly>
                                     </td>
                                 </tr>
                             </tbody>
@@ -174,7 +188,7 @@
                     <div class="col-md-11 text-left">
                         <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
                         <button class="btn btn-warning mt-3" 
-                            wire:click.prevent="goTo('{{route('additional-order.index')}}')">Back</a>
+                            wire:click.prevent="goTo('{{route('fix-order.index')}}')">Back</a>
                         
                     </div>
                     

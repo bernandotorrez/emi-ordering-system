@@ -9,10 +9,12 @@ use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderAdd;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderEdit;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderAdd;
 use App\Http\Livewire\Page\AllocatedAtpm\AllocatedAtpmIndex;
 use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ApprovedBM\ApprovedBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
@@ -62,6 +64,10 @@ Route::middleware('user.session')->group(function() {
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
     Route::get('/sales/dealer/additional-order/add', AdditionalOrderAdd::class)->name('additional-order.add');
     Route::get('/sales/dealer/additional-order/edit/{id?}', AdditionalOrderEdit::class)->name('additional-order.edit');
+
+    // Fix Order
+    Route::get('/sales/dealer/fix-order', FixOrderIndex::class)->name('fix-order.index');
+    Route::get('/sales/dealer/fix-order/add', FixOrderAdd::class)->name('fix-order.add');
 });
 
 // Approval BM

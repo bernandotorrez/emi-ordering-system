@@ -166,7 +166,7 @@
                     success: function(response) {
                         if(response.status == 'success') {
                             Swal.fire("Success!", "", "success")
-                            showTable('submitted_atpm')
+                            showTable('atpm_allocation')
                         } else {
                             Swal.fire("Failed", "", "error")
                         }

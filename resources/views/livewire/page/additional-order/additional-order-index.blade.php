@@ -115,14 +115,6 @@
             editButtonEl.value = "{!! route('additional-order.edit') !!}/"+id
         }
 
-        // var deleteButtonEl = document.getElementById('deleteButton')
-
-        // if(count == 0) {
-        //     deleteButtonEl.setAttribute('disabled', true) 
-        // } else {
-        //     deleteButtonEl.removeAttribute('disabled')
-        // }
-
         var sendButtonEl = document.getElementById('sendApprovalButton')
         if(count == 0) {
             sendButtonEl.setAttribute('disabled', true) 

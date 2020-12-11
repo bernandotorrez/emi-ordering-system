@@ -58,7 +58,7 @@
 
                     <button type="button" class="btn btn-primary mr-2" id="sendApprovalButton"
                         onclick="sendApproval()"
-                        disabled>Approve</button>
+                        disabled>Allocate</button>
 
                     <button type="button" class="btn btn-danger mr-2" id="sendCancelButton"
                         onclick="sendCancel()"
