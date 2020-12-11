@@ -28,16 +28,73 @@
 
                                 <form>
 
-                                    tes
+                                <div class="table-responsive" id="sub_detail">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr align="center">
+                                                <th>No</th>
+                                                <th>
+                                                    <font class="text-danger">Colour Name *</font>
+                                                </th>
+                                                <th>
+                                                    <font class="text-danger">Qty *</font>
+                                                </th>
+                                                <th>
+                                                    <a href="#sub_detail">
+                                                        <i class="fas fa-plus-circle fa-2x text-success"
+                                                            wire:click.prevent="addSubDetail">
+                                                        </i>
+                                                    </a>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach($subDetailData as $key => $data)
+                                            <tr align="center" wire:key="{{ $key }}">
+                                                <td>{{ $loop->iteration }} </td>
+                                                <td>
+                                                    <select class="form-control"
+                                                        wire:model.lazy="subDetailData.{{$key}}.id_colour">
+                                                        <option value="" selected>- Choose Colour -</option>
+
+                                                        @foreach($dataColour as $model)
+                                                        <option value="{{$model['kd_model_color']}}">{{$model['color']['nm_color_global']}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                    
+                                                </td>
+
+                                                <td>
+                                                    <input type="number" class="form-control">
+                                                </td>
+                                                <td>
+                                                    <a href="#sub_detail">
+                                                        <i class="fas fa-trash-alt fa-2x text-danger"
+                                                            wire:click.prevent="deleteSubDetail({{$key}})">
+                                                        </i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                            <tr>
+                                                <td colspan="2" align="right">Qty : </td>
+                                                <td colspan="1">
+                                                    <input type="text" class="form-control text-center"
+                                                        id="qty" wire:model.lazy="qty" readonly>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
                                 </form>
                             </div>
+
                             <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i>
-                                    Discard</button>
-                                <button type="button" class="btn btn-primary" id="submit"
-                                   > Submit </button>
-                               
+                                <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
+                                <button type="submit" class="btn btn-primary mt-3 mr-2">Add Colour</button>
                             </div>
                         </div>
                     </div>
@@ -111,7 +168,7 @@
                                     <th>No</th>
                                     <th><font class="text-danger">Model Name *</font></th>
                                     <th><font class="text-danger">Type Name *</font></th>
-                                    <th><font class="text-danger">Qty *</font></th>   
+                                    <th><font class="text-danger">Total Qty *</font></th>   
                                     <th>
                                         <a href="#detail">
                                             <i class="fas fa-plus-circle fa-2x text-success"
@@ -162,7 +219,8 @@
 
                                     <td>
                                         <a href="#detail">
-                                            <i class="fas fa-paint-brush fa-2x text-info mr-2" wire:click.prevent="addForm"></i>
+                                            <i class="fas fa-paint-brush fa-2x text-info mr-2" 
+                                                wire:click.prevent="addForm({{$key}})"></i>
                                         </a>
                                         
                                         <a href="#detail">

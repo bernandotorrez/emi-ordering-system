@@ -21,8 +21,9 @@ class FixOrderAdd extends Component
     use WithDeleteCache;
 
     public $pageTitle = 'Fix Order - Add';
-    public array $detailData = [];
+    public array $detailData = [], $subDetailData = [];
     public $totalQty = 0, $grandTotalQty = 0;
+    public array $dataColour = [];
     
     public array $bind = [
         'order_number_dealer' => ''
@@ -52,43 +53,62 @@ class FixOrderAdd extends Component
     
     public function mount()
     {
-        $data = array(
+        $detailData = array(
             'id_model' => '',
             'model_name' => '',
             'id_type' => '',
             'type_name' => '',
+            'qty' => 0,
+            'year_production' => Carbon::now()->year,
+            'data_type' => [],
+        );
+
+        array_push($this->detailData, $detailData);
+
+        $subDetailData = array(
             'id_colour' => '',
             'colour_name' => '',
-            'qty' => 0,
-            'year_production' => '',
-            'data_type' => [],
             'data_colour' => []
         );
 
-        array_push($this->detailData, $data);
+        array_push($this->subDetailData, $subDetailData);
     }
 
     public function addDetail()
     {
-        $data = array(
+        $detailData = array(
             'id_model' => '',
             'model_name' => '',
             'id_type' => '',
             'type_name' => '',
-            'id_colour' => '',
-            'colour_name' => '',
             'qty' => 0,
-            'year_production' => '',
+            'year_production' => Carbon::now()->year,
             'data_type' => [],
             'data_colour' => []
         );
 
-        array_push($this->detailData, $data);
+        array_push($this->detailData, $detailData);
+    }
+
+    public function addSubDetail()
+    {
+        $subDetailData = array(
+            'id_colour' => '',
+            'colour_name' => '',
+            'data_colour' => []
+        );
+
+        array_push($this->subDetailData, $subDetailData);
     }
 
     public function deleteDetail($key)
     {
         unset($this->detailData[$key]);
+    }
+
+    public function deleteSubDetail($key)
+    {
+        unset($this->subDetailData[$key]);
     }
 
     public function updated($propertyName)
@@ -108,15 +128,16 @@ class FixOrderAdd extends Component
         $this->totalQty = $totalQty;
     }
 
-    public function addForm()
+    public function addForm($key, ApiModelColorRepository $apiModelColorRepository)
     {
         //$this->resetForm();
+
+        $this->updateDataColour($key, $this->detailData[$key]['id_model'], $apiModelColorRepository);
         $this->emit('openModal');
     }
 
     public function updateDataType($key, $value, 
-        ApiTypeModelRepository $apiTypeModelRepository,
-        ApiModelColorRepository $apiModelColorRepository
+        ApiTypeModelRepository $apiTypeModelRepository
     ) {
         if($this->detailData[$key]['id_model'] != '') {
             $dataType = Cache::remember('data-type-with-id-model-'.$value, 30, function () use($value, $apiTypeModelRepository) {
@@ -124,8 +145,6 @@ class FixOrderAdd extends Component
             });
             $this->detailData[$key]['data_type'] = ($dataType['count'] > 0) ? $dataType['data'] : [];
         }
-
-        $this->updateDataColour($key, $value, $apiModelColorRepository);
         
     }
 
@@ -135,7 +154,10 @@ class FixOrderAdd extends Component
             $dataColor = Cache::remember('data-color-with-id-model-'.$value, 30, function () use($value, $apiModelColorRepository) {
                 return $apiModelColorRepository->getByIdModel($value);
             });
-            $this->detailData[$key]['data_colour'] = ($dataColor['count'] > 0) ? $dataColor['data'] : [];
+            // $this->detailData[$key]['data_colour'] = ($dataColor['count'] > 0) ? $dataColor['data'] : [];
+            $this->dataColour = ($dataColor['count'] > 0) ? $dataColor['data'] : [];
+        } else {
+            $this->dataColour = [];
         }
         
     }
