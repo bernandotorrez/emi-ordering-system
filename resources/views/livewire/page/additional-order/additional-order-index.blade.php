@@ -101,34 +101,42 @@
             </tr>
             </thead>
         </table>
-    </script>
+</script>
+
 <script>
-    
+    document.addEventListener('livewire:load', function() {
+        showTable('draft')
+    });
+
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
         var editButtonEl = document.getElementById('editButton')
 
-        if(count == 0 || count > 1) {
-            editButtonEl.setAttribute('disabled', true)
-        } else {
-            editButtonEl.removeAttribute('disabled')
-            editButtonEl.value = "{!! route('additional-order.edit') !!}/"+id
+        if (editButtonEl != null) {
+            if (count == 0 || count > 1) {
+                editButtonEl.setAttribute('disabled', true)
+            } else {
+                editButtonEl.removeAttribute('disabled')
+                editButtonEl.value = "{!! route('additional-order.edit') !!}/" + id
+            }
         }
 
         var sendButtonEl = document.getElementById('sendApprovalButton')
-        if(count == 0) {
-            sendButtonEl.setAttribute('disabled', true) 
-        } else {
-            sendButtonEl.removeAttribute('disabled')
+        if (sendButtonEl != null) {
+            if (count == 0) {
+                sendButtonEl.setAttribute('disabled', true)
+            } else {
+                sendButtonEl.removeAttribute('disabled')
+            }
         }
     }
 
     function allChecked(status) {
         var arrayChecked = document.querySelectorAll('.checkId');
-        arrayChecked.forEach(function(check) {
+        arrayChecked.forEach(function (check) {
             check.checked = status
         })
-        
+
         updateCheck('')
     }
 
@@ -136,7 +144,7 @@
         var arrayChecked = document.querySelectorAll('.checkId:checked');
         var arrayId = [];
 
-        arrayChecked.forEach(function(check) {
+        arrayChecked.forEach(function (check) {
             arrayId.push(check.value)
         })
 
@@ -161,8 +169,8 @@
                     data: data,
                     dataType: 'JSON',
                     cache: false,
-                    success: function(response) {
-                        if(response.status == 'success') {
+                    success: function (response) {
+                        if (response.status == 'success') {
                             Swal.fire("Success!", "", "success")
                             showTable('draft')
                         } else {
@@ -170,7 +178,7 @@
                         }
                     },
                     statusCode: {
-                        500: function() {
+                        500: function () {
                             Swal.fire("Oops, Something went Wrong", "", "error")
                         }
                     },
@@ -184,24 +192,20 @@
             },
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
-            
+
         })
     }
 
     function deleteProcess() {
         var check = document.querySelectorAll('.checkId:checked')
         var arrayId = [];
-        for(var i = 0;i==count;i++) {
-            arrayId.push(check[i-1].value)
+        for (var i = 0; i == count; i++) {
+            arrayId.push(check[i - 1].value)
         }
     }
 
-    document.addEventListener('livewire:load', function() {
-        showTable('draft')
-    });
-
     function getAction(status) {
-        if(status == 'draft') {
+        if (status == 'draft') {
             var dataAction = {
                 data: 'action',
                 name: 'action',
@@ -241,16 +245,37 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
-            columns: [
-                { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
+            columns: [{
+                    className: 'details-control',
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+                    defaultContent: ''
+                },
                 getAction(status),
-                { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                {
+                    data: 'no_order_dealer',
+                    name: 'no_order_dealer',
+                    title: 'No Order Dealer'
+                },
                 getDataRemark(status),
                 getDataDateRemark(status),
-                { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
+                {
+                    data: 'no_order_atpm',
+                    name: 'no_order_atpm',
+                    title: 'Order Sequence'
+                },
                 getDataStatusProgress(status),
-                { data: 'user_order', name: 'user_order', title: 'User Order' },
-                { data: 'total_qty', name: 'total_qty', title: 'Total Qty' }
+                {
+                    data: 'user_order',
+                    name: 'user_order',
+                    title: 'User Order'
+                },
+                {
+                    data: 'total_qty',
+                    name: 'total_qty',
+                    title: 'Total Qty'
+                }
             ]
         });
 
@@ -312,7 +337,7 @@
 
     function showTableTab(status) {
         showHideButton(status)
-        $('#master-additional-table').DataTable().destroy(); 
+        $('#master-additional-table').DataTable().destroy();
         $('#master-additional-table').html('');
 
         var template = Handlebars.compile($("#details-template").html());
@@ -332,16 +357,37 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
-            columns: [
-                { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
+            columns: [{
+                    className: 'details-control',
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+                    defaultContent: ''
+                },
                 getAction(status),
-                { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                {
+                    data: 'no_order_dealer',
+                    name: 'no_order_dealer',
+                    title: 'No Order Dealer'
+                },
                 getDataRemark(status),
                 getDataDateRemark(status),
-                { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
+                {
+                    data: 'no_order_atpm',
+                    name: 'no_order_atpm',
+                    title: 'Order Sequence'
+                },
                 getDataStatusProgress(status),
-                { data: 'user_order', name: 'user_order', title: 'User Order' },
-                { data: 'total_qty', name: 'total_qty', title: 'Total Qty' }
+                {
+                    data: 'user_order',
+                    name: 'user_order',
+                    title: 'User Order'
+                },
+                {
+                    data: 'total_qty',
+                    name: 'total_qty',
+                    title: 'Total Qty'
+                }
             ]
         });
 
@@ -367,9 +413,9 @@
 
     function showTableCancel(status, id) {
         showHideButton(status)
-        $('#master-additional-table').DataTable().destroy(); 
+        $('#master-additional-table').DataTable().destroy();
         $('#master-additional-table').html('');
-        var ajaxUrl = getUrlAjax(status)+'/'+id
+        var ajaxUrl = getUrlAjax(status) + '/' + id
 
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
@@ -388,16 +434,37 @@
             serverSide: true,
             destroy: true,
             ajax: ajaxUrl,
-            columns: [
-                { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
+            columns: [{
+                    className: 'details-control',
+                    data: null,
+                    searchable: false,
+                    orderable: false,
+                    defaultContent: ''
+                },
                 getAction(status),
-                { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                {
+                    data: 'no_order_dealer',
+                    name: 'no_order_dealer',
+                    title: 'No Order Dealer'
+                },
                 getDataRemark(status),
                 getDataDateRemark(status),
-                { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
+                {
+                    data: 'no_order_atpm',
+                    name: 'no_order_atpm',
+                    title: 'Order Sequence'
+                },
                 getDataStatusProgress(status),
-                { data: 'user_order', name: 'user_order', title: 'User Order' },
-                { data: 'total_qty', name: 'total_qty', title: 'Total Qty' }
+                {
+                    data: 'user_order',
+                    name: 'user_order',
+                    title: 'User Order'
+                },
+                {
+                    data: 'total_qty',
+                    name: 'total_qty',
+                    title: 'Total Qty'
+                }
             ]
         });
 
@@ -423,32 +490,44 @@
 
     function showHideButton(status) {
         var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
-        if(status == 'draft') {
-            sendButtonApprovalEl.style.display = 'inline-flex'
-        } else {
-            sendButtonApprovalEl.style.display = 'none'
+        if (sendButtonApprovalEl != null) {
+            if (status == 'draft') {
+                sendButtonApprovalEl.style.display = 'inline-flex'
+            } else {
+                sendButtonApprovalEl.style.display = 'none'
+            }
         }
+
 
         var editButtonEl = document.getElementById('editButton')
-        if(status == 'draft') {
-            editButtonEl.style.display = 'inline-flex'
-        } else {
-            editButtonEl.style.display = 'none'
+        if (editButtonEl != null) {
+            if (status == 'draft') {
+                editButtonEl.style.display = 'inline-flex'
+            } else {
+                editButtonEl.style.display = 'none'
+            }
         }
+
 
         var addButtonEl = document.getElementById('addButton')
-        if(status == 'draft') {
-            addButtonEl.style.display = 'inline-flex'
-        } else {
-            addButtonEl.style.display = 'none'
+        if (addButtonEl != null) {
+            if (status == 'draft') {
+                addButtonEl.style.display = 'inline-flex'
+            } else {
+                addButtonEl.style.display = 'none'
+            }
         }
 
+
         var cancelStatus = document.getElementById('dropdown_cancel_status')
-        if(status == 'canceled') {
-            cancelStatus.style.display = 'block'
-        } else {
-            cancelStatus.style.display = 'none'
+        if (cancelStatus != null) {
+            if (status == 'canceled') {
+                cancelStatus.style.display = 'block'
+            } else {
+                cancelStatus.style.display = 'none'
+            }
         }
+
     }
 </script>
 @endpush
