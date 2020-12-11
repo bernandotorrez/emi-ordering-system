@@ -77,17 +77,6 @@
                                 </select>
                             </div>
 
-                            <thead>
-                                <tr>
-                                    <th class="checkbox-column"></th>
-                                    <th><input type="checkbox" class="new-control-input"></th>
-                                    <th>No Order Dealer</th>
-                                    <th>No Order ATPM</th>
-                                    <th>Date Save</th>
-                                    <th>User Order</th>
-                                    <th>Total Qty</th>
-                                </tr>
-                            </thead>
                         </table>
                     </div>
                 </div>
@@ -272,6 +261,8 @@
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
                 getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                getDataRemark(status),
+                getDataDateRemark(status),
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
                 { data: 'user_order', name: 'user_order', title: 'User Order' },
@@ -361,6 +352,8 @@
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
                 getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                getDataRemark(status),
+                getDataDateRemark(status),
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
                 { data: 'user_order', name: 'user_order', title: 'User Order' },
@@ -415,6 +408,8 @@
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
                 getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                getDataRemark(status),
+                getDataDateRemark(status),
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
                 { data: 'user_order', name: 'user_order', title: 'User Order' },

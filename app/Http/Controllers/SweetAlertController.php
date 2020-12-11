@@ -111,10 +111,12 @@ class SweetAlertController extends Controller
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository
     ) {
         $id = $request->post('id');
+        $remark_revise = $request->post('remark_revise');
 
         $data = array(
             'flag_approval_dealer' => '0',
             'flag_send_approval_dealer' => '2',
+            'remark_revise' => $remark_revise,
             'date_revise' => Carbon::now()
         );
         
@@ -127,7 +129,7 @@ class SweetAlertController extends Controller
                 'status' => 'success',
             );
 
-            $this->deleteCaches('approval_dealer_principle');
+            $this->deleteCache('approval_dealer_principle');
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -142,10 +144,12 @@ class SweetAlertController extends Controller
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository
     ) {
         $id = $request->post('id');
+        $remark_cancel = $request->post('remark_cancel');
 
         $data = array(
             'status' => '0',
             'id_cancel_status' => '1',
+            'remark_cancel' => $remark_cancel,
             'date_cancel' => Carbon::now(),
         );
         
@@ -204,10 +208,12 @@ class SweetAlertController extends Controller
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository
     ) {
         $id = $request->post('id');
+        $remark_cancel = $request->post('remark_cancel');
 
         $data = array(
             'status' => '0',
             'id_cancel_status' => '2',
+            'remark_cancel' => $remark_cancel,
             'date_cancel' => Carbon::now(),
         );
         
@@ -236,10 +242,12 @@ class SweetAlertController extends Controller
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository
     ) {
         $id = $request->post('id');
+        $remark_cancel = $request->post('remark_cancel');
 
         $data = array(
             'status' => '0',
             'id_cancel_status' => '3',
+            'remark_cancel' => $remark_cancel,
             'date_cancel' => Carbon::now(),
         );
         

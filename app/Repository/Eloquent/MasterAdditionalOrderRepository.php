@@ -88,38 +88,71 @@ class MasterAdditionalOrderRepository extends BaseRepository
 
     public function getDraft($idDealer)
     {
-        return $this->model
-            ->whereIn('flag_send_approval_dealer', ['0', '2'])
-            ->where('flag_approval_dealer', '0')
-            ->where('flag_submit_to_atpm', '0')
-            ->where('flag_allocation', '0')
-            ->where('status', '1')
-            ->where('id_dealer', $idDealer)
-            ->get();
+        if(session()->get('user')['status_atpm'] == 'atpm') {
+            return $this->model
+                ->whereIn('flag_send_approval_dealer', ['0', '2'])
+                ->where('flag_approval_dealer', '0')
+                ->where('flag_submit_to_atpm', '0')
+                ->where('flag_allocation', '0')
+                ->where('status', '1')
+                ->get();
+        } else {
+            return $this->model
+                ->whereIn('flag_send_approval_dealer', ['0', '2'])
+                ->where('flag_approval_dealer', '0')
+                ->where('flag_submit_to_atpm', '0')
+                ->where('flag_allocation', '0')
+                ->where('status', '1')
+                ->where('id_dealer', $idDealer)
+                ->get();
+        }
+        
     }
 
     public function getWaitingApprovalDealerPrinciple($idDealer)
     {
-        return $this->model
-            ->where('flag_send_approval_dealer', '1')
-            ->where('flag_approval_dealer', '0')
-            ->where('flag_submit_to_atpm', '0')
-            ->where('flag_allocation', '0')
-            ->where('status', '1')
-            ->where('id_dealer', $idDealer)
+        if(session()->get('user')['status_atpm'] == 'atpm') {
+            return $this->model
+                ->where('flag_send_approval_dealer', '1')
+                ->where('flag_approval_dealer', '0')
+                ->where('flag_submit_to_atpm', '0')
+                ->where('flag_allocation', '0')
+                ->where('status', '1')
             ->get();
+        } else {
+            return $this->model
+                ->where('flag_send_approval_dealer', '1')
+                ->where('flag_approval_dealer', '0')
+                ->where('flag_submit_to_atpm', '0')
+                ->where('flag_allocation', '0')
+                ->where('status', '1')
+                ->where('id_dealer', $idDealer)
+                ->get();
+        }
+       
     }
 
     public function getApprovalDealerPrinciple($idDealer)
     {
-        return $this->model
-            ->where('flag_send_approval_dealer', '1')
-            ->where('flag_approval_dealer', '1')
-            ->where('flag_submit_to_atpm', '0')
-            ->where('flag_allocation', '0')
-            ->where('status', '1')
-            ->where('id_dealer', $idDealer)
-            ->get();
+        if(session()->get('user')['status_atpm'] == 'atpm') {
+            return $this->model
+                ->where('flag_send_approval_dealer', '1')
+                ->where('flag_approval_dealer', '1')
+                ->where('flag_submit_to_atpm', '0')
+                ->where('flag_allocation', '0')
+                ->where('status', '1')
+                ->get();
+        } else {
+            return $this->model
+                ->where('flag_send_approval_dealer', '1')
+                ->where('flag_approval_dealer', '1')
+                ->where('flag_submit_to_atpm', '0')
+                ->where('flag_allocation', '0')
+                ->where('status', '1')
+                ->where('id_dealer', $idDealer)
+                ->get();
+        }
+        
     }
 
     public function getSubmittedATPM()

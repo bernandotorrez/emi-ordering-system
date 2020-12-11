@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +34,29 @@ class MasterAdditionalOrderUnit extends Model
     public function getSearchableColumn()
     {
         return $this->searchableColumn;
+    }
+
+    // this is a Accessor (change field to show)
+    public function getDateReviseAttribute($value)
+    {
+        if($value) {
+            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d M Y H:i:s');
+        }
+    }
+
+    public function getDateSaveOrderAttribute($value)
+    {
+        if($value) {
+            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d M Y H:i:s');
+        }
+    }
+
+    public function getDateCancelAttribute($value)
+    {
+        if($value) {
+            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d M Y H:i:s');
+        }
+        
     }
 
     public function detailAdditionalOrderUnit()

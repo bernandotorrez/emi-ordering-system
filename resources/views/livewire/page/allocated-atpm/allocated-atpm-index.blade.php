@@ -86,17 +86,6 @@
                                 </select>
                             </div>
 
-                            <thead>
-                                <tr>
-                                    <th class="checkbox-column"></th>
-                                    <th><input type="checkbox" class="new-control-input"></th>
-                                    <th>No Order Dealer</th>
-                                    <th>No Order ATPM</th>
-                                    <th>Date Save</th>
-                                    <th>User Order</th>
-                                    <th>Total Qty</th>
-                                </tr>
-                            </thead>
                         </table>
                     </div>
                 </div>
@@ -161,24 +150,26 @@
         })
 
         var url = "{{url('sweetalert/additionalOrder/cancelAllocatedATPM')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
-        var data = {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            id: arrayId
-        }
 
         Swal.fire({
             title: "Cancel this Order?",
             text: "Please ensure and then confirm!",
             type: "info",
             icon: 'question',
+            input: 'text',
+            inputPlaceholder: 'Enter your Cancel Reason',
             showCancelButton: true,
             reverseButtons: false,
             showLoaderOnConfirm: true,
-            preConfirm: () => {
+            preConfirm: (remark_cancel) => {
                 return $.ajax({
                     type: "POST",
                     url: url,
-                    data: data,
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        id: arrayId,
+                        remark_cancel: remark_cancel
+                    },
                     dataType: 'JSON',
                     cache: false,
                     success: function(response) {
@@ -242,7 +233,7 @@
         return dataAction
     }
 
-    function showTable(status) {   
+    function showTable(status) {
         showHideButton(status)
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
@@ -263,8 +254,10 @@
             ajax: getUrlAjax(status),
             columns: [
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
-                { data: 'action', name: 'action', title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">', searchable: false, orderable: false },
+                getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                getDataRemark(status),
+                getDataDateRemark(status),
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
                 { data: 'user_order', name: 'user_order', title: 'User Order' },
@@ -332,6 +325,7 @@
         showHideButton(status)
         $('#master-additional-table').DataTable().destroy(); 
         $('#master-additional-table').html('');
+
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -353,6 +347,8 @@
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
                 getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                getDataRemark(status),
+                getDataDateRemark(status),
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
                 { data: 'user_order', name: 'user_order', title: 'User Order' },
@@ -407,6 +403,8 @@
                 { className: 'details-control', data: null, searchable: false, orderable: false, defaultContent: '' },
                 getAction(status),
                 { data: 'no_order_dealer', name: 'no_order_dealer', title: 'No Order Dealer' },
+                getDataRemark(status),
+                getDataDateRemark(status),
                 { data: 'no_order_atpm', name: 'no_order_atpm', title: 'Order Sequence' },
                 getDataStatusProgress(status),
                 { data: 'user_order', name: 'user_order', title: 'User Order' },

@@ -208,6 +208,43 @@
 
             return dataStatusProgress
         }
+        
+        function getDataRemark(status) {
+             if(status == 'canceled') {
+                var dataRemark = {
+                    data: 'remark_cancel', 
+                    name: 'remark_cancel', 
+                    title: 'Remark Cancel' ,
+                }
+            } else {
+                var dataRemark = {
+                    data: 'remark_revise', 
+                    name: 'remark_revise', 
+                    title: 'Remark Revise' ,
+                }
+            }
+
+            return dataRemark
+        }
+
+        function getDataDateRemark(status) {
+             if(status == 'canceled') {
+                var dataDateRemark = {
+                    data: 'date_cancel', 
+                    name: 'date_cancel', 
+                    title: 'Date Cancel' ,
+                }
+            } else {
+                var dataDateRemark = {
+                    data: 'date_revise', 
+                    name: 'date_revise', 
+                    title: 'Date Revise' ,
+                }
+            }
+
+            return dataDateRemark
+        
+        }
     </script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
