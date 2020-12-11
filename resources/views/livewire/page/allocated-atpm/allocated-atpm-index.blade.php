@@ -175,7 +175,7 @@
                     success: function(response) {
                         if(response.status == 'success') {
                             Swal.fire("Success!", "", "success")
-                            showTable('approval_dealer_principle')
+                            showTable('submitted_atpm')
                         } else {
                             Swal.fire("Failed", "", "error")
                         }
