@@ -25,7 +25,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-
+                                
                                 <form>
 
                                 <div class="table-responsive" id="sub_detail">
@@ -40,25 +40,22 @@
                                                     <font class="text-danger">Qty *</font>
                                                 </th>
                                                 <th>
-                                                    <a href="#sub_detail">
-                                                        <i class="fas fa-plus-circle fa-2x text-success"
-                                                            wire:click.prevent="addSubDetail">
-                                                        </i>
-                                                    </a>
+                                                    <button type="submit" class="btn btn-success"
+                                                    wire:click.prevent="addSubDetail">+</button>
                                                 </th>
                                             </tr>
                                         </thead>
 
                                         <tbody>
-                                            @foreach($subDetailData as $key => $data)
-                                            <tr align="center" wire:key="{{ $key }}">
+                                            @foreach($detailData[$id]['selected_colour'] as $keySub => $dataSub)
+                                            <tr align="center" wire:key="{{ $keySub }}">
                                                 <td>{{ $loop->iteration }} </td>
                                                 <td>
                                                     <select class="form-control"
-                                                        wire:model.lazy="subDetailData.{{$key}}.id_colour">
+                                                        wire:model.lazy="detailData.{{$keySub}}.selected_colour.id_colour">
                                                         <option value="" selected>- Choose Colour -</option>
 
-                                                        @foreach($dataColour as $model)
+                                                        @foreach($detailData[$id]['data_colour'] as $model)
                                                         <option value="{{$model['kd_model_color']}}">{{$model['color']['nm_color_global']}}
                                                         </option>
                                                         @endforeach
@@ -67,22 +64,23 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="number" class="form-control">
+                                                    <input type="number" class="form-control" 
+                                                    wire:model="detailData.{{$keySub}}.selected_colour.qty">
                                                 </td>
                                                 <td>
                                                     <a href="#sub_detail">
                                                         <i class="fas fa-trash-alt fa-2x text-danger"
-                                                            wire:click.prevent="deleteSubDetail({{$key}})">
+                                                            wire:click.prevent="deleteSubDetail({{$id}}, {{$keySub}})">
                                                         </i>
                                                     </a>
                                                 </td>
                                             </tr>
                                             @endforeach
                                             <tr>
-                                                <td colspan="2" align="right">Qty : </td>
+                                                <td colspan="2" align="right">Total Qty : </td>
                                                 <td colspan="1">
                                                     <input type="text" class="form-control text-center"
-                                                        id="qty" wire:model.lazy="qty" readonly>
+                                                        id="qty" wire:model.lazy="totalQty" readonly>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -93,7 +91,8 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
+                                <button type="button" class="btn btn-danger mt-3" data-dismiss="modal">
+                                <i class="flaticon-cancel-12"></i> Discard</button>
                                 <button type="submit" class="btn btn-primary mt-3 mr-2">Add Colour</button>
                             </div>
                         </div>

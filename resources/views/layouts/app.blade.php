@@ -158,7 +158,7 @@
         }
     </script>
 
-    <!-- Custom Javascript -->
+    <!-- Additional Order Javascript -->
     @if(Request::is('sales/dealer/additional-order') || Request::is('sales/dealer/approval-bm')
     || Request::is('sales/dealer/approved-bm') || Request::is('sales/atpm/submit-atpm') 
     || Request::is('sales/atpm/allocated-atpm'))
