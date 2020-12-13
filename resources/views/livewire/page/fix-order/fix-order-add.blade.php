@@ -25,6 +25,8 @@
                                 </button>
                             </div>
                             <div class="modal-body">
+                          
+                                <h6 class="mb-4">Model Name : <strong>{{$modelName}}</strong></h6>
 
                                 <div class="table-responsive" id="sub_detail">
                                     <table class="table table-striped table-bordered">
@@ -55,7 +57,7 @@
                                                         <option value="" selected>- Choose Colour -</option>
 
                                                         @foreach($detailData[$id]['data_colour'] as $model)
-                                                        <option value="{{$model['kd_model_color']}}">{{$model['color']['nm_color_global']}}
+                                                        <option value="{{$model['fk_color']}}">{{$model['color']['nm_color_global']}}
                                                         </option>
                                                         @endforeach
                                                     </select>
@@ -69,6 +71,7 @@
                                                 <td>
                                                     <a href="#sub_detail">
                                                         <i class="fas fa-trash-alt fa-2x text-danger"
+                                                            onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
                                                             wire:click.prevent="deleteSubDetail({{$id}}, {{$keySub}})">
                                                         </i>
                                                     </a>

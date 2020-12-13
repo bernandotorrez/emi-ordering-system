@@ -19,8 +19,6 @@ class CreateTblDetailFixOrderUnit extends Migration
                 $table->bigInteger('id_master_fix_order_unit');
                 $table->bigInteger('id_model');
                 $table->string('model_name', 150);
-                $table->string('id_colour', 25);
-                $table->string('colour_name', 150);
                 $table->string('id_type', 150);
                 $table->string('type_name', 150);
                 $table->integer('total_qty');

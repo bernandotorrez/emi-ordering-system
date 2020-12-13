@@ -13,7 +13,7 @@ class CreateTblDetailColorFixOrderUnit extends Migration
      */
     public function up()
     {
-        if (Schema::hasTable('tbl_detail_color_fix_order_unit')) {
+        if (!Schema::hasTable('tbl_detail_color_fix_order_unit')) {
             Schema::create('tbl_detail_color_fix_order_unit', function (Blueprint $table) {
                 $table->id('id_detail_color_fix_order_unit');
                 $table->bigInteger('id_detail_fix_order_unit');

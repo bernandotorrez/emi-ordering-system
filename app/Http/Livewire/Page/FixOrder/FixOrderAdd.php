@@ -6,7 +6,7 @@ use App\Repository\Api\ApiColorRepository;
 use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
-use App\Repository\Eloquent\MasterAdditionalOrderRepository;
+use App\Repository\Eloquent\MasterFixOrderRepository;
 use App\Traits\WithDeleteCache;
 use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
@@ -21,10 +21,10 @@ class FixOrderAdd extends Component
     use WithDeleteCache;
 
     public $pageTitle = 'Fix Order - Add';
-    public array $detailData = [], $subDetailData = [];
+    public array $detailData = [];
     public $grandTotalQty = 0;
-    public array $dataColour = [];
     public $id = 0;
+    public $modelName = '';
     
     public array $bind = [
         'order_number_dealer' => ''
@@ -36,8 +36,8 @@ class FixOrderAdd extends Component
         'detailData.*.id_type' => 'required',
         'detailData.*.id_colour' => 'required',
         'detailData.*.year_production' => 'required',
-        'subDetailData.*.id_colour' => 'required',
-        'subDetailData.*.qty' => 'required',
+        'detailData.*.selected_colour.*.id_colour' => 'required',
+        'detailData.*.selected_colour.*.qty' => 'required',
     ];
 
     protected $messages = [
@@ -49,8 +49,8 @@ class FixOrderAdd extends Component
         'detailData.*.id_colour.required' => 'Please Choose Colour!',
         'detailData.*.qty.required' => 'Quantity cant be Empty!',
         'detailData.*.year_production.required' => 'Please Choose Year Production!',
-        'subDetailData.*.id_colour.required' => 'Please Choose Colour!',
-        'subDetailData.*.qty.required' => 'Please Fill Quantity!',
+        'detailData.*.selected_colour.*..required' => 'Please Choose Colour!',
+        'detailData.*.selected_colour.*..required' => 'Please Fill Quantity!',
     ];
     
     public function mount()
@@ -124,7 +124,7 @@ class FixOrderAdd extends Component
 
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
+        //$this->validateOnly($propertyName);
         $this->sumTotalQty();
         $this->sumGrandTotalQty();
     }
@@ -168,6 +168,7 @@ class FixOrderAdd extends Component
                 return $apiTypeModelRepository->getByIdModel($value);
             });
             $this->detailData[$key]['data_type'] = ($dataType['count'] > 0) ? $dataType['data'] : [];
+            $this->modelName = ($dataType['count'] > 0) ? $dataType['data'][0]['model']['nm_model'] : '';
         }
         
         $this->updateDataColour($key, $value, $apiModelColorRepository);
@@ -204,12 +205,12 @@ class FixOrderAdd extends Component
     }
 
     public function addProcess(
-        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        MasterFixOrderRepository $masterFixOrderRepository,
         ApiModelRepository $apiModelRepository,
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiColorRepository $apiColorRepository
     ) {
-        $this->validate();
+        //$this->validate();
 
         $dataMaster = array(
             'no_order_atpm' => '',
@@ -218,9 +219,9 @@ class FixOrderAdd extends Component
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'month_order' => Carbon::now()->month,
+            'id_month' => '12',
             'year_order' => Carbon::now()->year,
-            'total_qty' => $this->totalQty,
+            'grand_total_qty' => $this->grandTotalQty,
             'status' => '1'
         );
 
@@ -228,18 +229,18 @@ class FixOrderAdd extends Component
 
         $where = array('no_order_dealer' => $this->bind['order_number_dealer']);
 
-        $count = $masterAdditionalOrderRepository->findDuplicate($where);
+        $count = $masterFixOrderRepository->findDuplicate($where);
 
         if($count > 0) {
             session()->flash('action_message', 
             '<div class="alert alert-warning" role="alert">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
-            $insert = $masterAdditionalOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+            $insert = $masterFixOrderRepository->createDealerOrder($dataMaster, $this->detailData);
 
             if($insert) {
                 $this->deleteCache();
                 session()->flash('action_message', '<div class="alert alert-primary" role="alert">Insert Data Success!</div>');
-                return redirect()->to(route('additional-order.index'));
+                return redirect()->to(route('fix-order.index'));
             } else {
                 session()->flash('action_message', '<div class="alert alert-danger" role="alert">Insert Data Failed!</div>');
             }
@@ -266,13 +267,16 @@ class FixOrderAdd extends Component
 
             $this->detailData[$key]['type_name'] = $dataModel['data']['nm_type'];
 
-            // Model Colour
-            $cacheModelColor = 'data-model-color-getById-'.$this->detailData[$key]['id_colour'];
-            $dataModel = Cache::remember($cacheModelColor, 10, function () use($apiColorRepository, $key) {
-                return $apiColorRepository->getById($this->detailData[$key]['id_colour']);
-            });
 
-            $this->detailData[$key]['colour_name'] = $dataModel['data']['nm_color_global'];
+            foreach($this->detailData[$key]['selected_colour'] as $keySelectedColor => $dataSelectedColor) {
+                // Model Colour
+                $cacheModelColor = 'data-model-color-getById-'.$this->detailData[$key]['selected_colour'][$keySelectedColor]['id_colour'];
+                $dataModel = Cache::remember($cacheModelColor, 10, function () use($apiColorRepository, $key, $keySelectedColor) {
+                    return $apiColorRepository->getById($this->detailData[$key]['selected_colour'][$keySelectedColor]['id_colour']);
+                });
+  
+                $this->detailData[$key]['selected_colour'][$keySelectedColor]['colour_name'] = $dataModel['data']['nm_color_global'];
+            } 
             
         }
     }

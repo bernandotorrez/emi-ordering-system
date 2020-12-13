@@ -24,4 +24,9 @@ class DetailColourFixOrderUnit extends Model
     {
         return $this->searchableColumn;
     }
+
+    public function detailFixOrder()
+    {
+        return $this->belongsTo(DetailFixOrderUnit::class, 'id_detail_fix_order_unit');
+    }
 }
