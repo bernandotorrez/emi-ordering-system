@@ -63,4 +63,9 @@ class MasterFixOrderUnit extends Model
     {
         return $this->hasMany(DetailFixOrderUnit::class, 'id_master_fix_order_unit');
     }
+
+    public function detailColorFixOrderUnit()
+    {
+        return $this->hasMany(DetailColourFixOrderUnit::class, 'id_detail_fix_order_unit');
+    }
 }

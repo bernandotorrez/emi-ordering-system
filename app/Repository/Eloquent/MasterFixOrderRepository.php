@@ -20,15 +20,32 @@ class MasterFixOrderRepository extends BaseRepository
     public function createDealerOrder($dataMaster, $dataDetail)
     {
         $insert = DB::transaction(function () use($dataMaster, $dataDetail) {
-            $insertMaster = $this->model->create($dataMaster);
-            if($insertMaster) {
-                $insertDetail = $insertMaster->detailFixOrderUnit()->createMany($dataDetail);
+            $insertMaster = DB::table('tbl_master_fix_order_unit')->insertGetId($dataMaster);
 
-                if($insertDetail) {
-                    $insertDetailColour = $insertDetail->detailColorFixOrder()->createMany($dataDetail['selected_colour']);
+            foreach($dataDetail as $detail) {
+                $dataInsertDetail = array(
+                    'id_master_fix_order_unit' => $insertMaster,
+                    'id_model' => $detail['id_model'],
+                    'model_name' => $detail['model_name'],
+                    'id_type' => $detail['id_type'],
+                    'type_name' => $detail['type_name'],
+                    'total_qty' => $detail['total_qty'],
+                    'year_production' => $detail['year_production'],
+                );
+
+                $insertDetail = DB::table('tbl_detail_fix_order_unit')->insertGetId($dataInsertDetail);
+
+                foreach($detail['selected_colour'] as $selectedColour) {
+                    $dataInsertDetailColour = array(
+                        'id_detail_fix_order_unit' => $insertDetail,
+                        'id_colour' => $selectedColour['id_colour'],
+                        'colour_name' => $selectedColour['colour_name'],
+                        'qty' => $selectedColour['qty'],
+                    );
+                    $insertDetailColour = DB::table('tbl_detail_color_fix_order_unit')->insertGetId($dataInsertDetailColour);
                 }
             }
-
+            
             return $insertMaster;
         }, 5);
 

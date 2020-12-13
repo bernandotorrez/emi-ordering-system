@@ -29,13 +29,13 @@ class DetailFixOrderUnit extends Model
         return $this->searchableColumn;
     }
 
-    public function masterFixOrderUnit()
-    {
-        return $this->belongsTo(MasterFixOrderUnit::class, 'id_master_fix_order_unit');
-    }
-
     public function detailColorFixOrder()
     {
         return $this->hasMany(DetailColourFixOrderUnit::class, 'id_detail_fix_order_unit');
+    }
+
+    public function masterFixOrderUnit()
+    {
+        return $this->belongsTo(MasterFixOrderUnit::class, 'id_master_fix_order_unit');
     }
 }

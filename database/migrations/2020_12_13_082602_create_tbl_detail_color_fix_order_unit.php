@@ -17,7 +17,7 @@ class CreateTblDetailColorFixOrderUnit extends Migration
             Schema::create('tbl_detail_color_fix_order_unit', function (Blueprint $table) {
                 $table->id('id_detail_color_fix_order_unit');
                 $table->bigInteger('id_detail_fix_order_unit');
-                $table->bigInteger('id_colour');
+                $table->string('id_colour', 25);
                 $table->string('colour_name', 100);
                 $table->integer('qty');
                 $table->enum('status', ['0', '1'])->default(1);

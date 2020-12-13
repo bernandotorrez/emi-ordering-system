@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Page\FixOrder;
 
+use App\Models\MasterFixOrderUnit;
 use App\Repository\Api\ApiColorRepository;
 use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
@@ -190,7 +191,6 @@ class FixOrderAdd extends Component
 
     public function render(ApiModelRepository $apiModelRepository)
     {
-
         $dealerName = session()->get('dealer')['nm_dealer'] ? session()->get('dealer')['nm_dealer'] : 'Admin';
         
         $dataModel = Cache::remember('data-model', 30, function () use($apiModelRepository) {
