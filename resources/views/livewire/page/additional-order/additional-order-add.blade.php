@@ -90,7 +90,7 @@
 
                             <tbody>
                                 @foreach($detailData as $key => $data)
-                                <tr align="center" wire:key="{{ $key }}">
+                                <tr align="center" wire:key="master-{{ $key }}">
                                     <td>{{ $loop->iteration }} </td>
                                     <td>
                                         <select class="form-control" wire:model.lazy="detailData.{{$key}}.id_model"

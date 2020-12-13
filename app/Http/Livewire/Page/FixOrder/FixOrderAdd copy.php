@@ -22,7 +22,7 @@ class FixOrderAdd extends Component
 
     public $pageTitle = 'Fix Order - Add';
     public array $detailData = [], $subDetailData = [];
-    public $grandTotalQty = 0;
+    public $totalQty = 0, $grandTotalQty = 0;
     public array $dataColour = [];
     public $id = 0;
     
@@ -35,6 +35,7 @@ class FixOrderAdd extends Component
         'detailData.*.id_model' => 'required',
         'detailData.*.id_type' => 'required',
         'detailData.*.id_colour' => 'required',
+        'detailData.*.qty' => 'required|numeric|min:1|max:99999',
         'detailData.*.year_production' => 'required',
         'subDetailData.*.id_colour' => 'required',
         'subDetailData.*.qty' => 'required',
@@ -48,6 +49,8 @@ class FixOrderAdd extends Component
         'detailData.*.id_type.required' => 'Please Choose Type Name!',
         'detailData.*.id_colour.required' => 'Please Choose Colour!',
         'detailData.*.qty.required' => 'Quantity cant be Empty!',
+        'detailData.*.qty.min' => 'Please input Quantity at Least :min',
+        'detailData.*.qty.max' => 'Please input Quantity at Max :max',
         'detailData.*.year_production.required' => 'Please Choose Year Production!',
         'subDetailData.*.id_colour.required' => 'Please Choose Colour!',
         'subDetailData.*.qty.required' => 'Please Fill Quantity!',
@@ -64,7 +67,6 @@ class FixOrderAdd extends Component
             'year_production' => Carbon::now()->year,
             'data_type' => [],
             'data_colour' =>  [],
-            'total_qty' => 0,
             'selected_colour' => array(
                 0 => array(
                     'id_colour' => '',
@@ -88,7 +90,6 @@ class FixOrderAdd extends Component
             'year_production' => Carbon::now()->year,
             'data_type' => [],
             'data_colour' =>  [],
-            'total_qty' => 0,
             'selected_colour' => array(
                 0 => array(
                     'id_colour' => '',
@@ -132,13 +133,12 @@ class FixOrderAdd extends Component
     private function sumTotalQty()
     {
         $totalQty = 0;
-        foreach($this->detailData[$this->id]['selected_colour'] as $keySelected => $selectedColour)
+        foreach($this->subDetailData as $key => $subDetailData)
         {
-                $totalQty += $this->detailData[$this->id]['selected_colour'][$keySelected]['qty'] 
-                ? $this->detailData[$this->id]['selected_colour'][$keySelected]['qty'] : 0;
+            $totalQty += $this->subDetailData[$key]['qty'] ? $this->subDetailData[$key]['qty'] : 0;
         }
-   
-        $this->detailData[$this->id]['total_qty'] = $totalQty;
+
+        $this->totalQty = $totalQty;
     }
 
     private function sumGrandTotalQty()
@@ -146,7 +146,7 @@ class FixOrderAdd extends Component
         $grandTotalQty = 0;
         foreach($this->detailData as $key => $detailData)
         {
-            $grandTotalQty += $this->detailData[$key]['total_qty'] ? $this->detailData[$key]['total_qty'] : 0;
+            $grandTotalQty += $this->detailData[$key]['qty'] ? $this->detailData[$key]['qty'] : 0;
         }
 
         $this->grandTotalQty = $grandTotalQty;
