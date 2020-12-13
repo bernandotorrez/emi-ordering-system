@@ -156,9 +156,8 @@
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Total Qty *</font></th>   
                                     <th>
-                                        <i class="fas fa-plus-circle fa-2x text-success"
-                                                wire:click.prevent="addDetail">
-                                        </i> 
+                                        <button type="submit" class="btn btn-success"
+                                            wire:click.prevent="addDetail">+</button>
                                     </th>
                                 </tr>
                             </thead>
