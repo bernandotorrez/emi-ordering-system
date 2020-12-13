@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblMasterAdditionalOrderUnitsTable extends Migration
+class CreateTblMasterFixOrderUnit extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('tbl_master_additional_order_unit')) {
-            Schema::create('tbl_master_additional_order_unit', function (Blueprint $table) {
-                $table->id('id_master_additional_order_unit');
+        if (!Schema::hasTable('tbl_master_fix_order_unit')) {
+            Schema::create('tbl_master_fix_order_unit', function (Blueprint $table) {
+                $table->id('id_master_fix_order_unit');
                 $table->string('no_order_atpm', 7)->nullable();
                 $table->string('no_order_dealer', 25);
                 $table->dateTime('date_save_order')->nullable();
@@ -29,7 +29,7 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
                 $table->bigInteger('id_user');
                 $table->string('user_order', 50);
                 $table->string('user_approval', 50)->nullable();
-                $table->string('month_order', 25);
+                $table->bigInteger('id_month');
                 $table->string('year_order', 4);
                 $table->tinyInteger('flag_send_approval_dealer')->default(0);
                 $table->tinyInteger('flag_approval_dealer')->default(0);
@@ -38,11 +38,12 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
                 $table->bigInteger('id_cancel_status')->default(0);
                 $table->text('remark_revise')->nullable();
                 $table->text('remark_cancel')->nullable();
-                $table->integer('total_qty')->default(0);
+                $table->integer('grand_total_qty')->default(0);
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
         }
+        
     }
 
     /**
@@ -52,6 +53,6 @@ class CreateTblMasterAdditionalOrderUnitsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_master_additional_order_unit');
+        Schema::dropIfExists('tbl_master_fix_order_unit');
     }
 }

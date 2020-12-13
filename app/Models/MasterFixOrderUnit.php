@@ -6,14 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MasterAdditionalOrderUnit extends Model
+class MasterFixOrderUnit extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbl_master_additional_order_unit';
-    protected $primaryKey = 'id_master_additional_order_unit';
-    protected $searchableColumn =  [
-        'id_master_additional_order_unit',
+    protected $table = 'tbl_master_fix_order_unit';
+    protected $primaryKey = 'id_master_fix_order_unit';
+    protected $searchableColumn = [
+        'id_master_fix_order_unit',
         'order_no_atpm',
         'order_no_dealer',
         'date_save_order',
@@ -25,11 +25,11 @@ class MasterAdditionalOrderUnit extends Model
         'id_user',
         'user_order',
         'user_approval',
-        'month_order',
+        'id_month',
         'year_order',
-        'total_qty',
+        'grand_total_qty',
     ];
-    protected $guarded = ['id_master_additional_order_unit'];
+    protected $guarded = ['id_master_fix_order_unit'];
 
     public function getSearchableColumn()
     {
@@ -59,8 +59,8 @@ class MasterAdditionalOrderUnit extends Model
         
     }
 
-    public function detailAdditionalOrderUnit()
+    public function detailFixOrderUnit()
     {
-        return $this->hasMany(DetailAdditionalOrderUnit::class, $this->primaryKey);
+        return $this->hasMany(DetailFixOrderUnit::class, 'id_master_fix_order_unit');
     }
 }
