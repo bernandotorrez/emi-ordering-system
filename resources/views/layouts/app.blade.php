@@ -164,6 +164,10 @@
     || Request::is('sales/atpm/allocated-atpm'))
         @include('layouts.custom_javascript.additional-order-javascript')
     @endif
+
+    @if(Request::is('sales/dealer/fix-order'))
+        @include('layouts.custom_javascript.fix-order-javascript')
+    @endif
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
 </head>
