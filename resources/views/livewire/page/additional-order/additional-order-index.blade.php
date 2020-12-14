@@ -7,6 +7,8 @@
                 @if(session()->has('action_message'))
                 {!! session('action_message') !!}
                 @endif
+                
+                <h6>Additional Order</h6>
 
                 <div class="widget-content widget-content-area animated-underline-content">
 

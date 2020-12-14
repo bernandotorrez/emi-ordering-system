@@ -67,7 +67,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="number" class="form-control" 
+                                                    <input type="number" class="form-control text-right" 
                                                     wire:model.lazy="detailData.{{$id}}.selected_colour.{{$keySub}}.qty">
                                                     @error('detailData.{{$id}}.selected_colour.{{$keySub}}.qty') 
                                                     <span class="error">{{ $message }}</span>
@@ -94,6 +94,12 @@
                                     </table>
                                 </div>
 
+                                <div class="text-right col-md-3 offset-9">
+                                    <button class="btn btn-primary btn-block mr-4" data-dismiss="modal">
+                                        OK
+                                    </button>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
