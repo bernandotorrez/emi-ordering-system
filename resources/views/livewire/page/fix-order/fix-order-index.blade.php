@@ -14,16 +14,10 @@
 
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
                         @foreach($dataMasterMonth as $key => $masterMonth)
-                        <li class="nav-item">
-                            <a class="nav-link {{(date('m')-1 == $key) ? 'active' : 'disabled'}}" id="animated-underline-home-tab" data-toggle="tab"
+                        <li class="nav-item" onclick="showHideAddButton($key)">
+                            <a class="nav-link {{(date('m')-1 == $key) ? 'active' : ''}}" id="animated-underline-home-tab" data-toggle="tab"
                                 href="#animated-underline-home" role="tab" aria-controls="animated-underline-home"
-                                @if((date('m')-1 == $key))
-                                aria-selected="true"
-                                @else
-                                aria-disabled="true"
-                                @endif
-                               
-                                >
+                                aria-selected="{{(date('m')-1 == $key) ? 'true' : 'false'}}">
                                 <i class="far fa-calendar-alt"></i> 
                                 {{$masterMonth->month}}
                                 <!-- {{Str::substr($masterMonth->month, 0, 3)}} -->
@@ -44,3 +38,7 @@
     </div>
 
 </div>
+
+@push('scripts')
+function 
+@endpush
