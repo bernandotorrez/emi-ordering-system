@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\DatatablesController;
+use App\Http\Controllers\FixOrderDatatableController;
 use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
@@ -84,6 +85,7 @@ Route::middleware(['user.session', 'atpm.session'])->group(function() {
 
 // Datatable Json
 Route::middleware('user.session')->prefix('datatable')->group(function() {
+    // Additional Order
     Route::get('additionalOrderJsonDraft', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonDraft']);
     Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
     Route::get('additionalOrderJsonApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
@@ -91,6 +93,9 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
     Route::get('additionalOrderJsonATPMAllocation', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonATPMAllocation']);
     Route::get('additionalOrderJsonCanceled/{idCancel?}', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonCanceled']);
     Route::get('detailAdditionalOrderJson/{id}', [AdditionalOrderDatatablesController::class, 'detailAdditionalOrderJson']);
+
+    // Fix Order
+    Route::get('fixOrderJson', [FixOrderDatatableController::class, 'fixOrderJson']);
 });
 
 // Sweet Alert
