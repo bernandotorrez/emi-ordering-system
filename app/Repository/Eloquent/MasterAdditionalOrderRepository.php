@@ -185,10 +185,12 @@ class MasterAdditionalOrderRepository extends BaseRepository
                 return $this->model
                     ->where('status', '0')
                     ->where('id_cancel_status', $idCancel)
+                    ->with('cancelStatus')
                     ->get();
             } else {
                 return $this->model
                     ->where('status', '0')
+                    ->with('cancelStatus')
                     ->get();
             }
         } else {
@@ -197,11 +199,13 @@ class MasterAdditionalOrderRepository extends BaseRepository
                     ->where('status', '0')
                     ->where('id_dealer', $idDealer)
                     ->where('id_cancel_status', $idCancel)
+                    ->with('cancelStatus')
                     ->get();
             } else {
                 return $this->model
                     ->where('status', '0')
                     ->where('id_dealer', $idDealer)
+                    ->with('cancelStatus')
                     ->get();
             }
         }

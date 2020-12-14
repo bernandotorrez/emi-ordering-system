@@ -63,4 +63,9 @@ class MasterAdditionalOrderUnit extends Model
     {
         return $this->hasMany(DetailAdditionalOrderUnit::class, $this->primaryKey);
     }
+
+    public function cancelStatus()
+    {
+        return $this->belongsTo(CancelStatus::class, 'id_cancel_status');
+    }
 }

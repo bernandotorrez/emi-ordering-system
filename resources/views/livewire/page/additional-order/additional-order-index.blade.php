@@ -67,6 +67,7 @@
                     <div class="table-responsive mt-4">
                         <table class="table table-striped table-bordered table-hover" id="master-additional-table">
 
+                            @if(session()->get('user')['status_atpm'] == 'atpm')
                             <div class="form-group col-md-3 mb-4" id="dropdown_cancel_status">
                                 <label for="parent_position">Cancel Status</label>
                                 <select name="cancel_status" id="cancel_status" class="form-control"
@@ -78,7 +79,7 @@
                                     @endforeach
                                 </select>
                             </div>
-
+                            @endif
                         </table>
                     </div>
                 </div>

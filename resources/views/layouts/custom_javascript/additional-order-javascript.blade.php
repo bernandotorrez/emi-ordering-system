@@ -59,13 +59,15 @@
             var dataStatusProgress = {
                 data: 'date_allocation_atpm',
                 name: 'date_allocation_atpm',
-                title: 'Date Allocatation'
+                title: 'Date Allocation'
             }
         } else if (status == 'canceled') {
             var dataStatusProgress = {
-                data: 'date_cancel',
-                name: 'date_cancel',
-                title: 'Date Cancel'
+                data: null,
+                searchable: false,
+                orderable: false,
+                defaultContent: '',
+                visible: false
             }
         }
 
@@ -107,6 +109,26 @@
 
         return dataDateRemark
 
+    }
+
+    function getDataCancelStatus(status) {
+        if(status == 'canceled') {
+            var dataCancelStatus = {
+                data: 'cancel_status.nama_cancel_status',
+                name: 'cancel_status',
+                title: 'Cancel Status',
+            }
+        } else {
+            var dataCancelStatus = {
+                data: null,
+                searchable: false,
+                orderable: false,
+                defaultContent: '',
+                visible: false
+            }
+        }
+
+        return dataCancelStatus
     }
 
     // TODO: yang perlu diubah
@@ -641,6 +663,13 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
+            // columnDefs : (status == 'canceled') ? [{
+            //     "visible": false,
+            //     "targets": 3
+            // },{
+            //     "visible": false,
+            //     "targets": 6
+            // }] : '',
             columns: [{
                     className: 'details-control',
                     data: null,
@@ -654,8 +683,6 @@
                     name: 'no_order_dealer',
                     title: 'No Order Dealer'
                 },
-                getDataRemark(status),
-                getDataDateRemark(status),
                 {
                     data: 'no_order_atpm',
                     name: 'no_order_atpm',
@@ -671,7 +698,10 @@
                     data: 'total_qty',
                     name: 'total_qty',
                     title: 'Total Qty'
-                }
+                },
+                // getDataCancelStatus(status),
+                getDataRemark(status),
+                getDataDateRemark(status),
             ]
         });
 
@@ -753,6 +783,12 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
+            columnsDef: [
+                (status == 'canceled') ? {
+                "visible": false,
+                "targets": 7
+                } : ''
+            ],
             columns: [{
                     className: 'details-control',
                     data: null,
@@ -766,8 +802,6 @@
                     name: 'no_order_dealer',
                     title: 'No Order Dealer'
                 },
-                getDataRemark(status),
-                getDataDateRemark(status),
                 {
                     data: 'no_order_atpm',
                     name: 'no_order_atpm',
@@ -783,7 +817,10 @@
                     data: 'total_qty',
                     name: 'total_qty',
                     title: 'Total Qty'
-                }
+                },
+                getDataCancelStatus(status),
+                getDataRemark(status),
+                getDataDateRemark(status),
             ]
         });
 
@@ -843,8 +880,6 @@
                     name: 'no_order_dealer',
                     title: 'No Order Dealer'
                 },
-                getDataRemark(status),
-                getDataDateRemark(status),
                 {
                     data: 'no_order_atpm',
                     name: 'no_order_atpm',
@@ -860,7 +895,10 @@
                     data: 'total_qty',
                     name: 'total_qty',
                     title: 'Total Qty'
-                }
+                },
+                getDataCancelStatus(status),
+                getDataRemark(status),
+                getDataDateRemark(status),
             ]
         });
 
