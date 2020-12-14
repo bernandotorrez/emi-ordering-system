@@ -16,11 +16,15 @@
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/elements/custom-pagination.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/elements/alert.css') }}">
     <link href="{{ asset('assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
     <style>
     td.details-control {
         background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -83,6 +87,8 @@
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('plugins/highlight/highlight.pack.js') }}"></script>
+    <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
+    <script src="{{ asset('assets/js/handlebars.js') }}"></script>
 
     @stack('scripts')
     <script>
@@ -150,65 +156,14 @@
 
             return true;
         }
-
-        function getUrlAjax(status) {
-            if (status == 'draft') {
-                return "{{ url('datatable/additionalOrderJsonDraft') }}"
-            } else if (status == 'waiting_approval_dealer_principle') {
-                return "{{ url('datatable/additionalOrderJsonWaitingApprovalDealerPrinciple') }}"
-            } else if (status == 'approval_dealer_principle') {
-                return "{{ url('datatable/additionalOrderJsonApprovalDealerPrinciple') }}"
-            } else if (status == 'submitted_atpm') {
-                return "{{ url('datatable/additionalOrderJsonSubmittedATPM') }}"
-            } else if (status == 'atpm_allocation') {
-                return "{{ url('datatable/additionalOrderJsonATPMAllocation') }}"
-            } else if (status == 'canceled') {
-                return "{{ url('datatable/additionalOrderJsonCanceled') }}"
-            }
-        }
-
-        function getDataStatusProgress(status) {
-            if (status == 'draft') { // di Dealer
-                var dataStatusProgress = {
-                    data: 'date_save_order',
-                    name: 'date_save_order',
-                    title: 'Date Draft'
-                }
-            } else if (status == 'waiting_approval_dealer_principle') { // di BM
-                var dataStatusProgress = {
-                    data: 'date_send_approval',
-                    name: 'date_send_approval',
-                    title: 'Date Send Approval'
-                }
-            } else if (status == 'approval_dealer_principle') {
-                var dataStatusProgress = {
-                    data: 'date_approval',
-                    name: 'date_approval',
-                    title: 'Date Approval'
-                }
-            } else if (status == 'submitted_atpm') { // di ATPM
-                var dataStatusProgress = {
-                    data: 'date_submit_atpm_order',
-                    name: 'date_submit_atpm_order',
-                    title: 'Date Submit ATPM'
-                }
-            } else if (status == 'atpm_allocation') {
-                var dataStatusProgress = {
-                    data: 'date_allocation_atpm',
-                    name: 'date_allocation_atpm',
-                    title: 'Date Allocatation'
-                }
-            } else if (status == 'canceled') {
-                var dataStatusProgress = {
-                    data: 'date_cancel',
-                    name: 'date_cancel',
-                    title: 'Date Cancel'
-                }
-            }
-
-            return dataStatusProgress
-        }
     </script>
+
+    <!-- Additional Order Javascript -->
+    @if(Request::is('sales/dealer/additional-order') || Request::is('sales/dealer/approval-bm')
+    || Request::is('sales/dealer/approved-bm') || Request::is('sales/atpm/submit-atpm') 
+    || Request::is('sales/atpm/allocated-atpm'))
+        @include('layouts.custom_javascript.additional-order-javascript')
+    @endif
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
 </head>

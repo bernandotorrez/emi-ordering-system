@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\DatatablesController;
+use App\Http\Controllers\FixOrderDatatableController;
 use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
@@ -9,9 +10,12 @@ use App\Http\Livewire\Page\About\AboutIndex;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderAdd;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderEdit;
 use App\Http\Livewire\Page\AdditionalOrder\AdditionalOrderIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderAdd;
+use App\Http\Livewire\Page\AllocatedAtpm\AllocatedAtpmIndex;
 use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ApprovedBM\ApprovedBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderIndex;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
@@ -61,6 +65,10 @@ Route::middleware('user.session')->group(function() {
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
     Route::get('/sales/dealer/additional-order/add', AdditionalOrderAdd::class)->name('additional-order.add');
     Route::get('/sales/dealer/additional-order/edit/{id?}', AdditionalOrderEdit::class)->name('additional-order.edit');
+
+    // Fix Order
+    Route::get('/sales/dealer/fix-order', FixOrderIndex::class)->name('fix-order.index');
+    Route::get('/sales/dealer/fix-order/add', FixOrderAdd::class)->name('fix-order.add');
 });
 
 // Approval BM
@@ -72,10 +80,12 @@ Route::middleware(['user.session', 'bm.session'])->group(function() {
 // APproval ATPM
 Route::middleware(['user.session', 'atpm.session'])->group(function() {
     Route::get('/sales/atpm/submit-atpm', SubmitAtpmIndex::class)->name('submit-atpm.index');
+    Route::get('/sales/atpm/allocated-atpm', AllocatedAtpmIndex::class)->name('allocated-atpm.index');
 });
 
 // Datatable Json
 Route::middleware('user.session')->prefix('datatable')->group(function() {
+    // Additional Order
     Route::get('additionalOrderJsonDraft', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonDraft']);
     Route::get('additionalOrderJsonWaitingApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonWaitingApprovalDealerPrinciple']);
     Route::get('additionalOrderJsonApprovalDealerPrinciple', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonApprovalDealerPrinciple']);
@@ -83,6 +93,9 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
     Route::get('additionalOrderJsonATPMAllocation', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonATPMAllocation']);
     Route::get('additionalOrderJsonCanceled/{idCancel?}', [AdditionalOrderDatatablesController::class, 'additionalOrderJsonCanceled']);
     Route::get('detailAdditionalOrderJson/{id}', [AdditionalOrderDatatablesController::class, 'detailAdditionalOrderJson']);
+
+    // Fix Order
+    Route::get('fixOrderJson', [FixOrderDatatableController::class, 'fixOrderJson']);
 });
 
 // Sweet Alert
@@ -93,6 +106,8 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/reviseBMDealer', [SweetAlertController::class, 'reviseBMDealer']);
     Route::post('additionalOrder/cancelBMDealer', [SweetAlertController::class, 'cancelBMDealer']);
     Route::post('additionalOrder/submittedAtpm', [SweetAlertController::class, 'submittedAtpm']);
+    Route::post('additionalOrder/cancelSubmitATPM', [SweetAlertController::class, 'cancelSubmitATPM']);
+    Route::post('additionalOrder/cancelAllocatedATPM', [SweetAlertController::class, 'cancelAllocatedATPM']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

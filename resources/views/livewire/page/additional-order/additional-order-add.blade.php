@@ -68,7 +68,7 @@
                     </div>
 
 
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="detail">
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr align="center">
@@ -78,13 +78,19 @@
                                     <th><font class="text-danger">Type Name *</font></th>
                                     <th><font class="text-danger">Colour *</font></th>
                                     <th><font class="text-danger">Qty *</font></th>
-                                    <th><button class="btn btn-success" wire:click.prevent="addDetail">+</button></th>
+                                    <th>
+                                        <a href="#detail">
+                                            <i class="fas fa-plus-circle fa-2x text-success"
+                                                wire:click.prevent="addDetail">
+                                            </i>
+                                        </a>
+                                    </th>
                                 </tr>
                             </thead>
 
                             <tbody>
                                 @foreach($detailData as $key => $data)
-                                <tr align="center" wire:key="{{ $key }}">
+                                <tr align="center" wire:key="master-{{ $key }}">
                                     <td>{{ $loop->iteration }} </td>
                                     <td>
                                         <select class="form-control" wire:model.lazy="detailData.{{$key}}.id_model"
@@ -144,8 +150,15 @@
                                         @enderror
                                     </td>
 
-                                    <td><button class="btn btn-danger" wire:click.prevent="deleteDetail({{$key}})"
-                                            @if(count($detailData)==1) disabled @endif>-</button></td>
+                                    <td>
+                                        <a href="#detail">
+                                            <i class="fas fa-trash-alt fa-2x text-danger"
+                                                onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
+                                                wire:click.prevent="deleteDetail({{$key}})"
+                                                @if(count($detailData)==1) disabled @endif>
+                                            </i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 @endforeach
                                 <tr>
