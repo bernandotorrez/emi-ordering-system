@@ -61,12 +61,17 @@
                                                         </option>
                                                         @endforeach
                                                     </select>
-                                                    
+                                                    @error('detailData.{{$id}}.selected_colour.{{$keySub}}.id_colour') 
+                                                    <span class="error">{{ $message }}</span>
+                                                    @enderror
                                                 </td>
 
                                                 <td>
                                                     <input type="number" class="form-control" 
                                                     wire:model.lazy="detailData.{{$id}}.selected_colour.{{$keySub}}.qty">
+                                                    @error('detailData.{{$id}}.selected_colour.{{$keySub}}.qty') 
+                                                    <span class="error">{{ $message }}</span>
+                                                    @enderror
                                                 </td>
                                                 <td>
                                                     <a href="#sub_detail">

@@ -37,6 +37,7 @@ class FixOrderAdd extends Component
         'detailData.*.id_type' => 'required',
         'detailData.*.id_colour' => 'required',
         'detailData.*.year_production' => 'required',
+        'detailData.*.total_qty' => 'required|min:1|max:99999',
         'detailData.*.selected_colour.*.id_colour' => 'required',
         'detailData.*.selected_colour.*.qty' => 'required',
     ];
@@ -48,10 +49,10 @@ class FixOrderAdd extends Component
         'detailData.*.id_model.required' => 'Please Choose Model Name!',
         'detailData.*.id_type.required' => 'Please Choose Type Name!',
         'detailData.*.id_colour.required' => 'Please Choose Colour!',
-        'detailData.*.qty.required' => 'Quantity cant be Empty!',
+        'detailData.*.total_qty.required' => 'Quantity cant be Empty!',
         'detailData.*.year_production.required' => 'Please Choose Year Production!',
-        'detailData.*.selected_colour.*..required' => 'Please Choose Colour!',
-        'detailData.*.selected_colour.*..required' => 'Please Fill Quantity!',
+        'detailData.*.selected_colour.*.id_colour.required' => 'Please Choose Colour!',
+        'detailData.*.selected_colour.*.qty.required' => 'Please Fill Quantity!',
     ];
     
     public function mount()
@@ -125,7 +126,7 @@ class FixOrderAdd extends Component
 
     public function updated($propertyName)
     {
-        //$this->validateOnly($propertyName);
+        $this->validateOnly($propertyName);
         $this->sumTotalQty();
         $this->sumGrandTotalQty();
     }
@@ -210,7 +211,7 @@ class FixOrderAdd extends Component
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiColorRepository $apiColorRepository
     ) {
-        //$this->validate();
+        $this->validate();
 
         $dataMaster = array(
             'no_order_atpm' => '',
