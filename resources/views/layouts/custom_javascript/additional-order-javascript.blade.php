@@ -285,7 +285,6 @@
 
     // TODO: yang perlu diubah
     function showHideButton(status) {
-        console.log(status)
         if (getInitData().table == 'draft') {
             var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
             if (sendButtonApprovalEl != null) {
@@ -410,8 +409,7 @@
                 searchable: false,
                 orderable: false
             }
-        } else if (status == 'waiting_approval_dealer_principle' 
-        || status == 'approval_dealer_principle' && url.includes('approval-bm')) {
+        } else if (status == 'waiting_approval_dealer_principle' && url.includes('approval-bm')) {
             var dataAction = {
                 data: 'action',
                 name: 'action',
@@ -664,6 +662,13 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
+            // columnDefs : (status == 'canceled') ? [{
+            //     "visible": false,
+            //     "targets": 3
+            // },{
+            //     "visible": false,
+            //     "targets": 6
+            // }] : '',
             columns: [{
                     className: 'details-control',
                     data: null,
@@ -693,6 +698,7 @@
                     name: 'total_qty',
                     title: 'Total Qty'
                 },
+                // getDataCancelStatus(status),
                 getDataRemark(status),
                 getDataDateRemark(status),
             ]

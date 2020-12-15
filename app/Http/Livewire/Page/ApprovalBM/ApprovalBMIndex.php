@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Page\ApprovalBM;
 
 use App\Repository\Eloquent\CancelStatusRepository;
 use Livewire\Component;
+use App\Traits\WithGoTo;
 
 class ApprovalBMIndex extends Component
 {
+    use WithGoTo;
+    
     public function render(CancelStatusRepository $cancelStatusRepository)
     {
         $dataCancelStatus = $cancelStatusRepository->allActive();

@@ -19,7 +19,7 @@
                         </li>
 
                         <!-- TODO: harus di pindahin Active nya dan aria-selected = true -->
-                        <li class="nav-item" onclick="showTableTab('waiting_approval_dealer_principle')">
+                        <li class="nav-item" wire:click.prevent="goTo('{{url('sales/dealer/approval-bm')}}')">
                             <a class="nav-link" id="animated-underline-profile-tab" data-toggle="tab"
                                 href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile"
                                 aria-selected="false">
@@ -74,17 +74,6 @@
                     <div class="table-responsive mt-4">
                         <table class="table table-striped table-bordered table-hover" id="master-additional-table">
 
-                            <div class="form-group col-md-3 mb-4" id="dropdown_cancel_status">
-                                <label for="parent_position">Cancel Status</label>
-                                <select name="cancel_status" id="cancel_status" class="form-control"
-                                    onchange="showTableCancel('canceled', this.value)">
-                                        <option value="">- Choose Cancel Status -</option>
-                                            @foreach($dataCancelStatus as $key => $cancelStatus)
-                                                <option value="{{$cancelStatus->id_cancel_status}}">
-                                                    {{$cancelStatus->nama_cancel_status}}</option>
-                                            @endforeach
-                                </select>
-                            </div>
                         </table>
                     </div>
                 </div>
