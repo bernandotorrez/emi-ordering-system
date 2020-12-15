@@ -12,7 +12,7 @@
 
                 <div class="widget-content widget-content-area animated-underline-content">
 
-                    <input type="text" class="form-control" id="id_month" value="{{date('m')}}">
+                    <input type="hidden" class="form-control" id="id_month" value="{{date('m')}}">
 
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
                         @foreach($dataMasterMonth as $key => $masterMonth)

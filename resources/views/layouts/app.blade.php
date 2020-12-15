@@ -166,14 +166,17 @@
         }
     </script>
 
+    <script>
+        document.addEventListener('turbolinks:before-visit', function() {
+            Turbolinks.clearCache()
+        })
+    </script>
     <!-- Additional Order Javascript -->
     @if(Request::is('sales/dealer/additional-order') || Request::is('sales/dealer/approval-bm')
     || Request::is('sales/dealer/approved-bm') || Request::is('sales/atpm/submit-atpm') 
     || Request::is('sales/atpm/allocated-atpm'))
         @include('layouts.custom_javascript.additional-order-javascript')
-    @endif
-
-    @if(Request::is('sales/dealer/fix-order'))
+    @elseif(Request::is('sales/dealer/fix-order'))
         @include('layouts.custom_javascript.fix-order-javascript')
     @endif
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
