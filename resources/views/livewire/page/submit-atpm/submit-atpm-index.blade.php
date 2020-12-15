@@ -37,7 +37,7 @@
                                 aria-selected="true">
                                 <i class="fas fa-file-import"></i> Submitted</a>
                         </li>
-                        <li class="nav-item" onclick="showTableTab('atpm_allocation')">
+                        <li class="nav-item" wire:click.prevent="goTo('{{url('sales/atpm/allocated-atpm')}}')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">
