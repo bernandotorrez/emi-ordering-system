@@ -49,9 +49,6 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <h6 class="mb-4">{{ $pageTitle }}</h6>
-
-                                <p class=""></p>
 
                                 <form>
                                     @if(session()->has('message_duplicate'))
@@ -61,7 +58,7 @@
                                     <div class="form-group mb-4">
                                         <label for="model_name">Group Name</label>
                                         <input type="text" class="form-control" id="nama_group" maxlength="50"
-                                            placeholder="Example : dealer001" wire:model.debounce.500ms="bind.nama_group">
+                                            placeholder="Example : dealer001" wire:model.lazy="bind.nama_group">
                                         @error('bind.nama_group') <span class="error">{{ $message }}</span>
                                         @enderror
                                     </div>

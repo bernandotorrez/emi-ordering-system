@@ -1,13 +1,8 @@
 <div class="topbar-nav header navbar" role="banner">
     <nav id="topbar">
         <ul class="navbar-nav theme-brand flex-row  text-center">
-            <li class="nav-item theme-logo">
-                <a href="{{ url()->route('home.index') }}"">
-                    <img src="assets/img/90x90.jpg" class="navbar-logo" alt="logo">
-                </a>
-            </li>
             <li class="nav-item theme-text">
-                <a href="/home" class="nav-link"> CORK </a>
+                <a href="/home" class="nav-link"> <h6>EMI Ordering System</h6> </a>
             </li>
         </ul>
 
@@ -16,44 +11,31 @@
             <li class="menu single-menu {{ Request::is('home') ? 'active' : '' }}">
                 <a href="{{ url()->route('home.index') }}">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-home">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
+                        <i class="fas fa-home {{ Request::is('home') ? 'icon-active' : '' }}"
+                            style="font-size: 20px"></i> &nbsp;
                         <span>Home</span>
                     </div>
                 </a>
             </li>
 
-
             <li class="menu single-menu {{ Request::is('about') ? 'active' : '' }}">
                 <a href="{{ url()->route('about.index') }}">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-info">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
+                        <i class="fas fa-info-circle {{ Request::is('about') ? 'icon-active' : '' }}"
+                            style="font-size: 20px"></i> &nbsp;
                         <span>About</span>
                     </div>
                 </a>
             </li>
 
+            @livewire('dynamic-menu')
+
             @if(session()->get('level_access') == 1)
-            <li class="menu single-menu active">
-                <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
+            <li class="menu single-menu {{ (request()->segment(1) == 'admin') ? 'active' : '' }}">
+                <a href="#admin" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle autodroprown">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-plus-circle">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="16"></line>
-                            <line x1="8" y1="12" x2="16" y2="12"></line>
-                        </svg>
+                        <i class="fas fa-plus-circle {{ request()->segment(1) == 'admin' ? 'icon-active' : '' }}"
+                            style="font-size: 20px"></i> &nbsp;
                         <span>Admin</span>
                     </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -62,11 +44,36 @@
                         <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#topAccordion">
+                <ul class="collapse submenu list-unstyled" id="admin" data-parent="#topAccordion">
 
-                    <li class="">
+                    <li class="{{ (request()->is('admin/user')) ? 'active' : '' }}">
+                        <a href="{{ route('user.index') }}"> User </a>
+                    </li>
+
+                    <li class="{{ (request()->is('admin/user-group')) ? 'active' : '' }}">
                         <a href="{{ route('user-group.index') }}"> User Group </a>
                     </li>
+
+                    <li class="{{ (request()->is('admin/parent-menu')) ? 'active' : '' }}">
+                        <a href="{{ route('parent-menu.index') }}"> Parent Menu </a>
+                    </li>
+
+                    <li class="{{ (request()->is('admin/child-menu')) ? 'active' : '' }}">
+                        <a href="{{ route('child-menu.index') }}"> Child Menu </a>
+                    </li>
+
+                    <li class="{{ (request()->is('admin/sub-child-menu')) ? 'active' : '' }}">
+                        <a href="{{ route('sub-child-menu.index') }}"> Sub Child Menu </a>
+                    </li>
+
+                    <li class="{{ (request()->is('admin/sub-sub-child-menu')) ? 'active' : '' }}">
+                        <a href="{{ route('sub-sub-child-menu.index') }}"> Sub Sub Child Menu </a>
+                    </li>
+
+                    <li class="{{ (request()->is('admin/menu-user-group')) ? 'active' : '' }}">
+                        <a href="{{ route('menu-user-group.index') }}"> Menu User Group </a>
+                    </li>
+
                 </ul>
             </li>
             @endif

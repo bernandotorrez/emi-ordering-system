@@ -57,7 +57,6 @@ class UserGroupIndex extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
-        $this->insertDuplicate = false;
     }
 
     public function updatingSearch()
@@ -177,7 +176,7 @@ class UserGroupIndex extends Component
                 
                 session()->flash('action_message', '<div class="alert alert-success">Update Data Success!</div>');
             } else {
-                session()->flash('action_message', '<div class="alert alert-dnager">Update Data Failed!</div>');
+                session()->flash('action_message', '<div class="alert alert-danger">Update Data Failed!</div>');
             }
         }
         
@@ -189,6 +188,7 @@ class UserGroupIndex extends Component
 
         if($delete) {
             $this->resetForm();
+            $this->checked = [];
             $this->deleteCache();
 
             $deleteStatus = 'success';

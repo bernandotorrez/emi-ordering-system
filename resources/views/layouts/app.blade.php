@@ -5,16 +5,45 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>Eurokars DMS @isset($title) - {{ $title }} @endisset</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>EMI Dealer Management System @isset($title) - {{ $title }} @endisset</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('icon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('icon/favicon-32x32.png') }}"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('icon/favicon-16x16.png') }}"> 
+    <link rel="manifest" href="{{ asset('icon/site.webmanifest') }}"> 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
     <link href="{{ asset('assets/css/elements/custom-pagination.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/components/custom-modal.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/elements/alert.css') }}">
+    <link href="{{ asset('assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
+    <style>
+    td.details-control {
+        background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+    tr.shown td.details-control {
+        background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
+
+    td.sub-details-control {
+        background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+    tr.shown td.sub-details-control {
+        background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
+    </style>
+
+    @stack('css')
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
 
@@ -38,6 +67,10 @@
             font-size: 13px;
             letter-spacing: 1px;
         }
+
+        .icon-active {
+            color: #25d5e4;
+        }
     </style>
 
     @livewireStyles
@@ -53,7 +86,7 @@
     <script src="{{ asset('assets/js/authentication/form-2.js') }}" defer></script>
     @endif -->
 
-    <!-- <script src="{{ asset('assets/js/custom.js') }}"></script> -->
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
@@ -61,6 +94,9 @@
     <script src="{{ asset('assets/js/turbolink/livewire-turbolinks.js') }}" data-turbolinks-eval="false"></script>
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('plugins/highlight/highlight.pack.js') }}"></script>
+    <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
+    <script src="{{ asset('assets/js/handlebars.js') }}"></script>
 
     @stack('scripts')
     <script>
@@ -89,38 +125,57 @@
             }
         })
 
-        
-    function formatRupiah(angka, prefix, id) {
-        var number_string = angka.replace(/[^,\d]/g, '').toString(),
-            split = number_string.split(','),
-            sisa = split[0].length % 3,
-            rupiah = split[0].substr(0, sisa),
-            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
-        // tambahkan titik jika yang di input sudah menjadi angka ribuan
-        if (ribuan) {
-            separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
+        function formatRupiah(angka, prefix, id) {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            var callback = prefix == '' ? rupiah : (rupiah ? rupiah : '')
+
+            var element = document.getElementById('estimation-price.' + id)
+            element.value = callback;
+
+            return callback;
         }
 
-        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-        var callback = prefix == '' ? rupiah : (rupiah ? rupiah : '')
+        function isNumberKey(e) {
+            var charCode = (e.which) ? e.which : e.keyCode;
+            if (charCode != 44 && charCode != 45 && charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
-        var element = document.getElementById('estimation-price.'+id)
-        element.value = callback;
+        function isQtyKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
 
-        return callback;
-    }
-
-    function isNumberKey(e) {
-    var charCode = (e.which) ? e.which : e.keyCode;
-		if (charCode != 44 && charCode != 45 && charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-			return false;
-		} else {
-			return true;
-		}
-    }
+            return true;
+        }
     </script>
+
+    <!-- Additional Order Javascript -->
+    @if(Request::is('sales/dealer/additional-order') || Request::is('sales/dealer/approval-bm')
+    || Request::is('sales/dealer/approved-bm') || Request::is('sales/atpm/submit-atpm') 
+    || Request::is('sales/atpm/allocated-atpm'))
+        @include('layouts.custom_javascript.additional-order-javascript')
+    @endif
+
+    @if(Request::is('sales/dealer/fix-order'))
+        @include('layouts.custom_javascript.fix-order-javascript')
+    @endif
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
 </head>

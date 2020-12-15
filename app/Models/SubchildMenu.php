@@ -8,4 +8,38 @@ use Illuminate\Database\Eloquent\Model;
 class SubchildMenu extends Model
 {
     use HasFactory;
+
+    protected $table = 'tbl_sub_child_menu';
+    protected $primaryKey = 'id_sub_child_menu';
+    protected $searchableColumn =  [
+        'id_sub_child_menu', 
+        'nama_child_menu', 
+        'nama_parent_menu', 
+        'sub_child_position', 
+        'nama_sub_child_menu', 
+        'url', 
+        'icon',
+        'nama_group'
+    ];
+    protected $guarded = ['id_sub_child_menu'];
+
+    public function getSearchableColumn()
+    {
+        return $this->searchableColumn;
+    }
+
+    public function childMenu()
+    {
+        return $this->belongsTo(ChildMenu::class, 'id_child_menu');
+    }
+
+    public function parentMenu()
+    {
+        return $this->belongsTo(ParentMenu::class, 'id_parent_menu');
+    }
+
+    public function subSubChildsMenu()
+    {
+        return $this->hasMany(SubSubChildMenu::class, 'id_sub_child_menu');
+    }
 }

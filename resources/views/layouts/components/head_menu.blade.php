@@ -12,8 +12,9 @@
             </svg></a>
 
         <div class="nav-logo align-self-center">
-            <a class="navbar-brand" href="/home"><img alt="logo" src="{{ asset('assets/img/90x90.jpg') }}"> <span
-                    class="navbar-brand-name">EMI Ordering System</span></a>
+            <img alt="logo" class="img-fluid" style="max-height: 8%; max-width: 8%;" src="{{ asset('assets/img/mazda-logo.png') }}"> 
+            <a class="navbar-brand" href="{{route('home.index')}}"><span
+                    class="navbar-brand-name">EMI Dealer Management System</span></a>
         </div>
 
         <ul class="navbar-item flex-row nav-dropdowns ml-auto">

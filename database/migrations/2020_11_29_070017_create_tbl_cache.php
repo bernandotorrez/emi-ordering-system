@@ -13,12 +13,14 @@ class CreateTblCache extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_cache', function (Blueprint $table) {
-            $table->id();
-            $table->text('cache_name');
-            $table->string('id_user', 100);
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('tbl_cache')) {
+            Schema::create('tbl_cache', function (Blueprint $table) {
+                $table->id();
+                $table->text('cache_name');
+                $table->integer('id_user');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

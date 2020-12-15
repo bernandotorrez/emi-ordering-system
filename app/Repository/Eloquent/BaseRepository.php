@@ -16,7 +16,7 @@ class BaseRepository implements BaseInterface
         $this->model = $model;
         $this->primaryKey = (new $model)->getKeyName();
         $this->searchableColumn = (new $model)->getSearchableColumn();
-        $this->visibleColumn = (new $model)->getVisible();
+        //$this->visibleColumn = (new $model)->getVisible();
     }
 
     /**
@@ -26,12 +26,26 @@ class BaseRepository implements BaseInterface
      */
     public function all()
     {
-        return $this->model->all($this->visibleColumn);
+        return $this->model->all();
     }
 
+    /**
+     * Get All Data Active (Status = 1)
+     * @return Collection
+     */
     public function allActive()
     {
-        return $this->model->where('status', '1')->get($this->visibleColumn);
+        return $this->model->where('status', '1')->get();
+    }
+
+    /**
+     * Get All Data Active (Status = 1)
+     * @param array $with
+     * @return Collection
+     */
+    public function allActiveWithRelation(array $with)
+    {
+        return $this->model->where('status', '1')->with($with)->get();
     }
 
     /**
@@ -40,7 +54,7 @@ class BaseRepository implements BaseInterface
      */
     public function create(array $data)
     {
-        return $this->model->firstOrCreate($data);
+        return $this->model->create($data);
     }
 
     /**
@@ -49,17 +63,17 @@ class BaseRepository implements BaseInterface
      */
     public function findDuplicate(array $where)
     {
-        return $this->model->where($where)->count();
+        return $this->model->where($where)->where('status', '1')->count();
     }
 
     /**
      * Check Duplicated Data in Edit Process
      * @param array $where
-     * @param int $id
+     * @param int|string $id
      */
-    public function findDuplicateEdit(array $where, int $id)
+    public function findDuplicateEdit(array $where, $id)
     {
-        return $this->model->where($where)->where($this->primaryKey, '!=', $id)->count();
+        return $this->model->where($where)->where('status', '1')->where($this->primaryKey, '!=', $id)->count();
     }
 
     /**
@@ -67,9 +81,19 @@ class BaseRepository implements BaseInterface
      * @param string $id
      * @param array $data
      */
-    public function update(string $id, array $data)
+    public function update($id, array $data)
     {
         return $this->model->where($this->primaryKey, $id)->update($data);
+    }
+
+    /**
+     * Update Data
+     * @param array $id
+     * @param array $data
+     */
+    public function massUpdate(array $id, array $data)
+    {
+        return $this->model->whereIn($this->primaryKey, $id)->update($data);
     }
 
     /**
@@ -87,14 +111,14 @@ class BaseRepository implements BaseInterface
      */
     public function massDelete(array $id)
     {
-        return $this->model->whereIn($this->primaryKey, $id)->delete();
+        return $this->model->whereIn($this->primaryKey, $id)->update(['status' => '0']);
     }
 
     /**
      * Get Data By ID
-     * @param int $id
+     * @param $id
      */
-    public function getById(int $id)
+    public function getById($id)
     {
         return $this->model->where($this->primaryKey, $id)->get()->first();
     }
@@ -259,6 +283,45 @@ class BaseRepository implements BaseInterface
                         $query = $query->where($arrayField[$i], 'like', '%'.$search.'%');
                     } else {
                         $query = $query->orWhere($arrayField[$i], 'like', '%'.$search.'%');
+                    }
+                }
+            }
+        });
+        $data = $data->where('status', '1');
+        $data = $data->orderBy($sortBy, $sortDirection);
+        $data = $data->paginate($perPage);
+
+        return $data;
+    }
+
+    /**
+     * Get Data Pagination With Relation Eager Loading
+     * @param array $with
+     * @param string $search
+     * @param string $sortBy
+     * @param string $sortDirection
+     * @param int $perPage
+     */
+    public function paginationWithRelation(
+        string $search = '',
+        string $sortBy,
+        string $sortDirection = 'asc',
+        int $perPage,
+        array $with = []
+    )
+    {
+        $searchableColumn = $this->searchableColumn;
+        $countField = count($searchableColumn);
+
+        $data = $this->model;
+        $data = $data->with($with);
+        $data = $data->where(function($query) use ($searchableColumn, $countField, $search) {
+            if($countField >= 1) {
+                for($i=0;$i <= $countField-1;$i++) {
+                    if($i == 0) {
+                        $query = $query->where($searchableColumn[$i], 'like', '%'.$search.'%');
+                    } else {
+                        $query = $query->orWhere($searchableColumn[$i], 'like', '%'.$search.'%');
                     }
                 }
             }

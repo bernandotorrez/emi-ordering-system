@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\UserGroup;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +22,21 @@ class CreateTblUserGroup extends Migration
                 $table->timestamps();
             });
         }
+
+        $this->insertUserGroup();
+    }
+
+    public function insertUserGroup()
+    {
+        UserGroup::create([
+            'nama_group' => 'admin001',
+        ]);
+        UserGroup::create([
+            'nama_group' => 'atpm001',
+        ]);
+        UserGroup::create([
+            'nama_group' => 'dealer001',
+        ]);
     }
 
     /**
