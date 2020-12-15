@@ -1,14 +1,14 @@
 
 <script id="details-template" type="text/x-handlebars-template" data-turbolinks-track="reload">
-    <h5 class="mt-2 text-center">Detail Order</h5>
-    <table class="table table-hover details-table" id="detail">
+    <h5 class="mt-2 text-center">Detail @{{no_order_dealer}} Order</h5>
+    <table class="table table-hover details-table" id="detail-@{{id_master_fix_order_unit}}">
 
     </table>
 </script>
 
 <script id="sub-details-template" type="text/x-handlebars-template" data-turbolinks-track="reload">
-    <h5 class="mt-2 text-center">List Colour</h5>
-    <table class="table table-hover details-table" id="sub-detail">
+    <h5 class="mt-2 text-center">List @{{model_name}} Colour</h5>
+    <table class="table table-hover details-table" id="sub-detail-@{{id_detail_fix_order_unit}}">
         <thead>
            
         </thead>
@@ -61,12 +61,21 @@ function showTable(month) {
         serverSide: true,
         destroy: true,
         ajax: month ? "{{url('datatable/fixOrderJson?month=')}}"+month : "{{url('datatable/fixOrderJson')}}",
+        columnDefs : [{
+                "visible": false,
+                "targets": 1
+        }],
         columns: [{
                 className: 'details-control',
                 data: null,
                 searchable: false,
                 orderable: false,
                 defaultContent: ''
+            },
+            {
+                data: 'id_master_fix_order_unit',
+                data: 'id_master_fix_order_unit',
+                title: 'ID',
             },
             {
                 data: 'no_order_dealer',
@@ -111,7 +120,7 @@ function showTable(month) {
     $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
-        var tableId = 'detail';
+        var tableId = 'detail-'+row.data().id_master_fix_order_unit;
 
         if (row.child.isShown()) {
             // This row is already open - close it
@@ -140,6 +149,10 @@ function initTable(tableId, data) {
         "info": false,
         destroy: true,
         ajax: data.details_url,
+        columnDefs : [{
+                "visible": false,
+                "targets": 1
+        }],
         columns: [
                 {
                     className: 'sub-details-control',
@@ -148,6 +161,11 @@ function initTable(tableId, data) {
                     orderable: false,
                     defaultContent: ''
                 },
+                {
+                data: 'id_detail_fix_order_unit',
+                data: 'id_detail_fix_order_unit',
+                title: 'ID',
+            },
             {
                 data: 'model_name',
                 name: 'model_name',
@@ -177,7 +195,7 @@ function initTable(tableId, data) {
         console.log('tes')
         var tr = $(this).closest('tr');
         var row = table.row(tr);
-        var tableId = 'sub-detail';
+        var tableId = 'sub-detail-'+row.data().id_detail_fix_order_unit;
 
         if (row.child.isShown()) {
             // This row is already open - close it
