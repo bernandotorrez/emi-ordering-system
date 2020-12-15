@@ -33,6 +33,14 @@
     tr.shown td.details-control {
         background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
     }
+
+    td.sub-details-control {
+        background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+    tr.shown td.sub-details-control {
+        background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+    }
     </style>
 
     @stack('css')

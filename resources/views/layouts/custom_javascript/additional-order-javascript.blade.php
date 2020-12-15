@@ -1,15 +1,7 @@
 <script id="details-template" type="text/x-handlebars-template">
         <h5 class="mt-2 text-center">Detail Order</h5>
         <table class="table table-hover details-table" id="detail">
-            <thead>
-            <tr>
-                <th>Model Name</th>
-                <th>Type Name</th>
-                <th>Colour Name</th>
-                <th>Year Production</th>
-                <th>Qty</th>
-            </tr>
-            </thead>
+           
         </table>
     </script>
 
@@ -181,7 +173,12 @@
     }
 
     document.addEventListener('livewire:load', function () {
-        showTable(getInitData().table)
+        var url = window.location.href
+        if(url.includes('additional-order') || url.includes('approval-bm') || url.includes('approved-bm')
+         || url.includes('submit-atpm') || url.includes('allocated_atpm')) {
+            showTable(getInitData().table)
+         }
+        
     });
 
     // TODO: yang perlu di ubah
@@ -738,23 +735,28 @@
             ajax: data.details_url,
             columns: [{
                     data: 'model_name',
-                    name: 'model_name'
+                    name: 'model_name',
+                    title: 'Model Name',
                 },
                 {
                     data: 'type_name',
-                    name: 'type_name'
+                    name: 'type_name',
+                    title: 'Type Name',
                 },
                 {
                     data: 'colour_name',
-                    name: 'colour_name'
+                    name: 'colour_name',
+                    title: 'Colour Name',
                 },
                 {
                     data: 'year_production',
-                    name: 'year_production'
+                    name: 'year_production',
+                    title: 'Year production',
                 },
                 {
                     data: 'qty',
-                    name: 'qty'
+                    name: 'qty',
+                    title: 'Qty',
                 },
             ]
         })

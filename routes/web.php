@@ -96,6 +96,8 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
 
     // Fix Order
     Route::get('fixOrderJson', [FixOrderDatatableController::class, 'fixOrderJson']);
+    Route::get('detailFixOrderJson/{id}', [FixOrderDatatableController::class, 'detailFixOrderJson']);
+    Route::get('subDetailFixOrderJson/{id}', [FixOrderDatatableController::class, 'subDetailFixOrderJson']);
 });
 
 // Sweet Alert
