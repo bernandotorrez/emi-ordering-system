@@ -12,15 +12,16 @@ use App\Repository\Eloquent\DetailFixOrderRepository;
 
 class FixOrderDatatableController extends Controller
 {
-    public function FixOrderJson(MasterFixOrderRepository $masterFixOrderRepository)
+    public function FixOrderJson(Request $request, MasterFixOrderRepository $masterFixOrderRepository)
     {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $cache_name = 'datatable-fixOrderJson-idUser-'.$idUser;
+        $month = $request->get('month');
+        $cache_name = 'datatable-fixOrderJson-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month;
         $datas = Cache::remember($cache_name, 10, 
-        function () use($masterFixOrderRepository, $idUser, $idDealer, $cache_name){
+        function () use($masterFixOrderRepository, $idUser, $idDealer, $cache_name, $month){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
-            return $masterFixOrderRepository->getByIdDealerAndMonth($idDealer);
+            return $masterFixOrderRepository->getByIdDealerAndMonth($idDealer, $month ? $month : date('m'));
         });
 
         return Datatables::of($datas)

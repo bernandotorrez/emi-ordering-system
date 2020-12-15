@@ -17,9 +17,8 @@ class MasterFixOrderRepository extends BaseRepository
         return $this->model->where(['status' => '1', 'id_dealer' => $idDealer])->get();
     }
 
-    public function getByIdDealerAndMonth($idDealer)
+    public function getByIdDealerAndMonth($idDealer, $month)
     {
-        $month = date('m');
         return $this->model->where(['status' => '1', 'id_dealer' => $idDealer, 'id_month' => $month])->get(); 
     }
 
