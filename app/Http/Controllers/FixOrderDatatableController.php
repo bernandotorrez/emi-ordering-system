@@ -12,7 +12,7 @@ class FixOrderDatatableController extends Controller
     {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
-        $datas = $masterFixOrderRepository->allActive();
+        $datas = $masterFixOrderRepository->getByIdDealerAndMonth($idDealer);
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {

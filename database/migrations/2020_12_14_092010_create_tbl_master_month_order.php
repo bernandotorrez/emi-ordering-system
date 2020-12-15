@@ -51,7 +51,7 @@ class CreateTblMasterMonthOrder extends Migration
             MasterMonthOrder::create([
                 'month' => $month,
                 'date_input_lock_start' => date('Y').'-'.$monthNumber.'-01',
-                'date_input_lock_end' => date('Y').'-'.$monthNumber.'-11',
+                'date_input_lock_end' => date('Y').'-'.$monthNumber.'-10',
                 'operator' => '<'
             ]);
         }

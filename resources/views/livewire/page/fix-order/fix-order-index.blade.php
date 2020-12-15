@@ -25,10 +25,20 @@
                         </li>
                         @endforeach
                     </ul>
-
+         
+                    @if((date('Y-m-d') >= $dataLockDate->date_input_lock_start) && (date('Y-m-d') <= $dataLockDate->date_input_lock_end))
                     <button class="btn btn-primary mr-2" id="addButton"
                         wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
+                    @else
+                    <button class="btn btn-primary mr-2" id="addButton" disabled>Add</button>
+                    @endif
 
+                    <div class="table-responsive mt-4">
+                        <table class="table table-striped table-bordered table-hover" id="master-fixorder-table">
+
+                            
+                        </table>
+                    </div>
 
                 </div>
 

@@ -17,6 +17,12 @@ class MasterFixOrderRepository extends BaseRepository
         return $this->model->where(['status' => '1', 'id_dealer' => $id])->get();
     }
 
+    public function getByIdDealerAndMonth($id)
+    {
+        $month = date('m');
+        return $this->model->where(['status' => '1', 'id_dealer' => $id, 'id_month' => $month])->get(); 
+    }
+
     public function createDealerOrder($dataMaster, $dataDetail)
     {
         $insert = DB::transaction(function () use($dataMaster, $dataDetail) {

@@ -13,8 +13,10 @@ class FixOrderIndex extends Component
     public function render(MasterMonthOrderRepository $masterMonthOrderRepository)
     {
         $dataMastermonth = $masterMonthOrderRepository->allActive();
+        $dataLockDate = $masterMonthOrderRepository->getById(date('m'));
         return view('livewire.page.fix-order.fix-order-index', [
-            'dataMasterMonth' => $dataMastermonth
+            'dataMasterMonth' => $dataMastermonth,
+            'dataLockDate' => $dataLockDate
         ])
         ->layout('layouts.app', ['title' => 'Fix Order']);
     }
