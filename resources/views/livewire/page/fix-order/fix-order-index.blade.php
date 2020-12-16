@@ -60,49 +60,6 @@
                             </table>
                         </div>
 
-                        <!-- <div class="widget-content widget-content-area animated-underline-content">
-                            <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
-                                <li class="nav-item" onclick="showTableTab('draft')">
-                                    <a class="nav-link active" id="animated-underline-home-tab" data-toggle="tab"
-                                        href="#animated-underline-home" role="tab" aria-controls="animated-underline-home"
-                                        aria-selected="true">
-                                        <i class="far fa-edit"></i> Draft</a>
-                                </li>
-                                <li class="nav-item" onclick="showTableTab('waiting_approval_dealer_principle')">
-                                    <a class="nav-link" id="animated-underline-profile-tab" data-toggle="tab"
-                                        href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile"
-                                        aria-selected="false">
-                                        <i class="fas fa-user-clock"></i> Waiting Approval</a>
-                                </li>
-                                <li class="nav-item" onclick="showTableTab('approval_dealer_principle')">
-                                    <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
-                                        href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
-                                        aria-selected="false">
-                                        <i class="fas fa-user-check"></i> Approved</a>
-                                </li>
-                                <li class="nav-item" onclick="showTableTab('submitted_atpm')">
-                                    <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
-                                        href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
-                                        aria-selected="false">
-                                        <i class="fas fa-file-import"></i> Submitted</a>
-                                </li>
-                                <li class="nav-item" onclick="showTableTab('atpm_allocation')">
-                                    <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
-                                        href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
-                                        aria-selected="false">
-                                        <i class="fas fa-shipping-fast"></i> Allocated</a>
-                                </li>
-                                <li class="nav-item" onclick="showTableTab('canceled')">
-                                    <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
-                                        href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
-                                        aria-selected="false">
-                                        <i class="fas fa-user-times"></i> Canceled</a>
-                                </li>
-                            </ul>
-
-                            
-                        </div> -->
-
                 </div>
 
 

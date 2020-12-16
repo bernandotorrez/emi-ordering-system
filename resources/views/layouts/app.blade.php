@@ -165,12 +165,6 @@
             return true;
         }
     </script>
-
-    <script>
-        document.addEventListener('turbolinks:before-visit', function() {
-            Turbolinks.clearCache()
-        })
-    </script>
     <!-- Additional Order Javascript -->
     @if(Request::is('sales/dealer/additional-order') || Request::is('sales/dealer/approval-bm')
     || Request::is('sales/dealer/approved-bm') || Request::is('sales/atpm/submit-atpm') 

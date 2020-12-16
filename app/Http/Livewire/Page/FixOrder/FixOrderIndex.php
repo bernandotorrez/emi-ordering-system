@@ -24,7 +24,7 @@ class FixOrderIndex extends Component
         foreach($dataRangeMonth as $month) {
             array_push($rangeMonth, $month->month_id_to);
         }
-
+        
         return view('livewire.page.fix-order.fix-order-index', [
             'dataMasterMonth' => $dataMastermonth,
             'dataLockDate' => $dataLockDate,

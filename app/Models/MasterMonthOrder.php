@@ -16,7 +16,8 @@ class MasterMonthOrder extends Model
         'month',
         'date_input_lock_start',
         'date_input_lock_end',
-        'operator',
+        'operator_start',
+        'operator_end',
     ];
 
     public function getSearchableColumn()
