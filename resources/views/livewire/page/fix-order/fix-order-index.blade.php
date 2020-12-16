@@ -8,14 +8,21 @@
                 {!! session('action_message') !!}
                 @endif
 
+                <?php
+                $date_start = date('Y-m-d',strtotime(date('Y-m-d') . "+1 days"));
+                $checkAddButtonCurrentMonth = eval("return ((string) date('Y-m-d') $dataLockDate->operator_start '$dataLockDate->date_input_lock_start')
+                    && ((string) date('Y-m-d') $dataLockDate->operator_end '$dataLockDate->date_input_lock_end');");
+
+                ?>
+
                 <h6>Fix Order</h6>
 
                 <div class="widget-content widget-content-area animated-underline-content">
 
                     <input type="hidden" class="form-control" id="id_month" value="{{date('m')}}">
-
+                 
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
-
+                    
                         @foreach($dataMasterMonth as $key => $masterMonth)
 
                         @if(in_array($masterMonth->id_month, $rangeMonth))
@@ -45,8 +52,7 @@
                         @endforeach
                     </ul>
 
-                    @if((date('Y-m-d') >= $dataLockDate->date_input_lock_start)
-                    && (date('Y-m-d') <= $dataLockDate->date_input_lock_end))
+                    @if($checkAddButtonCurrentMonth)
                         <button class="btn btn-primary mr-2" id="addButton"
                             wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
                         @else
