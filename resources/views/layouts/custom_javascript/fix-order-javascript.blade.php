@@ -1,14 +1,14 @@
 
 <script id="details-template" type="text/x-handlebars-template" data-turbolinks-track="reload">
-    <h5 class="mt-2 text-center">Detail Order</h5>
-    <table class="table table-hover details-table" id="detail">
+    <h5 class="mt-2 text-center">Detail @{{no_order_dealer}} Order</h5>
+    <table class="table table-hover details-table" id="detail-@{{id_master_fix_order_unit}}">
 
     </table>
 </script>
 
 <script id="sub-details-template" type="text/x-handlebars-template" data-turbolinks-track="reload">
-    <h5 class="mt-2 text-center">List Colour</h5>
-    <table class="table table-hover details-table" id="sub-detail">
+    <h5 class="mt-2 text-center">List @{{model_name}} Colour</h5>
+    <table class="table table-hover details-table" id="sub-detail-@{{id_detail_fix_order_unit}}">
         <thead>
            
         </thead>
@@ -61,12 +61,21 @@ function showTable(month) {
         serverSide: true,
         destroy: true,
         ajax: month ? "{{url('datatable/fixOrderJson?month=')}}"+month : "{{url('datatable/fixOrderJson')}}",
+        columnDefs : [{
+                "visible": false,
+                "targets": 1
+        }],
         columns: [{
                 className: 'details-control',
                 data: null,
                 searchable: false,
                 orderable: false,
                 defaultContent: ''
+            },
+            {
+                data: 'id_master_fix_order_unit',
+                data: 'id_master_fix_order_unit',
+                title: 'ID',
             },
             {
                 data: 'no_order_dealer',
@@ -76,7 +85,7 @@ function showTable(month) {
             {
                 data: 'no_order_atpm',
                 name: 'no_order_atpm',
-                title: 'No Order ATPm'
+                title: 'No Order ATPM'
             },
             {
                 data: 'date_save_order',
@@ -111,7 +120,7 @@ function showTable(month) {
     $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
-        var tableId = 'detail';
+        var tableId = 'detail-'+row.data().id_master_fix_order_unit;
 
         if (row.child.isShown()) {
             // This row is already open - close it
@@ -172,12 +181,12 @@ function initTable(tableId, data) {
     })
 
     // Add event listener for opening and closing details
-    $('#detail tbody').off('click', 'td.sub-details-control');
-    $('#detail tbody').on('click', 'td.sub-details-control', function () {
+    $('#detail-'+data.id_master_fix_order_unit+' tbody').off('click', 'td.sub-details-control');
+    $('#detail-'+data.id_master_fix_order_unit+' tbody').on('click', 'td.sub-details-control', function () {
         console.log('tes')
         var tr = $(this).closest('tr');
         var row = table.row(tr);
-        var tableId = 'sub-detail';
+        var tableId = 'sub-detail-'+row.data().id_detail_fix_order_unit;
 
         if (row.child.isShown()) {
             // This row is already open - close it
