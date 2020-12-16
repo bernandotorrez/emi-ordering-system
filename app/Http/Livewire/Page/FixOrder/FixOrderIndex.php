@@ -19,12 +19,12 @@ class FixOrderIndex extends Component
         $dataLockDate = $masterMonthOrderRepository->getById(date('m'));
         $dataRangeMonth = $rangeMonthFixOrderRepository->getByIdMonth(date('m'));
         $rangeMonth = array();
-        array_push($rangeMonth, date('m'));
+        //array_push($rangeMonth, date('m'));
 
         foreach($dataRangeMonth as $month) {
             array_push($rangeMonth, $month->month_id_to);
         }
-        
+
         return view('livewire.page.fix-order.fix-order-index', [
             'dataMasterMonth' => $dataMastermonth,
             'dataLockDate' => $dataLockDate,

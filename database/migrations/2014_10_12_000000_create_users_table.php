@@ -73,17 +73,44 @@ class CreateUsersTable extends Migration
             $checkDuplicate = User::firstWhere('kd_user_wrs', $dealer['kd_dealer_user']);
 
             if(!$checkDuplicate) {
-                User::create([
-                    'kd_user_wrs' => $dealer['kd_dealer_user'],
-                    'nama_user' => $dealer['nm_dealer_user'],
-                    'username' => $dealer['username'],
-                    'email' => $dealer['email'],
-                    'id_user_group' => 3,
-                    'id_dealer' => $dealer['fk_dealer'],
-                    'id_dealer_level' => $dealer['fk_dealer_level'],
-                    'status_atpm' => 'dealer',
-                    'is_from_wrs' => '1'
-                ]);
+                if($dealer['fk_dealer_level'] == 'Adm') {
+                    User::create([
+                        'kd_user_wrs' => $dealer['kd_dealer_user'],
+                        'nama_user' => $dealer['nm_dealer_user'],
+                        'username' => $dealer['username'],
+                        'email' => $dealer['email'],
+                        'id_user_group' => 4,
+                        'id_dealer' => $dealer['fk_dealer'],
+                        'id_dealer_level' => $dealer['fk_dealer_level'],
+                        'status_atpm' => 'dealer',
+                        'is_from_wrs' => '1'
+                    ]);
+                } else if($dealer['fk_dealer_level'] == 'BM') {
+                    User::create([
+                        'kd_user_wrs' => $dealer['kd_dealer_user'],
+                        'nama_user' => $dealer['nm_dealer_user'],
+                        'username' => $dealer['username'],
+                        'email' => $dealer['email'],
+                        'id_user_group' => 5,
+                        'id_dealer' => $dealer['fk_dealer'],
+                        'id_dealer_level' => $dealer['fk_dealer_level'],
+                        'status_atpm' => 'dealer',
+                        'is_from_wrs' => '1'
+                    ]);
+                } else {
+                    User::create([
+                        'kd_user_wrs' => $dealer['kd_dealer_user'],
+                        'nama_user' => $dealer['nm_dealer_user'],
+                        'username' => $dealer['username'],
+                        'email' => $dealer['email'],
+                        'id_user_group' => 3,
+                        'id_dealer' => $dealer['fk_dealer'],
+                        'id_dealer_level' => $dealer['fk_dealer_level'],
+                        'status_atpm' => 'dealer',
+                        'is_from_wrs' => '1'
+                    ]);
+                }
+                
             }
         }
     }

@@ -39,6 +39,12 @@ class CreateTblUserGroup extends Migration
         UserGroup::create([
             'nama_group' => 'dealer001',
         ]);
+        UserGroup::create([
+            'nama_group' => 'dealeradmin001',
+        ]);
+        UserGroup::create([
+            'nama_group' => 'dealerbm001',
+        ]);
     }
 
     /**

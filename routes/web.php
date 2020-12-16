@@ -58,9 +58,6 @@ Route::middleware('user.session')->group(function() {
 
     Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
-    //Contoh Menu privilege
-    Route::get('/parent-menu', ParentMenuIndex::class)->name('parent-menu.index');
-
     // Additional Order
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
     Route::get('/sales/dealer/additional-order/add', AdditionalOrderAdd::class)->name('additional-order.add');

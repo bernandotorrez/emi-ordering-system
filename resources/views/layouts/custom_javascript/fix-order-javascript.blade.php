@@ -41,6 +41,41 @@ function changeMonth(month) {
     showTable(month)
 }
 
+function allChecked(status) {
+    var arrayChecked = document.querySelectorAll('.checkId');
+    arrayChecked.forEach(function (check) {
+        check.checked = status
+    })
+
+    updateCheck('')
+}
+
+function updateCheck(id) {
+    var count = document.querySelectorAll('.checkId:checked').length
+
+    var editButtonEl = document.getElementById('editButton')
+    if (editButtonEl != null) {
+        if (count == 0 || count > 1) {
+            editButtonEl.setAttribute('disabled', true)
+        } else {
+            editButtonEl.removeAttribute('disabled')
+            editButtonEl.value = "{!! route('additional-order.edit') !!}/" + id
+        }
+
+
+        var sendButtonEl = document.getElementById('sendApprovalButton')
+        if (sendButtonEl != null) {
+            if (count == 0) {
+                sendButtonEl.setAttribute('disabled', true)
+            } else {
+                sendButtonEl.removeAttribute('disabled')
+            }
+        }
+
+    }
+
+    console.log(count)
+}
 
 function showTable(month) {
     //showHideButton()
@@ -63,7 +98,7 @@ function showTable(month) {
         ajax: month ? "{{url('datatable/fixOrderJson?month=')}}"+month : "{{url('datatable/fixOrderJson')}}",
         columnDefs : [{
                 "visible": false,
-                "targets": 1
+                "targets": 2
         }],
         columns: [{
                 className: 'details-control',
@@ -71,6 +106,13 @@ function showTable(month) {
                 searchable: false,
                 orderable: false,
                 defaultContent: ''
+            },
+            {
+                data: 'action',
+                name: 'action',
+                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                searchable: false,
+                orderable: false
             },
             {
                 data: 'id_master_fix_order_unit',

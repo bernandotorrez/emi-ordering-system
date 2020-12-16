@@ -15,7 +15,7 @@
 
                 ?>
 
-                <h6>Fix Order</h6>
+                <h6>Fix Order ( {{date('d M Y')}} )</h6>
 
                 <div class="widget-content widget-content-area animated-underline-content">
 
@@ -28,7 +28,7 @@
                         @if(in_array($masterMonth->id_month, $rangeMonth))
                         <li class="nav-item" 
                             style="background-color: var(--green); color: #fff"
-                            onclick="showHideAddButton({{$key}});changeMonth({{$key+1}})">
+                            onclick="changeMonth({{$key+1}})">
                             <a class="nav-link {{(date('m')-1 == $key) ? 'active' : ''}}"
                                 id="animated-underline-home-tab" data-toggle="tab" href="#animated-underline-home"
                                 role="tab" aria-controls="animated-underline-home"
@@ -58,6 +58,12 @@
                         @else
                         <button class="btn btn-primary mr-2" id="addButton" disabled>Add</button>
                         @endif
+
+                        <button class="btn btn-success mr-2" id="editButton"
+                            wire:click.prevent="goTo('{{route('fix-order.add')}}')">Amend</button>
+
+                        <button class="btn btn-primary mr-2" id="sendApprovalButton"
+                            wire:click.prevent="goTo('{{route('fix-order.add')}}')">Send Approval</button>
 
                         <div class="table-responsive mt-4">
                             <table class="table table-striped table-bordered table-hover" id="master-fixorder-table">
