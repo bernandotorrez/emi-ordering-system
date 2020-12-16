@@ -175,7 +175,7 @@
     document.addEventListener('livewire:load', function () {
         var url = window.location.href
         if(url.includes('additional-order') || url.includes('approval-bm') || url.includes('approved-bm')
-         || url.includes('submit-atpm') || url.includes('allocated_atpm')) {
+         || url.includes('submit-atpm') || url.includes('allocated-atpm')) {
             showTable(getInitData().table)
          }
         
