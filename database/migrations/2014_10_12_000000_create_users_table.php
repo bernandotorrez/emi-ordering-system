@@ -34,11 +34,12 @@ class CreateUsersTable extends Migration
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
-        }
 
-        $this->insertAtpm();
-        $this->insertDealer();
-        $this->insertAdmin();
+            $this->insertAtpm();
+            $this->insertDealer();
+            $this->insertAdmin();
+        }
+        
     }
 
     public function insertAtpm()

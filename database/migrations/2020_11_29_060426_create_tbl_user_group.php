@@ -21,9 +21,11 @@ class CreateTblUserGroup extends Migration
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
+
+            $this->insertUserGroup();
         }
 
-        $this->insertUserGroup();
+        
     }
 
     public function insertUserGroup()

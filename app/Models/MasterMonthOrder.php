@@ -23,4 +23,9 @@ class MasterMonthOrder extends Model
     {
         return $this->searchableColumn;
     }
+
+    public function rangeMonths()
+    {
+        return $this->hasMany(RangeMonthFixOrder::class, 'id_month');
+    }
 }
