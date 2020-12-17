@@ -45,7 +45,7 @@ Route::get('/', function() {
 Route::get('/login', LoginIndex::class)->middleware('guest')->name('login.index');
 Route::get('/register', RegisterIndex::class)->name('register.index');
 Route::get('/logout', function() {
-    session()->forget(['user', 'level_access']);
+    session()->flush();
 
     return redirect()->route('login.index');
 })->name('logout');

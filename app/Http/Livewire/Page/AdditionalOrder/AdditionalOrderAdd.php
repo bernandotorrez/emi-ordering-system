@@ -136,7 +136,6 @@ class AdditionalOrderAdd extends Component
 
     public function render(ApiModelRepository $apiModelRepository)
     {
-
         $dealerName = session()->get('dealer')['nm_dealer'] ? session()->get('dealer')['nm_dealer'] : 'Admin';
         
         $dataModel = Cache::remember('data-model', 30, function () use($apiModelRepository) {

@@ -210,11 +210,6 @@ function initTable(tableId, data) {
                 title: 'Type Name'
             },
             {
-                data: 'year_production',
-                name: 'year_production',
-                title: 'Year Production'
-            },
-            {
                 data: 'total_qty',
                 name: 'total_qty',
                 title: 'Total Qty'

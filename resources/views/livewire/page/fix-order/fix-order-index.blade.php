@@ -52,7 +52,7 @@
                         @endforeach
                     </ul>
 
-                    @if($checkAddButtonCurrentMonth)
+                        @if($checkAddButtonCurrentMonth)
                         <button class="btn btn-primary mr-2" id="addButton"
                             wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
                         @else

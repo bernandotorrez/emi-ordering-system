@@ -76,7 +76,12 @@ class LoginIndex extends Component
             if(!$login) {
                 session()->flash('login_failed', 'Username or Password is wrong!');
             } else {
-                session(['user' => $login->toArray(), 'dealer' => array('nm_dealer' => 'Admin'), 'level_access' => $login->level_access]);
+                session([
+                    'user' => $login->toArray(), 
+                    'dealer' => array('nm_dealer' => 'Admin'), 
+                    'level_access' => $login->level_access,
+                    'token' => 'admin'
+                ]);
                 return redirect()->route('home.index');
             }
         } else {
@@ -91,6 +96,8 @@ class LoginIndex extends Component
                 $status_atpm = 'dealer';
                 $dataDealer = ($response['message'] == 'success') ? $response['data']['dealer'] : array('nm_dealer' => 'Dealer');
             }
+
+            $token = $response->header('X-Auth-Token');
      
             if($response['message'] != 'success') {
                 session()->flash('login_failed', 'Username or Password is wrong!');
@@ -125,7 +132,12 @@ class LoginIndex extends Component
 
                 $loginData = User::where(['username' => $this->username])->first();
 
-                session(['user' => $loginData->toArray(), 'dealer' => $dataDealer, 'level_access' => $loginData->level_access]);
+                session([
+                    'user' => $loginData->toArray(), 
+                    'dealer' => $dataDealer, 
+                    'level_access' => $loginData->level_access,
+                    'token' => $token
+                ]);
                 return redirect()->route('home.index');
             }
         }
