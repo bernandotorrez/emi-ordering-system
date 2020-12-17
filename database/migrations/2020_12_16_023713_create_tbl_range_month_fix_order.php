@@ -21,6 +21,12 @@ class CreateTblRangeMonthFixOrder extends Migration
                 $table->string('month_id_to', 2);
                 $table->tinyInteger('flag_open_colour');
                 $table->tinyInteger('flag_open_volume');
+                $table->tinyInteger('flag_button_add_before');
+                $table->tinyInteger('flag_button_amend_before');
+                $table->tinyInteger('flag_button_send_approval_before');
+                $table->tinyInteger('flag_button_revise_before');
+                $table->tinyInteger('flag_button_planning_before'); 
+                $table->tinyInteger('flag_button_submit_before'); 
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });

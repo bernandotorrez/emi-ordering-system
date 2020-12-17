@@ -49,7 +49,7 @@ class SweetAlertController extends Controller
 
             $this->deleteCaches('datatable-additionalOrderJsonDraft-idUser-'.$idUser.'-idDealer-'.$idDealer);
 
-            Mail::to('Bernand.Hermawan@eurokars.co.id')->subject()->send(new SendEmailToDealerPrinciple);
+            Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -301,6 +301,6 @@ class SweetAlertController extends Controller
 
     private function deleteCaches($status) {
         $idUser = session()->get('user')['id_user'];
-        Cache::forget($this->cache[$status].$idUser);
+        Cache::forget($status);
     }
 }
