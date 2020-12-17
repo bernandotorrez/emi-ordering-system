@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-class SweetAlertController extends Controller
+class AdditionalOrderSweetAlertController extends Controller
 {
     use WithDeleteCache;
 

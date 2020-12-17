@@ -44,7 +44,11 @@ class CreateUsersTable extends Migration
 
     public function insertAtpm()
     {
-        $data = Http::get($this->wrsApi.'/atpm-user');
+        $data = $data = Http::withHeaders([
+            'X-Auth-Token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjp7InVzZXJuYW1lIjoidGFtcGFuIiwic3RhdHVzX2F0cG0iOiJhdHBtIn0sImlhdCI6MTYwODE5OTUzMywiZXhwIjoxNjA4MjAzMTMzfQ.Kf9nrQvxF2WRQ4Cb-iTOd9IRgPjxuwnZELyDc9XV7uY'
+        ])
+        ->get($this->wrsApi.'/atpm-user')
+        ->json();
 
         foreach($data['data'] as $atpm)
         {
@@ -66,8 +70,12 @@ class CreateUsersTable extends Migration
 
     public function insertDealer()
     {
-        $data = Http::get($this->wrsApi.'/dealer-user');
-
+        $data = Http::withHeaders([
+            'X-Auth-Token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjp7InVzZXJuYW1lIjoidmlybWFuIiwic3RhdHVzX2F0cG0iOiJkZWFsZXIifSwiaWF0IjoxNjA4MTk5NTc0LCJleHAiOjE2MDgyMDMxNzR9.MEMAXf2LE_VZvY93h1iuLmtOiMFD7_tIR-GruHx3Snk'
+        ])
+        ->get($this->wrsApi.'/dealer-user')
+        ->json();
+        
         foreach($data['data'] as $dealer)
         {
             $checkDuplicate = User::firstWhere('kd_user_wrs', $dealer['kd_dealer_user']);
