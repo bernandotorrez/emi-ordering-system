@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AdditionalOrderDatatablesController;
-use App\Http\Controllers\DatatablesController;
 use App\Http\Controllers\FixOrderDatatableController;
 use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +23,6 @@ use App\Http\Livewire\Page\SubChildMenu\SubChildMenuIndex;
 use App\Http\Livewire\Page\SubmitAtpm\SubmitAtpmIndex;
 use App\Http\Livewire\Page\SubSubChildMenu\SubSubChildMenuIndex;
 use App\Http\Livewire\Page\UserGroup\UserGroupIndex;
-use App\Http\Livewire\Page\TestDetail\TestDetailIndex;
 use App\Http\Livewire\Page\User\UserIndex;
 
 /*
@@ -53,10 +51,6 @@ Route::get('/logout', function() {
 Route::middleware('user.session')->group(function() {
     Route::get('/home', HomeIndex::class)->name('home.index');
     Route::get('/about', AboutIndex::class)->name('about.index');
-
-    //Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
-
-    Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
 
     // Additional Order
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendEmailToDealerPrinciple;
 use App\Repository\Eloquent\KodeTahunRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithDeleteCache;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class SweetAlertController extends Controller
 {
@@ -37,12 +39,17 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('send_to_approval');
+            $this->deleteCaches('datatable-additionalOrderJsonDraft-idUser-'.$idUser.'-idDealer-'.$idDealer);
+
+            Mail::to('Bernand.Hermawan@eurokars.co.id')->subject()->send(new SendEmailToDealerPrinciple);
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -67,12 +74,15 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('waiting_approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -91,12 +101,15 @@ class SweetAlertController extends Controller
         
         $update = $masterAdditionalOrderRepository->updateSubmitAtpm($id, $kodeTahunRepository);
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -124,12 +137,15 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCache('approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -157,12 +173,15 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
             $this->deleteCache();
         } else {
             $callback = array(
@@ -188,12 +207,15 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('submitted_atpm');
+            $this->deleteCaches('datatable-additionalOrderJsonSubmittedATPM-idUser-'.$idUser.'-idDealer-'.$idDealer);
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -221,12 +243,15 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('submitted_atpm');
+            $this->deleteCaches('datatable-additionalOrderJsonSubmittedATPM-idUser-'.$idUser.'-idDealer-'.$idDealer);
             $this->deleteCache();
         } else {
             $callback = array(
@@ -255,12 +280,15 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('atpm_allocation');
+            $this->deleteCaches('datatable-additionalOrderJsonATPMAllocation-idUser-'.$idUser.'-idDealer-'.$idDealer);
             $this->deleteCache();
         } else {
             $callback = array(
