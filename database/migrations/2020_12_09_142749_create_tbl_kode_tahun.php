@@ -21,9 +21,11 @@ class CreateTblKodeTahun extends Migration
                 $table->string('kode', 2);
                 $table->timestamps();
             });
+
+            $this->insertData();
         }
         
-        $this->insertData();
+        
     }
 
     private function insertData()

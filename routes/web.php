@@ -45,7 +45,7 @@ Route::get('/', function() {
 Route::get('/login', LoginIndex::class)->middleware('guest')->name('login.index');
 Route::get('/register', RegisterIndex::class)->name('register.index');
 Route::get('/logout', function() {
-    session()->forget(['user', 'level_access']);
+    session()->flush();
 
     return redirect()->route('login.index');
 })->name('logout');
@@ -57,9 +57,6 @@ Route::middleware('user.session')->group(function() {
     //Route::get('/car-model', CarModelIndex::class)->name('car-model.index');
 
     Route::get('/test-detail', TestDetailIndex::class)->name('test-detail.index');
-
-    //Contoh Menu privilege
-    Route::get('/parent-menu', ParentMenuIndex::class)->name('parent-menu.index');
 
     // Additional Order
     Route::get('/sales/dealer/additional-order', AdditionalOrderIndex::class)->name('additional-order.index');
@@ -96,6 +93,8 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
 
     // Fix Order
     Route::get('fixOrderJson', [FixOrderDatatableController::class, 'fixOrderJson']);
+    Route::get('detailFixOrderJson/{id}', [FixOrderDatatableController::class, 'detailFixOrderJson']);
+    Route::get('subDetailFixOrderJson/{id}', [FixOrderDatatableController::class, 'subDetailFixOrderJson']);
 });
 
 // Sweet Alert

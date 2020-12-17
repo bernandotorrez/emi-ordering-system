@@ -2,21 +2,35 @@
 
 namespace App\Repository\Api;
 
+use App\Traits\WithValidateToken;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Http;
 
 class ApiDealerUserRepository
 {
     use WithWrsApi;
+    use WithValidateToken;
 
     public function all()
     {
-        return Http::get($this->wrsApi.'/dealer-user/')->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/dealer-user/')
+        ->json();
+
+        return($this->validateToken($data));
     }
 
     public function getById($id)
     {
-        return Http::get($this->wrsApi.'/dealer-user/get?id='.$id)->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/dealer-user/get?id='.$id)
+        ->json();
+
+        return($this->validateToken($data));
     }
 
     public function login($username, $password)
@@ -24,16 +38,28 @@ class ApiDealerUserRepository
         return Http::post($this->wrsApi.'/dealer-user/login', [
             'username' => $username,
             'password' => $password
-        ])->json();
+        ]);
     }
 
     public function getByIdDealer($id)
     {
-        return Http::get($this->wrsApi.'/dealer-user/get/fk_dealer/'.$id)->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/dealer-user/get/fk_dealer/'.$id)
+        ->json();
+
+        return($this->validateToken($data));
     }
 
     public function allWithPagination()
     {
-        return Http::get($this->wrsApi.'/dealer-user/pagination/')->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/dealer-user/pagination/')
+        ->json();
+
+        return($this->validateToken($data));
     }
 }

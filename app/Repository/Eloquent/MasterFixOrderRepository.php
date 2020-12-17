@@ -12,9 +12,14 @@ class MasterFixOrderRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    public function getByIdDealer($id)
+    public function getByIdDealer($idDealer)
     {
-        return $this->model->where(['status' => '1', 'id_dealer' => $id])->get();
+        return $this->model->where(['status' => '1', 'id_dealer' => $idDealer])->get();
+    }
+
+    public function getByIdDealerAndMonth($idDealer, $month)
+    {
+        return $this->model->where(['status' => '1', 'id_dealer' => $idDealer, 'id_month' => $month])->get(); 
     }
 
     public function createDealerOrder($dataMaster, $dataDetail)

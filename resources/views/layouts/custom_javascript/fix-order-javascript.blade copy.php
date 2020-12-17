@@ -41,41 +41,6 @@ function changeMonth(month) {
     showTable(month)
 }
 
-function allChecked(status) {
-    var arrayChecked = document.querySelectorAll('.checkId');
-    arrayChecked.forEach(function (check) {
-        check.checked = status
-    })
-
-    updateCheck('')
-}
-
-function updateCheck(id) {
-    var count = document.querySelectorAll('.checkId:checked').length
-
-    var editButtonEl = document.getElementById('editButton')
-    if (editButtonEl != null) {
-        if (count == 0 || count > 1) {
-            editButtonEl.setAttribute('disabled', true)
-        } else {
-            editButtonEl.removeAttribute('disabled')
-            editButtonEl.value = "{!! route('additional-order.edit') !!}/" + id
-        }
-
-
-        var sendButtonEl = document.getElementById('sendApprovalButton')
-        if (sendButtonEl != null) {
-            if (count == 0) {
-                sendButtonEl.setAttribute('disabled', true)
-            } else {
-                sendButtonEl.removeAttribute('disabled')
-            }
-        }
-
-    }
-
-    console.log(count)
-}
 
 function showTable(month) {
     //showHideButton()
@@ -98,7 +63,7 @@ function showTable(month) {
         ajax: month ? "{{url('datatable/fixOrderJson?month=')}}"+month : "{{url('datatable/fixOrderJson')}}",
         columnDefs : [{
                 "visible": false,
-                "targets": 2
+                "targets": 1
         }],
         columns: [{
                 className: 'details-control',
@@ -106,13 +71,6 @@ function showTable(month) {
                 searchable: false,
                 orderable: false,
                 defaultContent: ''
-            },
-            {
-                data: 'action',
-                name: 'action',
-                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
-                searchable: false,
-                orderable: false
             },
             {
                 data: 'id_master_fix_order_unit',
@@ -127,7 +85,7 @@ function showTable(month) {
             {
                 data: 'no_order_atpm',
                 name: 'no_order_atpm',
-                title: 'No Order ATPM'
+                title: 'No Order ATPm'
             },
             {
                 data: 'date_save_order',
@@ -191,6 +149,10 @@ function initTable(tableId, data) {
         "info": false,
         destroy: true,
         ajax: data.details_url,
+        columnDefs : [{
+                "visible": false,
+                "targets": 1
+        }],
         columns: [
                 {
                     className: 'sub-details-control',
@@ -199,6 +161,11 @@ function initTable(tableId, data) {
                     orderable: false,
                     defaultContent: ''
                 },
+                {
+                data: 'id_detail_fix_order_unit',
+                data: 'id_detail_fix_order_unit',
+                title: 'ID',
+            },
             {
                 data: 'model_name',
                 name: 'model_name',
@@ -210,6 +177,11 @@ function initTable(tableId, data) {
                 title: 'Type Name'
             },
             {
+                data: 'year_production',
+                name: 'year_production',
+                title: 'Year Production'
+            },
+            {
                 data: 'total_qty',
                 name: 'total_qty',
                 title: 'Total Qty'
@@ -218,8 +190,8 @@ function initTable(tableId, data) {
     })
 
     // Add event listener for opening and closing details
-    $('#detail-'+data.id_master_fix_order_unit+' tbody').off('click', 'td.sub-details-control');
-    $('#detail-'+data.id_master_fix_order_unit+' tbody').on('click', 'td.sub-details-control', function () {
+    $('#detail tbody').off('click', 'td.sub-details-control');
+    $('#detail tbody').on('click', 'td.sub-details-control', function () {
         console.log('tes')
         var tr = $(this).closest('tr');
         var row = table.row(tr);

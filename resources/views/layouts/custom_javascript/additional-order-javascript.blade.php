@@ -1,19 +1,11 @@
-<script id="details-template" type="text/x-handlebars-template">
-        <h5 class="mt-2 text-center">Detail Order</h5>
-        <table class="table table-hover details-table" id="detail">
-            <thead>
-            <tr>
-                <th>Model Name</th>
-                <th>Type Name</th>
-                <th>Colour Name</th>
-                <th>Year Production</th>
-                <th>Qty</th>
-            </tr>
-            </thead>
-        </table>
-    </script>
+<script id="details-template" type="text/x-handlebars-template" data-turbolinks-track="reload">
+    <h5 class="mt-2 text-center">Detail @{{no_order_dealer}} Order</h5>
+    <table class="table table-hover details-table" id="detail-@{{id_master_additional_order_unit}}">
+           
+    </table>
+</script>
 
-<script>
+<script data-turbolinks-track="reload">
     function getUrlAjax(status) {
         if (status == 'draft') {
             return "{{ url('datatable/additionalOrderJsonDraft') }}"
@@ -181,7 +173,12 @@
     }
 
     document.addEventListener('livewire:load', function () {
-        showTable(getInitData().table)
+        var url = window.location.href
+        if(url.includes('additional-order') || url.includes('approval-bm') || url.includes('approved-bm')
+         || url.includes('submit-atpm') || url.includes('allocated-atpm')) {
+            showTable(getInitData().table)
+         }
+        
     });
 
     // TODO: yang perlu di ubah
@@ -285,7 +282,6 @@
 
     // TODO: yang perlu diubah
     function showHideButton(status) {
-        console.log(status)
         if (getInitData().table == 'draft') {
             var sendButtonApprovalEl = document.getElementById('sendApprovalButton')
             if (sendButtonApprovalEl != null) {
@@ -663,19 +659,21 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
-            // columnDefs : (status == 'canceled') ? [{
-            //     "visible": false,
-            //     "targets": 3
-            // },{
-            //     "visible": false,
-            //     "targets": 6
-            // }] : '',
+            columnDefs : [{
+                "visible": false,
+                "targets": 1
+            }],
             columns: [{
                     className: 'details-control',
                     data: null,
                     searchable: false,
                     orderable: false,
                     defaultContent: ''
+                },
+                {
+                    data: 'id_master_additional_order_unit',
+                    data: 'id_master_additional_order_unit',
+                    title: 'ID',
                 },
                 getAction(status),
                 {
@@ -706,10 +704,11 @@
         });
 
         // Add event listener for opening and closing details
+        $('#master-additional-table tbody').off('click', 'td.details-control');
         $('#master-additional-table tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
-            var tableId = 'detail';
+            var tableId = 'detail-'+row.data().id_master_additional_order_unit;
 
             if (row.child.isShown()) {
                 // This row is already open - close it
@@ -739,23 +738,28 @@
             ajax: data.details_url,
             columns: [{
                     data: 'model_name',
-                    name: 'model_name'
+                    name: 'model_name',
+                    title: 'Model Name',
                 },
                 {
                     data: 'type_name',
-                    name: 'type_name'
+                    name: 'type_name',
+                    title: 'Type Name',
                 },
                 {
                     data: 'colour_name',
-                    name: 'colour_name'
+                    name: 'colour_name',
+                    title: 'Colour Name',
                 },
                 {
                     data: 'year_production',
-                    name: 'year_production'
+                    name: 'year_production',
+                    title: 'Year production',
                 },
                 {
                     data: 'qty',
-                    name: 'qty'
+                    name: 'qty',
+                    title: 'Qty',
                 },
             ]
         })
@@ -783,18 +787,21 @@
             serverSide: true,
             destroy: true,
             ajax: getUrlAjax(status),
-            columnsDef: [
-                (status == 'canceled') ? {
+            columnDefs : [{
                 "visible": false,
-                "targets": 7
-                } : ''
-            ],
+                "targets": (status == 'canceled') ? [1, 7] : 1
+            }],
             columns: [{
                     className: 'details-control',
                     data: null,
                     searchable: false,
                     orderable: false,
                     defaultContent: ''
+                },
+                {
+                    data: 'id_master_additional_order_unit',
+                    data: 'id_master_additional_order_unit',
+                    title: 'ID',
                 },
                 getAction(status),
                 {
@@ -825,10 +832,11 @@
         });
 
         // Add event listener for opening and closing details
+        $('#master-additional-table tbody').off('click', 'td.details-control');
         $('#master-additional-table tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
-            var tableId = 'detail';
+            var tableId = 'detail-'+row.data().id_master_additional_order_unit;
 
             if (row.child.isShown()) {
                 // This row is already open - close it
@@ -867,12 +875,21 @@
             serverSide: true,
             destroy: true,
             ajax: ajaxUrl,
+            columnDefs : [{
+                "visible": false,
+                "targets": 1
+            }],
             columns: [{
                     className: 'details-control',
                     data: null,
                     searchable: false,
                     orderable: false,
                     defaultContent: ''
+                },
+                {
+                    data: 'id_master_additional_order_unit',
+                    data: 'id_master_additional_order_unit',
+                    title: 'ID',
                 },
                 getAction(status),
                 {
@@ -903,10 +920,11 @@
         });
 
         // Add event listener for opening and closing details
+        $('#master-additional-table tbody').off('click', 'td.details-control');
         $('#master-additional-table tbody').on('click', 'td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
-            var tableId = 'detail';
+            var tableId = 'detail-'+row.data().id_master_additional_order_unit;
 
             if (row.child.isShown()) {
                 // This row is already open - close it

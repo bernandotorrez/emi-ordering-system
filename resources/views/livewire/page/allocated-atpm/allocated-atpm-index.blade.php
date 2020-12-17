@@ -31,7 +31,7 @@
                                 aria-selected="false">
                                 <i class="fas fa-user-check"></i> Approved</a>
                         </li>
-                        <li class="nav-item" onclick="showTableTab('submitted_atpm')">
+                        <li class="nav-item" wire:click.prevent="goTo('{{url('sales/atpm/submit-atpm')}}')">
                             <a class="nav-link" id="animated-underline-contact-tab" data-toggle="tab"
                                 href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact"
                                 aria-selected="false">

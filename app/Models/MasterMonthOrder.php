@@ -16,11 +16,17 @@ class MasterMonthOrder extends Model
         'month',
         'date_input_lock_start',
         'date_input_lock_end',
-        'operator',
+        'operator_start',
+        'operator_end',
     ];
 
     public function getSearchableColumn()
     {
         return $this->searchableColumn;
+    }
+
+    public function rangeMonths()
+    {
+        return $this->hasMany(RangeMonthFixOrder::class, 'id_month');
     }
 }

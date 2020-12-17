@@ -265,6 +265,7 @@ class SubChildMenuIndex extends Component
         
         if($delete) {
             $this->resetForm();
+            $this->checked = [];
             $this->deleteCache();
             $deleteStatus = 'success';
 

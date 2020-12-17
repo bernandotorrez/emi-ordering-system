@@ -20,13 +20,16 @@ class CreateTblMasterMonthOrder extends Migration
                 $table->string('month', 25);
                 $table->date('date_input_lock_start')->nullable();
                 $table->date('date_input_lock_end')->nullable();
-                $table->string('operator', 5);
+                $table->string('operator_start', 5);
+                $table->string('operator_end', 5);
                 $table->enum('status', ['0', '1'])->default(1);
                 $table->timestamps();
             });
+
+            $this->insertData();
         }
         
-        $this->insertData();
+        
     }
 
     private function insertData()
@@ -51,8 +54,9 @@ class CreateTblMasterMonthOrder extends Migration
             MasterMonthOrder::create([
                 'month' => $month,
                 'date_input_lock_start' => date('Y').'-'.$monthNumber.'-01',
-                'date_input_lock_end' => date('Y').'-'.$monthNumber.'-11',
-                'operator' => '<'
+                'date_input_lock_end' => date('Y').'-'.$monthNumber.'-10',
+                'operator_start' => '>=',
+                'operator_end' => '<='
             ]);
         }
     }

@@ -2,21 +2,35 @@
 
 namespace App\Repository\Api;
 
+use App\Traits\WithValidateToken;
 use App\Traits\WithWrsApi;
 use Illuminate\Support\Facades\Http;
 
 class ApiAtpmUserRepository
 {
     use WithWrsApi;
+    use WithValidateToken;
 
     public function all()
     {
-        return Http::get($this->wrsApi.'/atpm-user/')->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/atpm-user/')
+        ->json();
+
+        return($this->validateToken($data));
     }
 
     public function getById($id)
     {
-        return Http::get($this->wrsApi.'/atpm-user/get?id='.$id)->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/atpm-user/get?id='.$id)
+        ->json();
+
+        return($this->validateToken($data));
     }
 
     public function login($username, $password)
@@ -24,16 +38,28 @@ class ApiAtpmUserRepository
         return Http::post($this->wrsApi.'/atpm-user/login', [
             'username' => $username,
             'password' => $password
-        ])->json();
+        ]);
     }
 
     public function getByIdDept($id)
     {
-        return Http::get($this->wrsApi.'/atpm-user/get/fk_atpm_dept/'.$id)->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/atpm-user/get/fk_atpm_dept/'.$id)
+        ->json();
+
+        return($this->validateToken($data));
     }
 
     public function allWithPagination()
     {
-        return Http::get($this->wrsApi.'/atpm-user/pagination/')->json();
+        $data = Http::withHeaders([
+            'X-Auth-Token' => session()->get('token')
+        ])
+        ->get($this->wrsApi.'/atpm-user/pagination/')
+        ->json();
+
+        return($this->validateToken($data));
     }
 }

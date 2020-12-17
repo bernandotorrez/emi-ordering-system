@@ -227,7 +227,7 @@ class SubSubChildMenuIndex extends Component
 
         $data = array(
             'id_user_group' => $this->bind['id_user_group'],
-            'id_sub_child_menu' => $this->bind['id_child_menu'],
+            'id_sub_child_menu' => $this->bind['id_sub_child_menu'],
             'id_parent_menu' => $this->bind['id_parent_menu'],
             'id_child_menu' => $this->bind['id_child_menu'],
             'sub_sub_child_position' => $this->bind['sub_sub_child_position'],
@@ -272,6 +272,7 @@ class SubSubChildMenuIndex extends Component
         
         if($delete) {
             $this->resetForm();
+            $this->checked = [];
             $this->deleteCache();
             $deleteStatus = 'success';
 
