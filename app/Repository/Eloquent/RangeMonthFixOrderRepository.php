@@ -15,6 +15,7 @@ class RangeMonthFixOrderRepository extends BaseRepository
     {
         return $this->model->where(['status' =>'1', 'id_month' => $idMonth])
         ->with('month')
+        ->orderBy('month_id_to', 'ASC')
         ->get();
     }
 }

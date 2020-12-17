@@ -19,7 +19,7 @@
 
                 <div class="widget-content widget-content-area animated-underline-content">
 
-                    <input type="hidden" class="form-control" id="id_month" value="{{date('m')}}">
+                    <input type="hidden" class="form-control" id="id_month" value="{{$rangeMonth[0]}}">
                  
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
                     
@@ -29,10 +29,10 @@
                         <li class="nav-item" 
                             style="background-color: var(--green); color: #fff"
                             onclick="changeMonth({{$key+1}})">
-                            <a class="nav-link {{(date('m')-1 == $key) ? 'active' : ''}}"
+                            <a class="nav-link {{($rangeMonth[0] == $key+1) ? 'active' : ''}}"
                                 id="animated-underline-home-tab" data-toggle="tab" href="#animated-underline-home"
                                 role="tab" aria-controls="animated-underline-home"
-                                aria-selected="{{(date('m')-1 == $key) ? 'true' : 'false'}}">
+                                aria-selected="{{($rangeMonth[0] == $key+1) ? 'true' : 'false'}}">
                                 <i class="far fa-calendar-alt"></i>
                                 {{$masterMonth->month}}
                             </a>
@@ -52,7 +52,7 @@
                         @endforeach
                     </ul>
 
-                        @if($checkAddButtonCurrentMonth)
+                        @if($checkAddButtonCurrentMonth || $countOrder > 1)
                         <button class="btn btn-primary mr-2" id="addButton"
                             wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
                         @else

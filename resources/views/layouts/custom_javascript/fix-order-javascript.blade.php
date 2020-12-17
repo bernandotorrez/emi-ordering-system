@@ -17,9 +17,10 @@
 
 <script data-turbolinks-track="reload">
 document.addEventListener('livewire:load', function () {
+    var month = document.getElementById('id_month').value
     var url = window.location.href
     if (url.includes('fix-order')) {
-        showTable()
+        showTable(month)
     }
 })
 
