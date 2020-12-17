@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdditionalOrderDatatablesController;
+use App\Http\Controllers\AdditionalOrderSweetAlertController;
 use App\Http\Controllers\FixOrderDatatableController;
-use App\Http\Controllers\SweetAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
@@ -93,14 +93,14 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
 
 // Sweet Alert
 Route::middleware('user.session')->prefix('sweetalert')->group(function() {
-    Route::post('additionalOrder/sendToApproval', [SweetAlertController::class, 'sendToApproval']);
-    Route::post('additionalOrder/approvedBM', [SweetAlertController::class, 'approvedBM']);
-    Route::post('additionalOrder/submitToAtpm', [SweetAlertController::class, 'submitToAtpm']);
-    Route::post('additionalOrder/reviseBMDealer', [SweetAlertController::class, 'reviseBMDealer']);
-    Route::post('additionalOrder/cancelBMDealer', [SweetAlertController::class, 'cancelBMDealer']);
-    Route::post('additionalOrder/submittedAtpm', [SweetAlertController::class, 'submittedAtpm']);
-    Route::post('additionalOrder/cancelSubmitATPM', [SweetAlertController::class, 'cancelSubmitATPM']);
-    Route::post('additionalOrder/cancelAllocatedATPM', [SweetAlertController::class, 'cancelAllocatedATPM']);
+    Route::post('additionalOrder/sendToApproval', [AdditionalOrderSweetAlertController::class, 'sendToApproval']);
+    Route::post('additionalOrder/approvedBM', [AdditionalOrderSweetAlertController::class, 'approvedBM']);
+    Route::post('additionalOrder/submitToAtpm', [AdditionalOrderSweetAlertController::class, 'submitToAtpm']);
+    Route::post('additionalOrder/reviseBMDealer', [AdditionalOrderSweetAlertController::class, 'reviseBMDealer']);
+    Route::post('additionalOrder/cancelBMDealer', [AdditionalOrderSweetAlertController::class, 'cancelBMDealer']);
+    Route::post('additionalOrder/submittedAtpm', [AdditionalOrderSweetAlertController::class, 'submittedAtpm']);
+    Route::post('additionalOrder/cancelSubmitATPM', [AdditionalOrderSweetAlertController::class, 'cancelSubmitATPM']);
+    Route::post('additionalOrder/cancelAllocatedATPM', [AdditionalOrderSweetAlertController::class, 'cancelAllocatedATPM']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {
