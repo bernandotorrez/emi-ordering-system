@@ -56,7 +56,7 @@
                             @if($dataRangeMonth[0]->flag_button_add_before == '1')
                             <button class="btn btn-primary mr-2" id="addButton"
                                 data-editableByJS="true"
-                                wire:click.prevent="triggerGoTo('{{route('fix-order.add')}}')">Add</button>
+                                wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
                             @else
                             <button class="btn btn-primary mr-2" data-editableByJS="false" id="addButton" disabled>Add</button>
                             @endif
@@ -90,7 +90,7 @@
                     @if($dataRangeMonth[0]->flag_button_add_after == '1')
                         <button class="btn btn-primary mr-2" id="addButton"
                             data-editableByJS="true"
-                            wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
+                            wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
                         @else
                         <button class="btn btn-primary mr-2" data-editableByJS="false" id="addButton" disabled>Add</button>
                         @endif
@@ -118,7 +118,7 @@
                     <div id="button_ajax_load" style="display: none;">
                         <button class="btn btn-primary mr-2" id="addButtonAjaxLoad"
                                 data-editableByJS="false"
-                                wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
+                                wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
 
                         <button class="btn btn-success mr-2" id="editButtonAjaxLoad"
                                 data-editableByJS="false"

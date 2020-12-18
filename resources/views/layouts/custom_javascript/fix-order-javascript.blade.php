@@ -25,7 +25,8 @@ document.addEventListener('livewire:load', function () {
 })
 
 Livewire.on('triggerGoTo', function(url) {
-    console.log(url)
+    var month = document.getElementById('id_month').value
+    window.location.href = url+'/'+month
 })
 
 function showHideAddButton(month) {

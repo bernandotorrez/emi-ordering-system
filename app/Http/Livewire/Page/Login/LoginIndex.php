@@ -96,7 +96,7 @@ class LoginIndex extends Component
                 $status_atpm = 'dealer';
                 $dataDealer = ($response['message'] == 'success') ? $response['data']['dealer'] : array('nm_dealer' => 'Dealer');
             }
-
+            
             $token = $response->header('X-Auth-Token');
      
             if($response['message'] != 'success') {

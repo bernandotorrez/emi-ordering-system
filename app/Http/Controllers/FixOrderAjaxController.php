@@ -36,7 +36,7 @@ class FixOrderAjaxController extends Controller
         $where = array(
             'status' => '1',
             'id_dealer' => $idDealer,
-            'id_month' => $idMonth
+            'id_month' => $monthIdTo
         );
         $countOrder = $masterFixOrderRepository->findDuplicate($where);
 

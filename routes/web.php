@@ -60,7 +60,7 @@ Route::middleware('user.session')->group(function() {
 
     // Fix Order
     Route::get('/sales/dealer/fix-order', FixOrderIndex::class)->name('fix-order.index');
-    Route::get('/sales/dealer/fix-order/add', FixOrderAdd::class)->name('fix-order.add');
+    Route::get('/sales/dealer/fix-order/add/{idMonth?}', FixOrderAdd::class)->name('fix-order.add');
 });
 
 // Approval BM

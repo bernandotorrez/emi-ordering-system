@@ -27,6 +27,7 @@ class FixOrderAdd extends Component
     public $grandTotalQty = 0;
     public $id = 0;
     public $modelName = '';
+    public $idMonth = '';
     
     public array $bind = [
         'order_number_dealer' => ''
@@ -54,8 +55,9 @@ class FixOrderAdd extends Component
         'detailData.*.selected_colour.*.qty.required' => 'Please Fill Quantity!',
     ];
     
-    public function mount()
+    public function mount($idMonth)
     {
+        $this->idMonth = $idMonth;
         $detailData = array(
             'id_model' => '',
             'model_name' => '',
@@ -189,8 +191,9 @@ class FixOrderAdd extends Component
         
     }
 
-    public function render(ApiModelRepository $apiModelRepository)
-    {
+    public function render(
+        ApiModelRepository $apiModelRepository
+    ) {
         $dealerName = session()->get('dealer')['nm_dealer'] ? session()->get('dealer')['nm_dealer'] : 'Admin';
         
         $dataModel = Cache::remember('data-model', 30, function () use($apiModelRepository) {
@@ -222,7 +225,7 @@ class FixOrderAdd extends Component
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'id_month' => $monthIdTo->month_id_to,
+            'id_month' => $this->idMonth,
             'year_order' => Carbon::now()->year,
             'grand_total_qty' => $this->grandTotalQty,
             'status' => '1'
