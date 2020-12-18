@@ -24,6 +24,9 @@ class FixOrderIndex extends Component
         $rangeMonth = array();
         //array_push($rangeMonth, date('m'));
 
+        $checkBeforeOrAfter = eval("return ((string) date('Y-m-d') $dataLockDate->operator_start '$dataLockDate->date_input_lock_start')
+                    && ((string) date('Y-m-d') $dataLockDate->operator_end '$dataLockDate->date_input_lock_end');");
+
         foreach($dataRangeMonth as $month) {
             array_push($rangeMonth, $month->month_id_to);
         }
@@ -38,8 +41,10 @@ class FixOrderIndex extends Component
         return view('livewire.page.fix-order.fix-order-index', [
             'dataMasterMonth' => $dataMastermonth,
             'dataLockDate' => $dataLockDate,
+            'dataRangeMonth' => $dataRangeMonth,
             'rangeMonth' => $rangeMonth,
-            'countOrder' => $countOrder
+            'countOrder' => $countOrder,
+            'checkBeforeOrAfter' => $checkBeforeOrAfter
         ])
         ->layout('layouts.app', ['title' => 'Fix Order']);
     }

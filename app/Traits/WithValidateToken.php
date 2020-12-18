@@ -8,7 +8,11 @@ trait WithValidateToken
     {
         if(session()->get('level_access') != '1') {
             if($data['httpStatus'] == 401) {
-                abort(401, 'Unauthorized action.');
+                if($data['message'] == 'token_expired') {
+                    redirect()->to(route('logout'));
+                } else {
+                    abort(401, 'Unauthorized action.');
+                }
             }
         }
         

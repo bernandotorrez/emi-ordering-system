@@ -8,6 +8,7 @@ use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\MasterFixOrderRepository;
+use App\Repository\Eloquent\RangeMonthFixOrderRepository;
 use App\Traits\WithDeleteCache;
 use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
@@ -207,9 +208,12 @@ class FixOrderAdd extends Component
         MasterFixOrderRepository $masterFixOrderRepository,
         ApiModelRepository $apiModelRepository,
         ApiTypeModelRepository $apiTypeModelRepository,
-        ApiColorRepository $apiColorRepository
+        ApiColorRepository $apiColorRepository,
+        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository
     ) {
         $this->validate();
+
+        $monthIdTo = $rangeMonthFixOrderRepository->getMonthIdToByIdMonth(date('m'));
 
         $dataMaster = array(
             'no_order_atpm' => '',
@@ -218,7 +222,7 @@ class FixOrderAdd extends Component
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'id_month' => '12',
+            'id_month' => $monthIdTo->month_id_to,
             'year_order' => Carbon::now()->year,
             'grand_total_qty' => $this->grandTotalQty,
             'status' => '1'

@@ -9,19 +9,24 @@ use Yajra\DataTables\DataTables;
 use App\Models\Cache as CacheModel;
 use App\Repository\Eloquent\DetailColourFixOrderRepository;
 use App\Repository\Eloquent\DetailFixOrderRepository;
+use App\Repository\Eloquent\RangeMonthFixOrderRepository;
 
 class FixOrderDatatableController extends Controller
 {
-    public function FixOrderJson(Request $request, MasterFixOrderRepository $masterFixOrderRepository)
-    {
+    public function FixOrderJson(
+        Request $request, 
+        MasterFixOrderRepository $masterFixOrderRepository,
+        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository
+    ) {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
         $month = $request->get('month');
+        $monthIdTo = $rangeMonthFixOrderRepository->getMonthIdToByIdMonth(date('m'));
         $cache_name = 'datatable-fixOrderJson-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month;
         $datas = Cache::remember($cache_name, 10, 
-        function () use($masterFixOrderRepository, $idUser, $idDealer, $cache_name, $month){
+        function () use($masterFixOrderRepository, $idUser, $idDealer, $cache_name, $month, $monthIdTo){
             CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
-            return $masterFixOrderRepository->getByIdDealerAndMonth($idDealer, $month ? $month : date('m'));
+            return $masterFixOrderRepository->getByIdDealerAndMonth($idDealer, $month ? $month : $monthIdTo->month_id_to);
         });
 
         return Datatables::of($datas)

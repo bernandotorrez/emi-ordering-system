@@ -18,4 +18,18 @@ class RangeMonthFixOrderRepository extends BaseRepository
         ->orderBy('month_id_to', 'ASC')
         ->get();
     }
+
+    public function getMonthIdToByIdMonth($idMonth)
+    {
+        return $this->model->where(['status' => '1', 'id_month' => $idMonth])
+        ->orderBy('month_id_to', 'ASC')
+        ->first();
+    }
+
+    public function getByIdMonthAndMonthIdTo($idMonth, $monthIdTo)
+    {
+        return $this->model->where(['status' => '1', 'id_month' => $idMonth, 'month_id_to' => $monthIdTo])
+        ->orderBy('month_id_to', 'ASC')
+        ->first();
+    }
 }

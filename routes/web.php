@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\AdditionalOrderSweetAlertController;
+use App\Http\Controllers\FixOrderAjaxController;
 use App\Http\Controllers\FixOrderDatatableController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
@@ -101,6 +102,11 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/submittedAtpm', [AdditionalOrderSweetAlertController::class, 'submittedAtpm']);
     Route::post('additionalOrder/cancelSubmitATPM', [AdditionalOrderSweetAlertController::class, 'cancelSubmitATPM']);
     Route::post('additionalOrder/cancelAllocatedATPM', [AdditionalOrderSweetAlertController::class, 'cancelAllocatedATPM']);
+});
+
+// Ajax
+Route::middleware('user.session')->prefix('ajax')->group(function() {
+    Route::get('fixOrder/rangeMonthFixOrder', [FixOrderAjaxController::class, 'rangeMonthFixOrder']);
 });
 
 Route::middleware('admin.session')->prefix('admin')->group(function() {

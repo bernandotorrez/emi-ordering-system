@@ -67,7 +67,8 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="number" class="form-control text-right" 
+                                                    <input type="text" class="form-control text-right" 
+                                                    onkeypress="return isQtyKey(event)"
                                                     wire:model.lazy="detailData.{{$id}}.selected_colour.{{$keySub}}.qty">
                                                     @error('detailData.{{$id}}.selected_colour.{{$keySub}}.qty') 
                                                     <span class="error">{{ $message }}</span>
