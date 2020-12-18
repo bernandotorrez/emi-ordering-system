@@ -92,7 +92,6 @@ function showHideButtonFirstLoad() {
     var month = document.getElementById('id_month').value
     var monthIdTo = document.getElementById('month_id_to').value
     var currentMonth = "{{date('m')}}"
-    var checkBeforeOrAfter = document.getElementById('checkBeforeOrAfter').value
 
     var addButtonAjaxLoadEl = document.getElementById('addButtonAjaxLoad')
     var editButtonAjaxLoadEl = document.getElementById('editButtonAjaxLoad')
@@ -101,11 +100,18 @@ function showHideButtonFirstLoad() {
     var dataAjax = getRangeMonthFixOrder(currentMonth, month)
     dataAjax.then(function(dataRange) {
         var data = dataRange.data
-        
+        var checkBeforeOrAfter = dataRange.checkBeforeOrAfter
+        var countOrder = dataRange.countOrder
+
         if(checkBeforeOrAfter) {
-            if(data.flag_button_add_before == '1') {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                addButtonAjaxLoadEl.disabled = false
+            if(countOrder == 0) {
+                if(data.flag_button_add_before == '1') {
+                    addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                    addButtonAjaxLoadEl.disabled = false
+                } else {
+                    addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                    addButtonAjaxLoadEl.disabled = true
+                }
             } else {
                 addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
                 addButtonAjaxLoadEl.disabled = true

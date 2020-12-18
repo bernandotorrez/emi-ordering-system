@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use App\Repository\Eloquent\RangeMonthFixOrderRepository;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Cache as CacheModel;
+use App\Repository\Eloquent\MasterFixOrderRepository;
+use App\Repository\Eloquent\MasterMonthOrderRepository;
 use Illuminate\Http\Request;
 
 class FixOrderAjaxController extends Controller
 {
     public function rangeMonthFixOrder(
         Request $request,
-        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository
+        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository,
+        MasterMonthOrderRepository $masterMonthOrderRepository,
+        MasterFixOrderRepository $masterFixOrderRepository
     ) {
         $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
         $idMonth = $request->get('idMonth');
         $monthIdTo = $request->get('monthIdTo');
         $cache_name = 'fixOrder-ButtonRule-idUser-'.$idUser.'-idMonth-'.$idMonth;
@@ -24,7 +29,20 @@ class FixOrderAjaxController extends Controller
             return $rangeMonthFixOrderRepository->getByIdMonthAndMonthIdTo($idMonth, $monthIdTo);
         });
 
+        $dataLockDate = $masterMonthOrderRepository->getById($idMonth);
+        $checkBeforeOrAfter = eval("return ((string) date('Y-m-d') $dataLockDate->operator_start '$dataLockDate->date_input_lock_start')
+                    && ((string) date('Y-m-d') $dataLockDate->operator_end '$dataLockDate->date_input_lock_end');");
+
+        $where = array(
+            'status' => '1',
+            'id_dealer' => $idDealer,
+            'id_month' => $idMonth
+        );
+        $countOrder = $masterFixOrderRepository->findDuplicate($where);
+
         return response()->json([
+            'checkBeforeOrAfter' => $checkBeforeOrAfter,
+            'countOrder' => $countOrder,
             'data' => $data
         ], 200);
     }

@@ -117,8 +117,8 @@
 
                     <div id="button_ajax_load" style="display: none;">
                         <button class="btn btn-primary mr-2" id="addButtonAjaxLoad"
-                                    data-editableByJS="false"
-                                    wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
+                                data-editableByJS="false"
+                                wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
 
                         <button class="btn btn-success mr-2" id="editButtonAjaxLoad"
                                 data-editableByJS="false"
