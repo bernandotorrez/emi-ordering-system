@@ -24,6 +24,10 @@ document.addEventListener('livewire:load', function () {
     }
 })
 
+Livewire.on('triggerGoTo', function(url) {
+    console.log(url)
+})
+
 function showHideAddButton(month) {
     var currentDate = "{{date('d-m-Y')}}"
     var addButtonEl = document.getElementById('addButton')
@@ -208,7 +212,7 @@ function showTable(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax: month ? "{{url('datatable/fixOrderJson?month=')}}" + month : "{{url('datatable/fixOrderJson')}}",
+        ajax: "{{url('datatable/fixOrderJson')}}",
         columnDefs: [{
             "visible": false,
             "targets": 2

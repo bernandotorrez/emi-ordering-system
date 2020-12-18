@@ -56,7 +56,7 @@
                             @if($dataRangeMonth[0]->flag_button_add_before == '1')
                             <button class="btn btn-primary mr-2" id="addButton"
                                 data-editableByJS="true"
-                                wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
+                                wire:click.prevent="triggerGoTo('{{route('fix-order.add')}}')">Add</button>
                             @else
                             <button class="btn btn-primary mr-2" data-editableByJS="false" id="addButton" disabled>Add</button>
                             @endif
