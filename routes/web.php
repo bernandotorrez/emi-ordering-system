@@ -4,6 +4,7 @@ use App\Http\Controllers\AdditionalOrderDatatablesController;
 use App\Http\Controllers\AdditionalOrderSweetAlertController;
 use App\Http\Controllers\FixOrderAjaxController;
 use App\Http\Controllers\FixOrderDatatableController;
+use App\Http\Controllers\FixOrderSweetAlertController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Page\Home\HomeIndex;
 use App\Http\Livewire\Page\About\AboutIndex;
@@ -102,6 +103,9 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('additionalOrder/submittedAtpm', [AdditionalOrderSweetAlertController::class, 'submittedAtpm']);
     Route::post('additionalOrder/cancelSubmitATPM', [AdditionalOrderSweetAlertController::class, 'cancelSubmitATPM']);
     Route::post('additionalOrder/cancelAllocatedATPM', [AdditionalOrderSweetAlertController::class, 'cancelAllocatedATPM']);
+
+    // Fix Order
+    Route::post('fixOrder/sendToApproval', [FixOrderSweetAlertController::class, 'sendToApproval']);
 });
 
 // Ajax

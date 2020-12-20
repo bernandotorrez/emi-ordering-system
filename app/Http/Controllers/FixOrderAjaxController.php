@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Cache as CacheModel;
 use App\Repository\Eloquent\MasterFixOrderRepository;
 use App\Repository\Eloquent\MasterMonthOrderRepository;
+use App\Repository\Eloquent\MonthExceptionRuleRepository;
 use Illuminate\Http\Request;
 
 class FixOrderAjaxController extends Controller
@@ -15,7 +16,8 @@ class FixOrderAjaxController extends Controller
         Request $request,
         RangeMonthFixOrderRepository $rangeMonthFixOrderRepository,
         MasterMonthOrderRepository $masterMonthOrderRepository,
-        MasterFixOrderRepository $masterFixOrderRepository
+        MasterFixOrderRepository $masterFixOrderRepository,
+        MonthExceptionRuleRepository $monthExceptionRuleRepository
     ) {
         $idUser = session()->get('user')['id_user'];
         $idDealer = session()->get('user')['id_dealer'];
@@ -29,7 +31,14 @@ class FixOrderAjaxController extends Controller
             return $rangeMonthFixOrderRepository->getByIdMonthAndMonthIdTo($idMonth, $monthIdTo);
         });
 
-        $dataLockDate = $masterMonthOrderRepository->getById($idMonth);
+        $dataMonthExceptionRule = $monthExceptionRuleRepository->getByIdDealerAndIdMonth($idDealer, date('m'));
+        
+        if($dataMonthExceptionRule) {
+            $dataLockDate = $dataMonthExceptionRule;
+        } else {
+            $dataLockDate = $masterMonthOrderRepository->getById(date('m'));
+        }
+
         $checkBeforeOrAfter = eval("return ((string) date('Y-m-d') $dataLockDate->operator_start '$dataLockDate->date_input_lock_start')
                     && ((string) date('Y-m-d') $dataLockDate->operator_end '$dataLockDate->date_input_lock_end');");
 

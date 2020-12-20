@@ -13,6 +13,7 @@ use App\Repository\Eloquent\RangeMonthFixOrderRepository;
 
 class FixOrderDatatableController extends Controller
 {
+    // In Dealer Admin
     public function FixOrderJson(
         Request $request, 
         MasterFixOrderRepository $masterFixOrderRepository,

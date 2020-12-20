@@ -33,11 +33,11 @@
                             </a>
                         </li>
                         @else
-                        <li class="nav-item" style="background-color: var(--red); color: #fff">
-                            <a class="nav-link disabled"
+                        <li class="nav-item" style="background-color: var(--red); color: #fff"
+                            onclick="showTableReadOnly({{$masterMonth->id_month}});">
+                            <a class="nav-link"
                                 id="animated-underline-home-tab" data-toggle="tab" href="#animated-underline-home"
-                                role="tab" aria-controls="animated-underline-home"
-                                aria-disabled="true">
+                                role="tab" aria-controls="animated-underline-home">
                                 <i class="far fa-calendar-alt"></i>
                                 {{$masterMonth->month}}
                             </a>
@@ -77,7 +77,7 @@
                         <!-- Send Approval Button -->
                         @if($dataRangeMonth[0]->flag_button_send_approval_before == '1')
                         <button class="btn btn-primary mr-2" id="sendApprovalButton"
-                            data-editableByJS="true" disabled>Send Approval</button>
+                            data-editableByJS="true" onclick="sendApproval()" disabled>Send Approval</button>
                         @else
                         <button class="btn btn-primary mr-2" data-editableByJS="false" 
                             id="sendApprovalButton" disabled>Send Approval</button>
@@ -107,7 +107,7 @@
                         <!-- Send Approval Button -->
                         @if($dataRangeMonth[0]->flag_button_send_approval_after == '1')
                         <button class="btn btn-primary mr-2" id="sendApprovalButton"
-                            data-editableByJS="true" disabled>Send Approval</button>
+                            data-editableByJS="true" onclick="sendApproval()" disabled>Send Approval</button>
                         @else
                         <button class="btn btn-primary mr-2" data-editableByJS="false" id="sendApprovalButton" disabled>Send Approval</button>
                         @endif
@@ -125,7 +125,7 @@
                                 wire:click.prevent="goTo('{{route('fix-order.add')}}')" disabled>Amend</button>
 
                         <button class="btn btn-primary mr-2" id="sendApprovalButtonAjaxLoad"
-                                data-editableByJS="false" disabled>Send Approval</button>
+                                data-editableByJS="false" onclick="sendApproval()" disabled>Send Approval</button>
                     </div>
 
                         <div class="table-responsive mt-4">

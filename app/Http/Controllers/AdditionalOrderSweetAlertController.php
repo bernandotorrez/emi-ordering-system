@@ -299,8 +299,8 @@ class AdditionalOrderSweetAlertController extends Controller
         return $callback;
     }
 
-    private function deleteCaches($status) {
+    private function deleteCaches($cacheName) {
         $idUser = session()->get('user')['id_user'];
-        Cache::forget($status);
+        Cache::forget($cacheName);
     }
 }
