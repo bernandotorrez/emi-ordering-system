@@ -214,15 +214,21 @@
                                     </td>
 
                                     <td>
-                                            <i class="fas fa-paint-brush fa-2x text-info mr-2" 
+                                    <div class="row">
+                                        <div class="col-md-1 offset-2 mr-4">
+                                            <i class="fas fa-paint-brush fa-2x text-info mr-4"
                                                 wire:click.prevent="addForm({{$key}})"></i>
-                            
+
+
+                                        </div>
+                                        <div class="col-md-1">
                                             <i class="fas fa-trash-alt fa-2x text-danger"
                                                 onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
-                                                wire:click.prevent="deleteDetail({{$key}})"
-                                                @if(count($detailData)==1) disabled @endif>
+                                                wire:click.prevent="deleteDetail({{$key}})" @if(count($detailData)==1)
+                                                disabled @endif>
                                             </i>
-                                        
+                                        </div>
+                                    </div>
                                     </td>
                                 </tr>
                                 @endforeach

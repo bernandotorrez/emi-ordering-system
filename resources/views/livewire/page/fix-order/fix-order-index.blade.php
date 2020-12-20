@@ -29,7 +29,7 @@
                                 role="tab" aria-controls="animated-underline-home"
                                 aria-selected="{{($rangeMonth[0] == $key+1) ? 'true' : 'false'}}">
                                 <i class="far fa-calendar-alt"></i>
-                                {{$masterMonth->month}}
+                                {{Str::substr($masterMonth->month, 0, 3)}}
                             </a>
                         </li>
                         @else
@@ -39,7 +39,7 @@
                                 id="animated-underline-home-tab" data-toggle="tab" href="#animated-underline-home"
                                 role="tab" aria-controls="animated-underline-home">
                                 <i class="far fa-calendar-alt"></i>
-                                {{$masterMonth->month}}
+                                {{Str::substr($masterMonth->month, 0, 3)}}
                             </a>
                         </li>
                         @endif

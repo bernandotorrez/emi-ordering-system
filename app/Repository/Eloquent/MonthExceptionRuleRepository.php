@@ -13,6 +13,12 @@ class MonthExceptionRuleRepository extends BaseRepository
 
     public function getByIdDealerAndIdMonth($idDealer, $idMonth)
     {
-        return $this->model->where(['status' => '1', 'id_dealer' => $idDealer, 'id_month' => $idMonth])->first();
+        return $this->model->where([
+            'status' => '1', 
+            'id_dealer' => $idDealer, 
+            'id_month' => $idMonth
+        ])
+        ->orWhere(['status' => '1', 'id_dealer' => '0'])
+        ->first();
     }
 }

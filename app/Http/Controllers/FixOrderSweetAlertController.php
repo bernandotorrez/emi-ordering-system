@@ -41,7 +41,7 @@ class FixOrderSweetAlertController extends Controller
 
             $this->deleteCaches('datatable-fixOrderJson-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
 
-            Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+            //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
         } else {
             $callback = array(
                 'status' => 'fail',
