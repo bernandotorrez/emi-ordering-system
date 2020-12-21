@@ -48,7 +48,7 @@
                     </ul>
 
                     <div id="button_first_load">
-                    <!-- Tanggal hari ini masih di antara date_lock_input_start dan date_lock_input_end (Before) -->
+                    <!-- Tanggal hari ini masih di antara date_lock_input_start dan date_lock_input_end (Before), TRUE = Before -->
                     @if($checkBeforeOrAfter)
 
                         <!-- Add Button -->

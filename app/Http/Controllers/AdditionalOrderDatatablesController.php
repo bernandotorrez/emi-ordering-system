@@ -23,10 +23,14 @@ class AdditionalOrderDatatablesController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'" 
-            value="'.$data->id_master_additional_order_unit.'">';
+            return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+                id="'.$data->id_master_additional_order_unit.'" 
+                value="'.$data->id_master_additional_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
@@ -47,10 +51,14 @@ class AdditionalOrderDatatablesController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'" 
-            value="'.$data->id_master_additional_order_unit.'">';
+            return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+                id="'.$data->id_master_additional_order_unit.'" 
+                value="'.$data->id_master_additional_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
@@ -71,10 +79,14 @@ class AdditionalOrderDatatablesController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'" 
-            value="'.$data->id_master_additional_order_unit.'">';
+            return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+                id="'.$data->id_master_additional_order_unit.'" 
+                value="'.$data->id_master_additional_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
@@ -95,10 +107,14 @@ class AdditionalOrderDatatablesController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'" 
-            value="'.$data->id_master_additional_order_unit.'">';
+            return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+                id="'.$data->id_master_additional_order_unit.'" 
+                value="'.$data->id_master_additional_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
@@ -119,10 +135,14 @@ class AdditionalOrderDatatablesController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'" 
-            value="'.$data->id_master_additional_order_unit.'">';
+            return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+                id="'.$data->id_master_additional_order_unit.'" 
+                value="'.$data->id_master_additional_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);
@@ -145,10 +165,14 @@ class AdditionalOrderDatatablesController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            return '<input type="checkbox" class="new-control-input checkId" 
-            onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
-            id="'.$data->id_master_additional_order_unit.'" 
-            value="'.$data->id_master_additional_order_unit.'">';
+            return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_additional_order_unit.')" 
+                id="'.$data->id_master_additional_order_unit.'" 
+                value="'.$data->id_master_additional_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
         })
         ->addColumn('details_url', function($data) {
             return url('datatable/detailAdditionalOrderJson/' . $data->id_master_additional_order_unit);

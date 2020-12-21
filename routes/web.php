@@ -17,6 +17,7 @@ use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ApprovedBM\ApprovedBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
 use App\Http\Livewire\Page\FixOrder\FixOrderIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderPrinciple;
 use App\Http\Livewire\Page\Login\LoginIndex;
 use App\Http\Livewire\Page\MenuUserGroup\MenuUserGroupIndex;
 use App\Http\Livewire\Page\ParentMenu\ParentMenuIndex;
@@ -68,6 +69,7 @@ Route::middleware('user.session')->group(function() {
 Route::middleware(['user.session', 'bm.session'])->group(function() {
     Route::get('/sales/dealer/approval-bm', ApprovalBMIndex::class)->name('approval-bm.index');
     Route::get('/sales/dealer/approved-bm', ApprovedBMIndex::class)->name('approved-bm.index');
+    Route::get('/sales/dealer/fix-order-bm', FixOrderPrinciple::class)->name('fix-order.principle');
 });
 
 // APproval ATPM
@@ -89,6 +91,7 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
 
     // Fix Order
     Route::get('fixOrderJson', [FixOrderDatatableController::class, 'fixOrderJson']);
+    Route::get('FixOrderJsonApprovalBM', [FixOrderDatatableController::class, 'FixOrderJsonApprovalBM']);
     Route::get('detailFixOrderJson/{id}', [FixOrderDatatableController::class, 'detailFixOrderJson']);
     Route::get('subDetailFixOrderJson/{id}', [FixOrderDatatableController::class, 'subDetailFixOrderJson']);
 });
@@ -106,6 +109,9 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
 
     // Fix Order
     Route::post('fixOrder/sendToApproval', [FixOrderSweetAlertController::class, 'sendToApproval']);
+    Route::post('fixOrder/approvalBM', [FixOrderSweetAlertController::class, 'approvalBM']);
+    Route::post('fixOrder/planningToAtpm', [FixOrderSweetAlertController::class, 'planningToAtpm']);
+    Route::post('fixOrder/reviseBM', [FixOrderSweetAlertController::class, 'reviseBM']);
 });
 
 // Ajax

@@ -241,7 +241,7 @@ class FixOrderAdd extends Component
             session()->flash('action_message', 
             '<div class="alert alert-warning" role="alert">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
-            $insert = $masterFixOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+            $insert = $masterFixOrderRepository->createDealerOrder($dataMaster, $this->detailData, $this->idMonth);
 
             if($insert) {
                 $this->deleteCache();

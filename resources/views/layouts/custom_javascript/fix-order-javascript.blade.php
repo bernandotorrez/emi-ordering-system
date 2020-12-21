@@ -330,6 +330,11 @@ function showTable(month) {
                 title: 'Grand Total Qty'
             },
             {
+                data: 'status_progress',
+                name: 'status_progress',
+                title: 'Status Progress'
+            },
+            {
                 data: 'remark_revise',
                 name: 'remark_revise',
                 title: 'Remark Revise',
@@ -437,6 +442,11 @@ function showTableTab(month) {
                 title: 'Grand Total Qty'
             },
             {
+                data: 'status_progress',
+                name: 'status_progress',
+                title: 'Status Progress'
+            },
+            {
                 data: 'remark_revise',
                 name: 'remark_revise',
                 title: 'Remark Revise',
@@ -535,6 +545,11 @@ function showTableReadOnly(month) {
                 data: 'grand_total_qty',
                 name: 'grand_total_qty',
                 title: 'Grand Total Qty'
+            },
+            {
+                data: 'status_progress',
+                name: 'status_progress',
+                title: 'Status Progress'
             },
             {
                 data: 'remark_revise',

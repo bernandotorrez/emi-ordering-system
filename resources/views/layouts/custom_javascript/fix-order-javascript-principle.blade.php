@@ -19,7 +19,7 @@
 document.addEventListener('livewire:load', function () {
     var month = document.getElementById('id_month').value
     var url = window.location.href
-    if (url.includes('fix-order')) {
+    if (url.includes('fix-order-bm')) {
         showTable(month)
     }
 })
@@ -28,18 +28,6 @@ Livewire.on('triggerGoTo', function(url) {
     var month = document.getElementById('id_month').value
     window.location.href = url+'/'+month
 })
-
-function showHideAddButton(month) {
-    var currentDate = "{{date('d-m-Y')}}"
-    var addButtonEl = document.getElementById('addButton')
-    var currentMonth = currentDate.split('-')[1]
-
-    if (month == currentMonth - 1) {
-        addButtonEl.style.display = 'inline-flex'
-    } else {
-        addButtonEl.style.display = 'none'
-    }
-}
 
 function changeMonthIdTo(monthIdTo) {
     var monthIdToTab = document.getElementById('month_id_to_tab')
@@ -64,23 +52,35 @@ function allChecked(status) {
 function updateCheck(id) {
     var count = document.querySelectorAll('.checkId:checked').length
 
-    var editButtonEl = document.getElementById('editButton')
-    if (editButtonEl != null) {
-        var editButtonEditable = editButtonEl.getAttribute('data-editableByJS')
-        if (editButtonEditable == 'true') {
-            if (count == 0 || count > 1) {
-                editButtonEl.setAttribute('disabled', true)
+    var planningButtonEl = document.getElementById('planningButton')
+    if (planningButtonEl != null) {
+        var planningButtonEditable = planningButtonEl.getAttribute('data-editableByJS')
+        if (planningButtonEditable == 'true') {
+            if (count == 0) {
+                planningButtonEl.setAttribute('disabled', true)
             } else {
-                editButtonEl.removeAttribute('disabled')
-                editButtonEl.value = "{!! route('additional-order.edit') !!}/" + id
+                planningButtonEl.removeAttribute('disabled')
             }
         }
 
     }
 
-    var sendButtonEl = document.getElementById('sendApprovalButton')
+    var reviseButtonEl = document.getElementById('reviseButton')
+    if (reviseButtonEl != null) {
+        var reviseButtonEditable = reviseButtonEl.getAttribute('data-editableByJS')
+        if (reviseButtonEditable == 'true') {
+            if (count == 0 || count > 1) {
+                reviseButtonEl.setAttribute('disabled', true)
+            } else {
+                reviseButtonEl.removeAttribute('disabled')
+            }
+        }
+
+    }
+
+    var sendButtonEl = document.getElementById('approveButton')
     if (sendButtonEl != null) {
-        var sendButtonEditable = editButtonEl.getAttribute('data-editableByJS')
+        var sendButtonEditable = sendButtonEl.getAttribute('data-editableByJS')
         if (sendButtonEditable == 'true') {
             if (count == 0) {
                 sendButtonEl.setAttribute('disabled', true)
@@ -98,9 +98,9 @@ function showHideButtonFirstLoad() {
     var monthIdTo = document.getElementById('month_id_to').value
     var currentMonth = "{{date('m')}}"
 
-    var addButtonAjaxLoadEl = document.getElementById('addButtonAjaxLoad')
-    var editButtonAjaxLoadEl = document.getElementById('editButtonAjaxLoad')
-    var sendApprovalButtonAjaxLoadEl = document.getElementById('sendApprovalButtonAjaxLoad')
+    var reviseButtonAjaxLoadEl = document.getElementById('reviseButtonAjaxLoad')
+    var planningButtonAjaxLoadEl = document.getElementById('planningButtonAjaxLoad')
+    var approveButtonAjaxLoadEl = document.getElementById('approveButtonAjaxLoad')
 
     var dataAjax = getRangeMonthFixOrder(currentMonth, month)
     dataAjax.then(function(dataRange) {
@@ -111,47 +111,47 @@ function showHideButtonFirstLoad() {
         if(checkBeforeOrAfter) {
             if(countOrder == 0) {
                 if(data.flag_button_add_before == '1') {
-                    addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                    addButtonAjaxLoadEl.disabled = false
+                    reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                    reviseButtonAjaxLoadEl.disabled = false
                 } else {
-                    addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                    addButtonAjaxLoadEl.disabled = true
+                    reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                    reviseButtonAjaxLoadEl.disabled = true
                 }
             } else {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                addButtonAjaxLoadEl.disabled = true
+                reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                reviseButtonAjaxLoadEl.disabled = true
             }
 
             if(data.flag_button_amend_before == '1') {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
 
             if(data.flag_button_send_approval_before == '1') {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
         } else {
             if(data.flag_button_add_after == '1') {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                addButtonAjaxLoadEl.disabled = false
+                reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                reviseButtonAjaxLoadEl.disabled = false
             } else {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                addButtonAjaxLoadEl.disabled = true
+                reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                reviseButtonAjaxLoadEl.disabled = true
             }
 
             if(data.flag_button_amend_after == '1') {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
 
             if(data.flag_button_send_approval_after == '1') {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
         }
         
@@ -184,7 +184,7 @@ function sendApproval() {
         arrayId.push(check.value)
     })
 
-    var url = "{{url('sweetalert/fixOrder/sendToApproval')}}"
+    var url = "{{url('sweetalert/fixOrder/approvalBM')}}"
     var data = {
         _token: $('meta[name="csrf-token"]').attr('content'),
         id: arrayId,
@@ -192,7 +192,7 @@ function sendApproval() {
     }
 
     Swal.fire({
-        title: 'Send Approval?',
+        title: 'Approve?',
         text: "Please ensure and then confirm!",
         type: "info",
         icon: 'question',
@@ -204,6 +204,126 @@ function sendApproval() {
                 type: "POST",
                 url: url,
                 data: data,
+                dataType: 'JSON',
+                cache: false,
+                success: function (response) {
+                    if (response.status == 'success') {
+                        Swal.fire("Success!", "", "success")
+                        showTableTab(month)
+                    } else {
+                        Swal.fire("Failed", "", "error")
+                    }
+                },
+                statusCode: {
+                    500: function () {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    }
+                },
+                failure: function (response) {
+                    Swal.fire("Oops, Something went Wrong", "", "error")
+                },
+                error: function (response) {
+                    Swal.fire("Oops, Something went Wrong", "", "error")
+                },
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+
+    })
+}
+
+function planningToAtpm() {
+    var month = document.getElementById('id_month').value
+
+    var arrayChecked = document.querySelectorAll('.checkId:checked');
+    var arrayId = [];
+
+    arrayChecked.forEach(function (check) {
+        arrayId.push(check.value)
+    })
+
+    var url = "{{url('sweetalert/fixOrder/planningToAtpm')}}"
+    var data = {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        id: arrayId,
+        id_month: month
+    }
+
+    Swal.fire({
+        title: 'Approve?',
+        text: "Please ensure and then confirm!",
+        type: "info",
+        icon: 'question',
+        showCancelButton: true,
+        reverseButtons: false,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                dataType: 'JSON',
+                cache: false,
+                success: function (response) {
+                    if (response.status == 'success') {
+                        Swal.fire("Success!", "", "success")
+                        showTableTab(month)
+                    } else {
+                        Swal.fire("Failed", "", "error")
+                    }
+                },
+                statusCode: {
+                    500: function () {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    }
+                },
+                failure: function (response) {
+                    Swal.fire("Oops, Something went Wrong", "", "error")
+                },
+                error: function (response) {
+                    Swal.fire("Oops, Something went Wrong", "", "error")
+                },
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+
+    })
+}
+
+function sendRevision() {
+    var month = document.getElementById('id_month').value
+
+    var arrayChecked = document.querySelectorAll('.checkId:checked');
+    var arrayId = [];
+
+    arrayChecked.forEach(function (check) {
+        arrayId.push(check.value)
+    })
+
+    var url = "{{url('sweetalert/fixOrder/reviseBM')}}" // TODO: Harus di rubah, sesuai Route SweetAlert
+
+    Swal.fire({
+        title: "Revise this Order?",
+        text: "Please ensure and then confirm!",
+        type: "info",
+        icon: 'question',
+        input: 'text',
+        inputPlaceholder: 'Enter your Revise Reason',
+        showCancelButton: true,
+        reverseButtons: false,
+        showLoaderOnConfirm: true,
+        preConfirm: (remark_revise) => {
+            return $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    id: arrayId,
+                    id_month: month,
+                    remark_revise: remark_revise
+                },
                 dataType: 'JSON',
                 cache: false,
                 success: function (response) {
@@ -265,7 +385,7 @@ function showTable(month) {
     //showHideButton()
 
     var template = Handlebars.compile($("#details-template").html());
-    var table = $('#master-fixorder-table').DataTable({
+    var table = $('#master-fixorder-principle-table').DataTable({
         "oLanguage": {
             "oPaginate": {
                 "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -280,7 +400,7 @@ function showTable(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax: "{{url('datatable/fixOrderJson')}}",
+        ajax: "{{url('datatable/FixOrderJsonApprovalBM')}}",
         columnDefs: [{
             "visible": false,
             "targets": 2
@@ -315,9 +435,9 @@ function showTable(month) {
                 title: 'No Order ATPM'
             },
             {
-                data: 'date_save_order',
-                name: 'date_save_order',
-                title: 'Date Save Order'
+                data: 'date_send_approval',
+                name: 'date_send_approval',
+                title: 'Date Send Approval'
             },
             {
                 data: 'user_order',
@@ -328,6 +448,11 @@ function showTable(month) {
                 data: 'grand_total_qty',
                 name: 'grand_total_qty',
                 title: 'Grand Total Qty'
+            },
+            {
+                data: 'status_progress',
+                name: 'status_progress',
+                title: 'Status Progress'
             },
             {
                 data: 'remark_revise',
@@ -343,8 +468,8 @@ function showTable(month) {
     });
 
     // Add event listener for opening and closing details
-    $('#master-fixorder-table tbody').off('click', 'td.details-control');
-    $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
+    $('#master-fixorder-principle-table tbody').off('click', 'td.details-control');
+    $('#master-fixorder-principle-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var tableId = 'detail-' + row.data().id_master_fix_order_unit;
@@ -368,11 +493,11 @@ function showTableTab(month) {
     //showHideButton()
     showHideButtonFirstLoad()
 
-    $('#master-fixorder-table').DataTable().destroy();
-    $('#master-fixorder-table').html('');
+    $('#master-fixorder-principle-table').DataTable().destroy();
+    $('#master-fixorder-principle-table').html('');
 
     var template = Handlebars.compile($("#details-template").html());
-    var table = $('#master-fixorder-table').DataTable({
+    var table = $('#master-fixorder-principle-table').DataTable({
         "oLanguage": {
             "oPaginate": {
                 "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -387,7 +512,7 @@ function showTableTab(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax: month ? "{{url('datatable/fixOrderJson?month=')}}" + month : "{{url('datatable/fixOrderJson')}}",
+        ajax: month ? "{{url('datatable/FixOrderJsonApprovalBM?month=')}}" + month : "{{url('datatable/FixOrderJsonApprovalBM')}}",
         columnDefs: [{
             "visible": false,
             "targets": 2
@@ -422,9 +547,9 @@ function showTableTab(month) {
                 title: 'No Order ATPM'
             },
             {
-                data: 'date_save_order',
-                name: 'date_save_order',
-                title: 'Date Save Order'
+                data: 'date_send_approval',
+                name: 'date_send_approval',
+                title: 'Date Send Approval'
             },
             {
                 data: 'user_order',
@@ -435,6 +560,11 @@ function showTableTab(month) {
                 data: 'grand_total_qty',
                 name: 'grand_total_qty',
                 title: 'Grand Total Qty'
+            },
+            {
+                data: 'status_progress',
+                name: 'status_progress',
+                title: 'Status Progress'
             },
             {
                 data: 'remark_revise',
@@ -450,8 +580,8 @@ function showTableTab(month) {
     });
 
     // Add event listener for opening and closing details
-    $('#master-fixorder-table tbody').off('click', 'td.details-control');
-    $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
+    $('#master-fixorder-principle-table tbody').off('click', 'td.details-control');
+    $('#master-fixorder-principle-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var tableId = 'detail-' + row.data().id_master_fix_order_unit;
@@ -475,11 +605,11 @@ function showTableReadOnly(month) {
     //showHideButton()
     hideAllButton()
 
-    $('#master-fixorder-table').DataTable().destroy();
-    $('#master-fixorder-table').html('');
+    $('#master-fixorder-principle-table').DataTable().destroy();
+    $('#master-fixorder-principle-table').html('');
 
     var template = Handlebars.compile($("#details-template").html());
-    var table = $('#master-fixorder-table').DataTable({
+    var table = $('#master-fixorder-principle-table').DataTable({
         "oLanguage": {
             "oPaginate": {
                 "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -494,7 +624,7 @@ function showTableReadOnly(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax:  "{{url('datatable/fixOrderJson?month=')}}" + month,
+        ajax:  "{{url('datatable/FixOrderJsonApprovalBM?month=')}}" + month,
         columnDefs: [{
             "visible": false,
             "targets": 1
@@ -522,9 +652,9 @@ function showTableReadOnly(month) {
                 title: 'No Order ATPM'
             },
             {
-                data: 'date_save_order',
-                name: 'date_save_order',
-                title: 'Date Save Order'
+                data: 'date_send_approval',
+                name: 'date_send_approval',
+                title: 'Date Send Approval'
             },
             {
                 data: 'user_order',
@@ -535,6 +665,11 @@ function showTableReadOnly(month) {
                 data: 'grand_total_qty',
                 name: 'grand_total_qty',
                 title: 'Grand Total Qty'
+            },
+            {
+                data: 'status_progress',
+                name: 'status_progress',
+                title: 'Status Progress'
             },
             {
                 data: 'remark_revise',
@@ -550,8 +685,8 @@ function showTableReadOnly(month) {
     });
 
     // Add event listener for opening and closing details
-    $('#master-fixorder-table tbody').off('click', 'td.details-control');
-    $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
+    $('#master-fixorder-principle-table tbody').off('click', 'td.details-control');
+    $('#master-fixorder-principle-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var tableId = 'detail-' + row.data().id_master_fix_order_unit;
