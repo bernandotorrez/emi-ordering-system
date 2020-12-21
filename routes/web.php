@@ -16,6 +16,7 @@ use App\Http\Livewire\Page\AllocatedAtpm\AllocatedAtpmIndex;
 use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ApprovedBM\ApprovedBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderEdit;
 use App\Http\Livewire\Page\FixOrder\FixOrderIndex;
 use App\Http\Livewire\Page\FixOrder\FixOrderPrinciple;
 use App\Http\Livewire\Page\Login\LoginIndex;
@@ -63,6 +64,7 @@ Route::middleware('user.session')->group(function() {
     // Fix Order
     Route::get('/sales/dealer/fix-order', FixOrderIndex::class)->name('fix-order.index');
     Route::get('/sales/dealer/fix-order/add/{idMonth?}', FixOrderAdd::class)->name('fix-order.add');
+    Route::get('/sales/dealer/fix-order/edit/{id?}', FixOrderEdit::class)->name('fix-order.edit');
 });
 
 // Approval BM

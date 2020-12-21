@@ -68,8 +68,8 @@
                         <!-- Amend Button -->
                         @if($dataRangeMonth[0]->flag_button_amend_before == '1')
                         <button class="btn btn-success mr-2" id="editButton"
-                            data-editableByJS="true"
-                            wire:click.prevent="goTo('{{route('fix-order.add')}}')" disabled>Amend</button>
+                            wire:click.prevent="goTo($event.target.value)" 
+                            data-editableByJS="true" disabled>Amend</button>
                         @else
                         <button class="btn btn-primary mr-2" data-editableByJS="false" id="editButton" disabled>Amend</button>
                         @endif
@@ -98,8 +98,8 @@
                         <!-- Amend Button -->
                         @if($dataRangeMonth[0]->flag_button_amend_after == '1')
                         <button class="btn btn-success mr-2" id="editButton"
-                            data-editableByJS="true"
-                            wire:click.prevent="goTo('{{route('fix-order.add')}}')" disabled>Amend</button>
+                            wire:click.prevent="goTo($event.target.value)" 
+                            data-editableByJS="true" disabled>Amend</button>
                         @else
                         <button class="btn btn-success mr-2" data-editableByJS="false" id="editButton" disabled>Amend</button>
                         @endif

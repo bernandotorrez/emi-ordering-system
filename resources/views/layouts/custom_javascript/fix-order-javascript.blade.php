@@ -72,7 +72,7 @@ function updateCheck(id) {
                 editButtonEl.setAttribute('disabled', true)
             } else {
                 editButtonEl.removeAttribute('disabled')
-                editButtonEl.value = "{!! route('additional-order.edit') !!}/" + id
+                editButtonEl.value = "{!! route('fix-order.edit') !!}/" + id
             }
         }
 

@@ -25,7 +25,7 @@ class FixOrderAdd extends Component
     public $pageTitle = 'Fix Order - Add';
     public array $detailData = [];
     public $grandTotalQty = 0;
-    public $id = 0;
+    public $idKey = 0;
     public $modelName = '';
     public $idMonth = '';
     
@@ -112,7 +112,7 @@ class FixOrderAdd extends Component
             'qty' => 0,
         );
 
-        array_push($this->detailData[$this->id]['selected_colour'], $subDetailData);
+        array_push($this->detailData[$this->idKey]['selected_colour'], $subDetailData);
     }
 
     public function deleteDetail($key)
@@ -135,13 +135,13 @@ class FixOrderAdd extends Component
     private function sumTotalQty()
     {
         $totalQty = 0;
-        foreach($this->detailData[$this->id]['selected_colour'] as $keySelected => $selectedColour)
+        foreach($this->detailData[$this->idKey]['selected_colour'] as $keySelected => $selectedColour)
         {
-                $totalQty += $this->detailData[$this->id]['selected_colour'][$keySelected]['qty'] 
-                ? $this->detailData[$this->id]['selected_colour'][$keySelected]['qty'] : 0;
+                $totalQty += $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] 
+                ? $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] : 0;
         }
    
-        $this->detailData[$this->id]['total_qty'] = $totalQty;
+        $this->detailData[$this->idKey]['total_qty'] = $totalQty;
     }
 
     private function sumGrandTotalQty()
@@ -158,7 +158,7 @@ class FixOrderAdd extends Component
     public function addForm($key, ApiModelColorRepository $apiModelColorRepository)
     {
         //$this->resetForm();
-        $this->id = $key;
+        $this->idKey = $key;
         $this->emit('openModal');
     }
 
