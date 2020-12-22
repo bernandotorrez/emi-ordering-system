@@ -104,10 +104,12 @@
                     <table class="table table-striped table-bordered" id="users-table">
                         <thead>
                             <th width="5%">
-                                <input type="checkbox"
-                                class="new-control-input"
+                                <label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                                <input type="checkbox" class="new-control-input" 
                                 wire:model="allChecked"
                                 wire:click="allChecked">
+                                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                                </label> 
                             </th>
                             <th width="10%">No</th>
                             <th wire:click="sortBy('nama_group')">
@@ -120,10 +122,13 @@
                             @foreach($dataUserGroup as $data)
                             <tr>
                                 <td>
+                                <label class="new-control new-checkbox checkbox-outline-primary  m-auto">
                                     <input type="checkbox" 
                                     value="{{ $data->id_user_group }}" 
                                     class="new-control-input"
                                     wire:model="checked">
+                                    <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                                    </label> 
                                 </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_group }}</td>
