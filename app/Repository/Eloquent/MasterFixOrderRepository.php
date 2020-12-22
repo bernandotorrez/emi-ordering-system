@@ -2,6 +2,8 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Models\DetailColourFixOrderUnit;
+use App\Models\DetailFixOrderUnit;
 use App\Models\MasterFixOrderUnit;
 use Illuminate\Support\Facades\DB;
 
@@ -85,14 +87,17 @@ class MasterFixOrderRepository extends BaseRepository
 
     }
 
-    public function updateDealerOrder($dataMaster, $dataDetail, $idMonth)
+    public function updateDealerOrder($dataMaster, $dataDetail, $deleteIdDetail, $deleteIdDetailColour)
     {
-        $insert = DB::transaction(function () use($dataMaster, $dataDetail) {
-        $insertMaster = DB::table('tbl_master_fix_order_unit')->insertGetId($dataMaster);
-    
-        foreach($dataDetail as $detail) {
-                    $dataInsertDetail = array(
-                        'id_master_fix_order_unit' => $insertMaster,
+        $update = DB::transaction(function () use($dataMaster, $dataDetail, $deleteIdDetail, $deleteIdDetailColour) {
+            $updateMaster = $this->model
+            ->where('id_master_fix_order_unit', $dataMaster['id_master_fix_order_unit'])
+            ->update($dataMaster);
+            
+            foreach($dataDetail as $detail) {
+                $insertDetail = '';
+                if($detail['id_detail_fix_order_unit']) {
+                    $dateUpdateDetail = array(
                         'id_model' => $detail['id_model'],
                         'model_name' => $detail['model_name'],
                         'id_type' => $detail['id_type'],
@@ -100,23 +105,60 @@ class MasterFixOrderRepository extends BaseRepository
                         'total_qty' => $detail['total_qty'],
                         'year_production' => $detail['year_production'],
                     );
-    
+                    $updateDetail = DetailFixOrderUnit::where('id_detail_fix_order_unit', $detail['id_detail_fix_order_unit'])
+                    ->update($dateUpdateDetail);
+                } else {
+                    $dataInsertDetail = array(
+                        'id_master_fix_order_unit' => $dataMaster['id_master_fix_order_unit'],
+                        'id_model' => $detail['id_model'],
+                        'model_name' => $detail['model_name'],
+                        'id_type' => $detail['id_type'],
+                        'type_name' => $detail['type_name'],
+                        'total_qty' => $detail['total_qty'],
+                        'year_production' => $detail['year_production'],
+                    );
+            
                     $insertDetail = DB::table('tbl_detail_fix_order_unit')->insertGetId($dataInsertDetail);
-    
-                    foreach($detail['selected_colour'] as $selectedColour) {
-                        $dataInsertDetailColour = array(
-                            'id_detail_fix_order_unit' => $insertDetail,
+                }
+
+                foreach($detail['selected_colour'] as $selectedColour) {
+           
+                    if($selectedColour['id_detail_color_fix_order_unit']) {
+                        $dataUpdateDetailColour = array(
                             'id_colour' => $selectedColour['id_colour'],
                             'colour_name' => $selectedColour['colour_name'],
-                            'qty' => $selectedColour['qty'],
+                            'qty' => (int) $selectedColour['qty'],
+                        );
+                        $updateDetailColour = DetailColourFixOrderUnit::where('id_detail_color_fix_order_unit', $selectedColour['id_detail_color_fix_order_unit'])
+                        ->update($dataUpdateDetailColour);
+                    } else {
+                        $dataInsertDetailColour = array(
+                            'id_detail_fix_order_unit' => $insertDetail ? $insertDetail : $detail['id_detail_fix_order_unit'],
+                            'id_colour' => $selectedColour['id_colour'],
+                            'colour_name' => $selectedColour['colour_name'],
+                            'qty' => (int) $selectedColour['qty'],
                         );
                         $insertDetailColour = DB::table('tbl_detail_color_fix_order_unit')->insertGetId($dataInsertDetailColour);
                     }
+                    
                 }
+            }
+
+            // Delete Detail from Edit Page
+            foreach($deleteIdDetail as $idDetail) {
+                $deleteDetail = DetailFixOrderUnit::where('id_detail_fix_order_unit', $idDetail)
+                ->update(['status' => '0']);
+            }
+
+            // Delete Detail Colour from Edit Page
+            foreach($deleteIdDetailColour as $idDetailColour) {
+                $deleteDetailColour = DetailColourFixOrderUnit::where('id_detail_color_fix_order_unit', $idDetailColour)
+                ->update(['status' => '0']);
+            }
                 
-                return $insertMaster;
-            }, 5);
+            return $updateMaster;
+        }, 5);
     
-            return $insert;
+        return $update;
     }
 }

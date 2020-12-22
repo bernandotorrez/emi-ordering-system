@@ -7,7 +7,7 @@
                 @if(session()->has('action_message'))
                 {!! session('action_message') !!}
                 @endif
-                
+                @dump($detailData)
                 <!-- Modal -->
                 <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -78,7 +78,7 @@
                                                     <a href="#sub_detail">
                                                         <i class="fas fa-trash-alt fa-2x text-danger"
                                                             onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
-                                                            wire:click.prevent="deleteSubDetail({{$idKey}}, {{$keySub}})">
+                                                            wire:click.prevent="deleteSubDetail({{$idKey}}, {{$keySub}}, '{{$dataSub['id_detail_color_fix_order_unit']}}')">
                                                         </i>
                                                     </a>
                                                 </td>
@@ -224,7 +224,7 @@
                                         <div class="col-md-1">
                                             <i class="fas fa-trash-alt fa-2x text-danger"
                                                 onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
-                                                wire:click.prevent="deleteDetail({{$key}})" @if(count($detailData)==1)
+                                                wire:click.prevent="deleteDetail({{$key}}, '{{$data['id_detail_fix_order_unit']}}')" @if(count($detailData)==1)
                                                 disabled @endif>
                                             </i>
                                         </div>

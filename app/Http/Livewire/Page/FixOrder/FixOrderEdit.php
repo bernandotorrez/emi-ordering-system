@@ -28,7 +28,8 @@ class FixOrderEdit extends Component
     public $grandTotalQty = 0;
     public $idKey = 0;
     public $modelName = '';
-    public $idFixOrder = '';
+    public array $deleteIdDetailColor = [];
+    public array $deleteIdDetail = [];
 
     public array $bind = [
         'id_master_fix_order_unit' => '',
@@ -65,8 +66,6 @@ class FixOrderEdit extends Component
         ApiTypeModelRepository $apiTypeModelRepository,
         ApiModelColorRepository $apiModelColorRepository
     ) {
-        $this->idFixOrder = $id;
-
         $masterFixOrder = $masterFixOrderRepository->getById($id);
         $this->bind['order_number_dealer'] = $masterFixOrder->no_order_dealer;
         $this->bind['id_master_fix_order_unit'] = $masterFixOrder->id_master_fix_order_unit;
@@ -111,7 +110,7 @@ class FixOrderEdit extends Component
 
             foreach($dataColourFixOrder as $detailColour) {
                 $dataColour = array(
-                    'id_detail_colour_fix_order_unit' => $detailColour->id_detail_colour_fix_order_unit,
+                    'id_detail_color_fix_order_unit' => $detailColour->id_detail_color_fix_order_unit,
                     'id_colour' => $detailColour->id_colour,
                     'colour_name' => $detailColour->colour_name,
                     'qty' => $detailColour->qty,
@@ -137,7 +136,7 @@ class FixOrderEdit extends Component
             'total_qty' => 0,
             'selected_colour' => array(
                 0 => array(
-                    'id_detail_colour_fix_order_unit' => '',
+                    'id_detail_color_fix_order_unit' => '',
                     'id_colour' => '',
                     'colour_name' => '',
                     'qty' => 0,
@@ -151,7 +150,7 @@ class FixOrderEdit extends Component
     public function addSubDetail()
     {
         $subDetailData = array(
-            'id_detail_colour_fix_order_unit' => '',
+            'id_detail_color_fix_order_unit' => '',
             'id_colour' => '',
             'colour_name' => '',
             'qty' => 0,
@@ -160,13 +159,15 @@ class FixOrderEdit extends Component
         array_push($this->detailData[$this->idKey]['selected_colour'], $subDetailData);
     }
 
-    public function deleteDetail($key)
+    public function deleteDetail($key, $idDetail)
     {
+        array_push($this->deleteIdDetail, $idDetail);
         unset($this->detailData[$key]);
     }
 
-    public function deleteSubDetail($key, $keySub)
+    public function deleteSubDetail($key, $keySub, $idDetailColour)
     {
+        array_push($this->deleteIdDetailColor, $idDetailColour);
         unset($this->detailData[$key]['selected_colour'][$keySub]);
     }
 
@@ -265,14 +266,6 @@ class FixOrderEdit extends Component
 
         $dataMaster = array(
             'id_master_fix_order_unit' => $this->bind['id_master_fix_order_unit'],
-            'no_order_atpm' => '',
-            'no_order_dealer' => $this->bind['order_number_dealer'],
-            'date_save_order' => Carbon::now(),
-            'id_dealer' => session()->get('user')['id_dealer'],
-            'id_user' => session()->get('user')['id_user'],
-            'user_order' => session()->get('user')['nama_user'],
-            'id_month' => $this->idMonth,
-            'year_order' => Carbon::now()->year,
             'grand_total_qty' => $this->grandTotalQty,
             'status' => '1'
         );
@@ -281,14 +274,14 @@ class FixOrderEdit extends Component
 
         $where = array('no_order_dealer' => $this->bind['order_number_dealer']);
 
-        $count = $masterFixOrderRepository->findDuplicate($where);
+        $count = $masterFixOrderRepository->findDuplicateEdit($where, $dataMaster['id_master_fix_order_unit']);
 
         if($count > 0) {
             session()->flash('action_message', 
             '<div class="alert alert-warning" role="alert">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
-            $update = $masterFixOrderRepository->updateDealerOrder($dataMaster, $this->detailData, $this->idMonth);
-
+            $update = $masterFixOrderRepository->updateDealerOrder($dataMaster, $this->detailData, $this->deleteIdDetail, $this->deleteIdDetailColor);
+            
             if($update) {
                 $this->deleteCache();
                 session()->flash('action_message', '<div class="alert alert-primary" role="alert">Insert Data Success!</div>');

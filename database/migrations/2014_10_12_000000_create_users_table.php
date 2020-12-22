@@ -45,7 +45,7 @@ class CreateUsersTable extends Migration
     public function insertAtpm()
     {
         $data = $data = Http::withHeaders([
-            'X-Auth-Token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiJ0YW1wYW4iLCJzdGF0dXNfYXRwbSI6ImF0cG0ifSwiaWF0IjoxNjA4NDc5NTkxLCJleHAiOjE2MDg0OTAzOTF9.qXU6JqGB1TCUmRIcUDCM1N9gFau6VPoCnxHoeuDEps0'
+            'X-Auth-Token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiJ2aXJtYW4iLCJzdGF0dXNfYXRwbSI6ImRlYWxlciJ9LCJpYXQiOjE2MDg2MjcxMjEsImV4cCI6MTYwODYzNzkyMX0.RKifXov4mndNbEFHNbnwNwVacmAH3d1vf1ZQFe8O7os'
         ])
         ->get($this->wrsApi.'/atpm-user')
         ->json();
@@ -71,7 +71,7 @@ class CreateUsersTable extends Migration
     public function insertDealer()
     {
         $data = Http::withHeaders([
-            'X-Auth-Token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiJ2aXJtYW4iLCJzdGF0dXNfYXRwbSI6ImRlYWxlciJ9LCJpYXQiOjE2MDg0Nzk1NjAsImV4cCI6MTYwODQ5MDM2MH0.BYKiEXNO-e9_hI0BEZJrzh5DynsTggct2CJN-Ru8XLY'
+            'X-Auth-Token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiJ2aXJtYW4iLCJzdGF0dXNfYXRwbSI6ImRlYWxlciJ9LCJpYXQiOjE2MDg2MjcxMjEsImV4cCI6MTYwODYzNzkyMX0.RKifXov4mndNbEFHNbnwNwVacmAH3d1vf1ZQFe8O7os'
         ])
         ->get($this->wrsApi.'/dealer-user')
         ->json();

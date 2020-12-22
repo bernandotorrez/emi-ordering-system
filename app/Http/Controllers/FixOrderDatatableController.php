@@ -140,7 +140,7 @@ class FixOrderDatatableController extends Controller
 
         if($flag_send_approval_dealer == '0' && $flag_approval_dealer == '0' 
         && $flag_submit_to_atpm == '0' && $flag_allocation == '0') {
-            $statusProgress = 'Not Sent';
+            $statusProgress = 'Draft';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '0' 
         && $flag_submit_to_atpm == '0' && $flag_allocation == '0') {
             $statusProgress = 'Waiting Approval';
@@ -153,8 +153,11 @@ class FixOrderDatatableController extends Controller
         }  else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '1') {
             $statusProgress = 'Allocated';
+        } elseif($flag_send_approval_dealer == '2' && $flag_approval_dealer == '0' 
+        && $flag_submit_to_atpm == '0' && $flag_allocation == '0') {
+            $statusProgress = 'Revised';
         } else {
-            $statusProgress = 'Not Sent';
+            $statusProgress = '-';
         }
 
         return $statusProgress;

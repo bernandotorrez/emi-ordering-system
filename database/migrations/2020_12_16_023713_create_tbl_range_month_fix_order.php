@@ -46,7 +46,7 @@ class CreateTblRangeMonthFixOrder extends Migration
 
     private function insertData()
     {
-        DB::query(
+        DB::unprepared(
             "INSERT IGNORE INTO `tbl_range_month_fix_order` (`id_range_rule`, `id_month`, `month_id_to`, `flag_open_colour`, `flag_open_volume`, `flag_button_add_before`, `flag_button_amend_before`, `flag_button_send_approval_before`, `flag_button_revise_before`, `flag_button_planning_before`, `flag_button_submit_before`, `flag_button_approve_before`, `flag_button_add_after`, `flag_button_amend_after`, `flag_button_send_approval_after`, `flag_button_revise_after`, `flag_button_planning_after`, `flag_button_submit_after`, `flag_button_approve_after`, `status`, `created_at`, `updated_at`) VALUES
             (1, 1, 3, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, '1', '17-12-20 16:26', '17-12-20 16:26'),
             (2, 1, 4, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, '1', '17-12-20 16:26', '17-12-20 16:26'),
