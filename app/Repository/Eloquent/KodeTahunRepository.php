@@ -35,4 +35,26 @@ class KodeTahunRepository
 
         return $orderSequence;
     }
+
+    public function getOrderSequenceFixOrder($id)
+    {
+        $typeOrder = 'F';
+        $dataTahun = $this->model->where('tahun',  Carbon::now()->year)->first();
+
+        if($id < 10) {
+            $sequence = '0000'.$id;
+        } else if($id < 100) {
+            $sequence = '000'.$id;
+        } else if($id < 1000) {
+            $sequence = '00'.$id;
+        } else if($id < 10000) {
+            $sequence = '0'.$id;
+        } else {
+            $sequence = $id;
+        }
+
+        $orderSequence = $typeOrder.$dataTahun->kode.$sequence;
+
+        return $orderSequence;
+    }
 }

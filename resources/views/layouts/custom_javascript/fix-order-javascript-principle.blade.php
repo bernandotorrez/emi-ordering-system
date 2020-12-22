@@ -51,7 +51,19 @@ function allChecked(status) {
     updateCheck('')
 }
 
-function updateCheck(id) {
+function disableButton() {
+    var planningButtonEl = document.getElementById('planningButtonAjaxLoad')
+    var reviseButtonEl = document.getElementById('reviseButtonAjaxLoad')
+    var sendButtonEl = document.getElementById('approveButtonAjaxLoad')
+    var submitButtonEl = document.getElementById('submitButtonAjaxLoad')
+
+    planningButtonEl.setAttribute('disabled', true)
+    reviseButtonEl.setAttribute('disabled', true)
+    sendButtonEl.setAttribute('disabled', true)
+    submitButtonEl.setAttribute('disabled', true)
+}
+
+function updateCheck(id, approved) {
     var count = document.querySelectorAll('.checkId:checked').length
 
     var planningButtonEl = document.getElementById('planningButtonAjaxLoad')
@@ -84,10 +96,22 @@ function updateCheck(id) {
     if (sendButtonEl != null) {
         var sendButtonEditable = sendButtonEl.getAttribute('data-editableByJS')
         if (sendButtonEditable == 'true') {
-            if (count == 0) {
+            if (count == 0 || approved == '1') {
                 sendButtonEl.setAttribute('disabled', true)
             } else {
                 sendButtonEl.removeAttribute('disabled')
+            }
+        }
+    }
+
+    var submitButtonEl = document.getElementById('submitButtonAjaxLoad')
+    if (submitButtonEl != null) {
+        var submitButtonEditable = submitButtonEl.getAttribute('data-editableByJS')
+        if (submitButtonEditable == 'true') {
+            if (count == 0 || approved == '0') {
+                submitButtonEl.setAttribute('disabled', true)
+            } else {
+                submitButtonEl.removeAttribute('disabled')
             }
         }
     }
@@ -103,6 +127,7 @@ function showHideButtonFirstLoad() {
     var reviseButtonAjaxLoadEl = document.getElementById('reviseButtonAjaxLoad')
     var planningButtonAjaxLoadEl = document.getElementById('planningButtonAjaxLoad')
     var approveButtonAjaxLoadEl = document.getElementById('approveButtonAjaxLoad')
+    var submitButtonAjaxLoadEl = document.getElementById('submitButtonAjaxLoad')
 
     divButtonSecondLoadEl.style.display = 'inline-flex'
 
@@ -137,6 +162,12 @@ function showHideButtonFirstLoad() {
             } else {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
+
+            if(data.flag_button_submit_before == '1') {
+                submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+            } else {
+                submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+            }
         } else {
             if(data.flag_button_revise_after == '1') {
                 reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
@@ -156,6 +187,12 @@ function showHideButtonFirstLoad() {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+            }
+
+            if(data.flag_button_submit_after == '1') {
+                submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+            } else {
+                submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
         }
         
@@ -296,6 +333,65 @@ function planningToAtpm() {
     })
 }
 
+function sendSubmitToAtpm() {
+    var month = document.getElementById('id_month').value
+
+    var arrayChecked = document.querySelectorAll('.checkId:checked');
+    var arrayId = [];
+
+    arrayChecked.forEach(function (check) {
+        arrayId.push(check.value)
+    })
+
+    var url = "{{url('sweetalert/fixOrder/submitToAtpm')}}"
+    var data = {
+        _token: $('meta[name="csrf-token"]').attr('content'),
+        id: arrayId,
+        id_month: month
+    }
+
+    Swal.fire({
+        title: 'Submit?',
+        text: "Please ensure and then confirm!",
+        type: "info",
+        icon: 'question',
+        showCancelButton: true,
+        reverseButtons: false,
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+            return $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                dataType: 'JSON',
+                cache: false,
+                success: function (response) {
+                    if (response.status == 'success') {
+                        Swal.fire("Success!", "", "success")
+                        showTableTab(month)
+                    } else {
+                        Swal.fire("Failed", "", "error")
+                    }
+                },
+                statusCode: {
+                    500: function () {
+                        Swal.fire("Oops, Something went Wrong", "", "error")
+                    }
+                },
+                failure: function (response) {
+                    Swal.fire("Oops, Something went Wrong", "", "error")
+                },
+                error: function (response) {
+                    Swal.fire("Oops, Something went Wrong", "", "error")
+                },
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+
+    })
+}
+
 function sendRevision() {
     var month = document.getElementById('id_month').value
 
@@ -388,6 +484,7 @@ function getRangeMonthFixOrder(idMonth, monthIdTo) {
 function showTable(month) {
     //showHideButton()
     showHideButtonFirstLoad()
+    disableButton()
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#master-fixorder-principle-table').DataTable({
         "oLanguage": {
@@ -496,7 +593,7 @@ function showTable(month) {
 function showTableTab(month) {
     //showHideButton()
     showHideButtonFirstLoad()
-
+    disableButton()
     $('#master-fixorder-principle-table').DataTable().destroy();
     $('#master-fixorder-principle-table').html('');
 
@@ -608,7 +705,7 @@ function showTableTab(month) {
 function showTableReadOnly(month) {
     //showHideButton()
     hideAllButton()
-
+    disableButton()
     $('#master-fixorder-principle-table').DataTable().destroy();
     $('#master-fixorder-principle-table').html('');
 

@@ -63,6 +63,14 @@ function allChecked(status) {
     updateCheck('')
 }
 
+function disableButton() {
+    var editButtonEl = document.getElementById('editButtonAjaxLoad')
+    var sendButtonEl = document.getElementById('sendApprovalButtonAjaxLoad')
+
+    editButtonEl.setAttribute('disabled', true)
+    sendButtonEl.setAttribute('disabled', true)
+}
+
 function updateCheck(id) {
     var count = document.querySelectorAll('.checkId:checked').length
 
@@ -268,6 +276,7 @@ function getRangeMonthFixOrder(idMonth, monthIdTo) {
 function showTable(month) {
     //showHideButton()
     showHideButtonFirstLoad()
+    disableButton()
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#master-fixorder-table').DataTable({
         "oLanguage": {
@@ -376,7 +385,7 @@ function showTable(month) {
 function showTableTab(month) {
     //showHideButton()
     showHideButtonFirstLoad()
-
+    disableButton()
     $('#master-fixorder-table').DataTable().destroy();
     $('#master-fixorder-table').html('');
 
@@ -488,7 +497,7 @@ function showTableTab(month) {
 function showTableReadOnly(month) {
     //showHideButton()
     hideAllButton()
-
+    disableButton()
     $('#master-fixorder-table').DataTable().destroy();
     $('#master-fixorder-table').html('');
 

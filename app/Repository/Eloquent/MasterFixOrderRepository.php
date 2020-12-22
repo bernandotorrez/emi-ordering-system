@@ -5,6 +5,7 @@ namespace App\Repository\Eloquent;
 use App\Models\DetailColourFixOrderUnit;
 use App\Models\DetailFixOrderUnit;
 use App\Models\MasterFixOrderUnit;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class MasterFixOrderRepository extends BaseRepository
@@ -34,7 +35,7 @@ class MasterFixOrderRepository extends BaseRepository
         ->where('id_dealer', $idDealer)
         ->where('id_month', $month)
         ->where('flag_send_approval_dealer', '1')
-        ->where('flag_approval_dealer', '0')
+        ->whereIn('flag_approval_dealer', ['0', '1'])
         ->get();
     }
 
@@ -159,6 +160,25 @@ class MasterFixOrderRepository extends BaseRepository
             return $updateMaster;
         }, 5);
     
+        return $update;
+    }
+
+    public function updateSubmitAtpm(array $arrayId, $kodeTahunRepository)
+    {
+        foreach($arrayId as $id) {
+            $orderSequence = $kodeTahunRepository->getOrderSequenceFixOrder($id);
+            $data = array(
+                'flag_submit_to_atpm' => '1',
+                'date_submit_atpm_order' => Carbon::now(),
+                'no_order_atpm' => $orderSequence
+            );
+
+            $update = DB::transaction(function () use($id, $data) {
+                return $this->model->where($this->primaryKey, $id)->update($data);
+            });
+            
+        }
+
         return $update;
     }
 }

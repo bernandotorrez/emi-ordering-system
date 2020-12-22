@@ -47,14 +47,17 @@
                     </ul>
 
                     <div id="button_ajax_load">
-                        <button class="btn btn-success mr-2" data-editableByJS="false" onclick="sendRevision()"
-                            id="reviseButtonAjaxLoad" disabled>Revise</button>
-
                         <button class="btn btn-warning mr-2" data-editableByJS="false" onclick="planningToAtpm()"
                             id="planningButtonAjaxLoad" disabled>Planning</button>
+                        
+                        <button class="btn btn-danger mr-2" data-editableByJS="false" onclick="sendRevision()"
+                            id="reviseButtonAjaxLoad" disabled>Revise</button>
 
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" onclick="sendApproval()"
+                        <button class="btn btn-success mr-2" data-editableByJS="false" onclick="sendApproval()"
                             id="approveButtonAjaxLoad" disabled>Approve</button>
+                        
+                        <button class="btn btn-primary mr-2" data-editableByJS="false" onclick="sendSubmitToAtpm()"
+                            id="submitButtonAjaxLoad" disabled>Submit</button>
                     </div>
 
                     <div class="table-responsive mt-4">

@@ -79,7 +79,7 @@ class FixOrderDatatableController extends Controller
 
         return Datatables::of($datas)
         ->addColumn('action', function($data) {
-            if($data->flag_approval_dealer == '1') {
+            if($data->flag_approval_dealer == '1' && $data->flag_submit_to_atpm == '1') {
                 return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
                 <input type="checkbox" checked class="new-control-input child-chk select-customers-info" id="customer-all-info" disabled>
                 <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
@@ -87,8 +87,9 @@ class FixOrderDatatableController extends Controller
             } else {
                 return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
                 <input type="checkbox" class="new-control-input child-chk checkId" 
-                onclick="updateCheck('.$data->id_master_fix_order_unit.')" 
+                onclick="updateCheck('.$data->id_master_fix_order_unit.', '.$data->flag_approval_dealer.')" 
                 id="'.$data->id_master_fix_order_unit.'" 
+                data-approved="'.$data->flag_approval_dealer.'"
                 value="'.$data->id_master_fix_order_unit.'">
                 <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
                 </label>
@@ -146,10 +147,10 @@ class FixOrderDatatableController extends Controller
             $statusProgress = 'Waiting Approval';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '0' && $flag_allocation == '0') {
-            $statusProgress = 'Approved Dealer Principle';
+            $statusProgress = 'Approved';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '0') {
-            $statusProgress = 'Submit to ATPM';
+            $statusProgress = 'Submited';
         }  else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '1') {
             $statusProgress = 'Allocated';

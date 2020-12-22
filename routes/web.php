@@ -114,6 +114,7 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('fixOrder/approvalBM', [FixOrderSweetAlertController::class, 'approvalBM']);
     Route::post('fixOrder/planningToAtpm', [FixOrderSweetAlertController::class, 'planningToAtpm']);
     Route::post('fixOrder/reviseBM', [FixOrderSweetAlertController::class, 'reviseBM']);
+    Route::post('fixOrder/submitToAtpm', [FixOrderSweetAlertController::class, 'submitToAtpm']);
 });
 
 // Ajax
