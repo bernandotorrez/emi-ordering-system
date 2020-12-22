@@ -24,6 +24,7 @@ class AdditionalOrderEdit extends Component
     public $pageTitle = 'Additional Order - Edit';
     public array $detailData = [];
     public $totalQty = 0;
+    public array $deleteIdDetail = [];
     
     public array $bind = [
         'id_master_additional_order_unit' => '',
@@ -115,9 +116,11 @@ class AdditionalOrderEdit extends Component
         array_push($this->detailData, $data);
     }
 
-    public function deleteDetail($key)
+    public function deleteDetail($key, $idDetail)
     {
+        array_push($this->deleteIdDetail, $idDetail);
         unset($this->detailData[$key]);
+        $this->sumTotalQty();
     }
 
     public function updated($propertyName)
@@ -215,7 +218,8 @@ class AdditionalOrderEdit extends Component
             $update = $masterAdditionalOrderRepository->updateDealerOrder(
                 $this->bind['id_master_additional_order_unit'],
                 $dataMaster, 
-                $this->detailData
+                $this->detailData,
+                $this->deleteIdDetail
             );
 
             if($update) {
