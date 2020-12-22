@@ -7,8 +7,6 @@
                 @if(session()->has('action_message'))
                 {!! session('action_message') !!}
                 @endif
-
-                @dump($idKey !== '')
                 
                 <!-- Modal -->
                 <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
