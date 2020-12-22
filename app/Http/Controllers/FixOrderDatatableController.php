@@ -143,13 +143,13 @@ class FixOrderDatatableController extends Controller
             $statusProgress = 'Not Sent';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '0' 
         && $flag_submit_to_atpm == '0' && $flag_allocation == '0') {
-            $statusProgress = 'Approval Dealer Principle';
+            $statusProgress = 'Waiting Approval';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '0' && $flag_allocation == '0') {
             $statusProgress = 'Approved Dealer Principle';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '0') {
-            $statusProgress = 'Submitted ATPM';
+            $statusProgress = 'Submit to ATPM';
         }  else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '1') {
             $statusProgress = 'Allocated';

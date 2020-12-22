@@ -46,78 +46,15 @@
                         @endforeach
                     </ul>
 
-                    <div id="button_first_load">
-                        <!-- Tanggal hari ini masih di antara date_lock_input_start dan date_lock_input_end (Before), TRUE = Before -->
-                        @if($checkBeforeOrAfter)
-
-                        <!-- Revise Button -->
-                        @if($dataRangeMonth[0]->flag_button_revise_before == '1')
-                        <button class="btn btn-success mr-2" data-editableByJS="true" onclick="sendRevision()"
-                            id="reviseButton" disabled>Revise</button>
-                        @else
-                        <button class="btn btn-success mr-2" data-editableByJS="false" id="reviseButton" disabled>Revise</button>
-                        @endif
-
-
-                        <!-- Planning Button -->
-                        @if($dataRangeMonth[0]->flag_button_planning_before == '1')
-                        <button class="btn btn-warning mr-2" data-editableByJS="true" onclick="planningToAtpm()"
-                            id="planningButton" disabled>Planning</button>
-                        @else
-                        <button class="btn btn-warning mr-2" data-editableByJS="false" id="planningButton" disabled>Planning</button>
-                        @endif
-
-                        <!-- Approve Button -->
-                        @if($dataRangeMonth[0]->flag_button_approve_before == '1')
-                        <button class="btn btn-primary mr-2" data-editableByJS="true" onclick="sendApproval()"
-                            id="approveButton" disabled>Approve</button>
-                        @else
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" id="approveButton" disabled>Approve</button>
-                        @endif
-
-                        <!-- Tanggal hari ini diluar antara date_lock_input_start dan date_lock_input_end (After) -->
-                        @else
-
-                        <!-- Revise Button -->
-                        @if($dataRangeMonth[0]->flag_button_revise_after == '1')
-                        <button class="btn btn-success mr-2" data-editableByJS="true" onclick="sendRevision()"
-                            id="reviseButton" disabled>Revise</button>
-                        @else
-                        <button class="btn btn-success mr-2" data-editableByJS="false" id="reviseButton"
-                            disabled>Revise</button>
-                        @endif
-
-
-                        <!-- Planning Button -->
-                        @if($dataRangeMonth[0]->flag_button_planning_after == '1')
-                        <button class="btn btn-warning mr-2" data-editableByJS="true" onclick="planningToAtpm()"
-                            id="planningButton" disabled>Planning</button>
-                        @else
-                        <button class="btn btn-warning mr-2" data-editableByJS="false" id="planningButton"
-                            disabled>Planning</button>
-                        @endif
-
-                        <!-- Approve Button -->
-                        @if($dataRangeMonth[0]->flag_button_approve_after == '1')
-                        <button class="btn btn-primary mr-2" data-editableByJS="true"
-                            id="approveButton" onclick="sendApproval()" disabled>Approve</button>
-                        @else
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" id="approveButton"
-                            disabled>Approve</button>
-                        @endif
-
-                        @endif
-                    </div>
-
-                    <div id="button_ajax_load" style="display: none;">
+                    <div id="button_ajax_load">
                         <button class="btn btn-success mr-2" data-editableByJS="false" onclick="sendRevision()"
-                            id="reviseButton" disabled>Revise</button>
+                            id="reviseButtonAjaxLoad" disabled>Revise</button>
 
                         <button class="btn btn-warning mr-2" data-editableByJS="false" onclick="planningToAtpm()"
-                            id="planningButton" disabled>Planning</button>
+                            id="planningButtonAjaxLoad" disabled>Planning</button>
 
                         <button class="btn btn-primary mr-2" data-editableByJS="false" onclick="sendApproval()"
-                            id="approveButton" disabled>Approve</button>
+                            id="approveButtonAjaxLoad" disabled>Approve</button>
                     </div>
 
                     <div class="table-responsive mt-4">

@@ -47,82 +47,14 @@
                         @endforeach
                     </ul>
 
-                    <div id="button_first_load">
-                    <!-- Tanggal hari ini masih di antara date_lock_input_start dan date_lock_input_end (Before), TRUE = Before -->
-                    @if($checkBeforeOrAfter)
-
-                        <!-- Add Button -->
-                        @if($countOrder == 0)
-                            @if($dataRangeMonth[0]->flag_button_add_before == '1')
-                            <button class="btn btn-primary mr-2" id="addButton"
-                                data-editableByJS="true"
-                                wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
-                            @else
-                            <button class="btn btn-primary mr-2" data-editableByJS="false" id="addButton" disabled>Add</button>
-                            @endif
-                        @else
-                            <button class="btn btn-primary mr-2" data-editableByJS="false" id="addButton" disabled>Add</button>
-                        @endif
-                       
-
-                        <!-- Amend Button -->
-                        @if($dataRangeMonth[0]->flag_button_amend_before == '1')
-                        <button class="btn btn-success mr-2" id="editButton"
-                            wire:click.prevent="goTo($event.target.value)" 
-                            data-editableByJS="true" disabled>Amend</button>
-                        @else
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" id="editButton" disabled>Amend</button>
-                        @endif
-
-                        <!-- Send Approval Button -->
-                        @if($dataRangeMonth[0]->flag_button_send_approval_before == '1')
-                        <button class="btn btn-primary mr-2" id="sendApprovalButton"
-                            data-editableByJS="true" onclick="sendApproval()" disabled>Send Approval</button>
-                        @else
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" 
-                            id="sendApprovalButton" disabled>Send Approval</button>
-                        @endif
-                    
-                    <!-- Tanggal hari ini diluar antara date_lock_input_start dan date_lock_input_end (After) -->
-                    @else
-
-                    <!-- Add Button -->
-                    @if($dataRangeMonth[0]->flag_button_add_after == '1')
-                        <button class="btn btn-primary mr-2" id="addButton"
-                            data-editableByJS="true"
-                            wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
-                        @else
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" id="addButton" disabled>Add</button>
-                        @endif
-
-                        <!-- Amend Button -->
-                        @if($dataRangeMonth[0]->flag_button_amend_after == '1')
-                        <button class="btn btn-success mr-2" id="editButton"
-                            wire:click.prevent="goTo($event.target.value)" 
-                            data-editableByJS="true" disabled>Amend</button>
-                        @else
-                        <button class="btn btn-success mr-2" data-editableByJS="false" id="editButton" disabled>Amend</button>
-                        @endif
-
-                        <!-- Send Approval Button -->
-                        @if($dataRangeMonth[0]->flag_button_send_approval_after == '1')
-                        <button class="btn btn-primary mr-2" id="sendApprovalButton"
-                            data-editableByJS="true" onclick="sendApproval()" disabled>Send Approval</button>
-                        @else
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" id="sendApprovalButton" disabled>Send Approval</button>
-                        @endif
-
-                    @endif
-                    </div>
-
-                    <div id="button_ajax_load" style="display: none;">
+                    <div id="button_ajax_load">
                         <button class="btn btn-primary mr-2" id="addButtonAjaxLoad"
                                 data-editableByJS="false"
                                 wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
 
                         <button class="btn btn-success mr-2" id="editButtonAjaxLoad"
-                                data-editableByJS="false"
-                                wire:click.prevent="goTo('{{route('fix-order.add')}}')" disabled>Amend</button>
+                            wire:click.prevent="goTo($event.target.value)" 
+                            data-editableByJS="true" disabled>Amend</button>
 
                         <button class="btn btn-primary mr-2" id="sendApprovalButtonAjaxLoad"
                                 data-editableByJS="false" onclick="sendApproval()" disabled>Send Approval</button>

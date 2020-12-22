@@ -21,6 +21,8 @@ document.addEventListener('livewire:load', function () {
     var url = window.location.href
     if (url.includes('fix-order-bm')) {
         showTable(month)
+
+        updateCheck('')
     }
 })
 
@@ -52,7 +54,7 @@ function allChecked(status) {
 function updateCheck(id) {
     var count = document.querySelectorAll('.checkId:checked').length
 
-    var planningButtonEl = document.getElementById('planningButton')
+    var planningButtonEl = document.getElementById('planningButtonAjaxLoad')
     if (planningButtonEl != null) {
         var planningButtonEditable = planningButtonEl.getAttribute('data-editableByJS')
         if (planningButtonEditable == 'true') {
@@ -65,7 +67,7 @@ function updateCheck(id) {
 
     }
 
-    var reviseButtonEl = document.getElementById('reviseButton')
+    var reviseButtonEl = document.getElementById('reviseButtonAjaxLoad')
     if (reviseButtonEl != null) {
         var reviseButtonEditable = reviseButtonEl.getAttribute('data-editableByJS')
         if (reviseButtonEditable == 'true') {
@@ -78,7 +80,7 @@ function updateCheck(id) {
 
     }
 
-    var sendButtonEl = document.getElementById('approveButton')
+    var sendButtonEl = document.getElementById('approveButtonAjaxLoad')
     if (sendButtonEl != null) {
         var sendButtonEditable = sendButtonEl.getAttribute('data-editableByJS')
         if (sendButtonEditable == 'true') {
@@ -92,7 +94,7 @@ function updateCheck(id) {
 }
 
 function showHideButtonFirstLoad() {
-    var divButtonFirstLoadEl = document.getElementById('button_first_load')
+    //var divButtonFirstLoadEl = document.getElementById('button_first_load')
     var divButtonSecondLoadEl = document.getElementById('button_ajax_load')
     var month = document.getElementById('id_month').value
     var monthIdTo = document.getElementById('month_id_to').value
@@ -102,6 +104,8 @@ function showHideButtonFirstLoad() {
     var planningButtonAjaxLoadEl = document.getElementById('planningButtonAjaxLoad')
     var approveButtonAjaxLoadEl = document.getElementById('approveButtonAjaxLoad')
 
+    divButtonSecondLoadEl.style.display = 'inline-flex'
+
     var dataAjax = getRangeMonthFixOrder(currentMonth, month)
     dataAjax.then(function(dataRange) {
         var data = dataRange.data
@@ -110,7 +114,7 @@ function showHideButtonFirstLoad() {
 
         if(checkBeforeOrAfter) {
             if(countOrder == 0) {
-                if(data.flag_button_add_before == '1') {
+                if(data.flag_button_revise_before == '1') {
                     reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
                     reviseButtonAjaxLoadEl.disabled = false
                 } else {
@@ -122,19 +126,19 @@ function showHideButtonFirstLoad() {
                 reviseButtonAjaxLoadEl.disabled = true
             }
 
-            if(data.flag_button_amend_before == '1') {
+            if(data.flag_button_planning_before == '1') {
                 planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
                 planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
 
-            if(data.flag_button_send_approval_before == '1') {
+            if(data.flag_button_approve_before == '1') {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
         } else {
-            if(data.flag_button_add_after == '1') {
+            if(data.flag_button_revise_after == '1') {
                 reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
                 reviseButtonAjaxLoadEl.disabled = false
             } else {
@@ -142,13 +146,13 @@ function showHideButtonFirstLoad() {
                 reviseButtonAjaxLoadEl.disabled = true
             }
 
-            if(data.flag_button_amend_after == '1') {
+            if(data.flag_button_planning_after == '1') {
                 planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
                 planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
             }
 
-            if(data.flag_button_send_approval_after == '1') {
+            if(data.flag_button_approve_after == '1') {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
             } else {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
@@ -157,20 +161,20 @@ function showHideButtonFirstLoad() {
         
     })
 
-    if(monthIdTo == month) {
-        divButtonFirstLoadEl.style.display = 'inline-flex' 
-        divButtonSecondLoadEl.style.display = 'none'
-    } else {
-        divButtonFirstLoadEl.style.display = 'none' 
-        divButtonSecondLoadEl.style.display = 'inline-flex'
-    }
+    // if(monthIdTo == month) {
+    //     divButtonFirstLoadEl.style.display = 'inline-flex' 
+    //     divButtonSecondLoadEl.style.display = 'none'
+    // } else {
+    //     divButtonFirstLoadEl.style.display = 'none' 
+    //     divButtonSecondLoadEl.style.display = 'inline-flex'
+    // }
 }
 
 function hideAllButton() {
-    var divButtonFirstLoadEl = document.getElementById('button_first_load')
+    //var divButtonFirstLoadEl = document.getElementById('button_first_load')
     var divButtonSecondLoadEl = document.getElementById('button_ajax_load')
 
-    divButtonFirstLoadEl.style.display = 'none' 
+    //divButtonFirstLoadEl.style.display = 'none' 
     divButtonSecondLoadEl.style.display = 'none'
 }
 
@@ -383,7 +387,7 @@ function getRangeMonthFixOrder(idMonth, monthIdTo) {
 
 function showTable(month) {
     //showHideButton()
-
+    showHideButtonFirstLoad()
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#master-fixorder-principle-table').DataTable({
         "oLanguage": {

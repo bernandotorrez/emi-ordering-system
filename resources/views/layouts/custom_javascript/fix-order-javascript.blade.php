@@ -21,6 +21,8 @@ document.addEventListener('livewire:load', function () {
     var url = window.location.href
     if (url.includes('fix-order')) {
         showTable(month)
+
+        updateCheck('')
     }
 })
 
@@ -64,7 +66,7 @@ function allChecked(status) {
 function updateCheck(id) {
     var count = document.querySelectorAll('.checkId:checked').length
 
-    var editButtonEl = document.getElementById('editButton')
+    var editButtonEl = document.getElementById('editButtonAjaxLoad')
     if (editButtonEl != null) {
         var editButtonEditable = editButtonEl.getAttribute('data-editableByJS')
         if (editButtonEditable == 'true') {
@@ -78,7 +80,7 @@ function updateCheck(id) {
 
     }
 
-    var sendButtonEl = document.getElementById('sendApprovalButton')
+    var sendButtonEl = document.getElementById('sendApprovalButtonAjaxLoad')
     if (sendButtonEl != null) {
         var sendButtonEditable = editButtonEl.getAttribute('data-editableByJS')
         if (sendButtonEditable == 'true') {
@@ -92,7 +94,7 @@ function updateCheck(id) {
 }
 
 function showHideButtonFirstLoad() {
-    var divButtonFirstLoadEl = document.getElementById('button_first_load')
+    //var divButtonFirstLoadEl = document.getElementById('button_first_load')
     var divButtonSecondLoadEl = document.getElementById('button_ajax_load')
     var month = document.getElementById('id_month').value
     var monthIdTo = document.getElementById('month_id_to').value
@@ -101,6 +103,8 @@ function showHideButtonFirstLoad() {
     var addButtonAjaxLoadEl = document.getElementById('addButtonAjaxLoad')
     var editButtonAjaxLoadEl = document.getElementById('editButtonAjaxLoad')
     var sendApprovalButtonAjaxLoadEl = document.getElementById('sendApprovalButtonAjaxLoad')
+
+    divButtonSecondLoadEl.style.display = 'inline-flex'
 
     var dataAjax = getRangeMonthFixOrder(currentMonth, month)
     dataAjax.then(function(dataRange) {
@@ -157,20 +161,20 @@ function showHideButtonFirstLoad() {
         
     })
 
-    if(monthIdTo == month) {
-        divButtonFirstLoadEl.style.display = 'inline-flex' 
-        divButtonSecondLoadEl.style.display = 'none'
-    } else {
-        divButtonFirstLoadEl.style.display = 'none' 
-        divButtonSecondLoadEl.style.display = 'inline-flex'
-    }
+    // if(monthIdTo == month) {
+    //     divButtonFirstLoadEl.style.display = 'inline-flex' 
+    //     divButtonSecondLoadEl.style.display = 'none'
+    // } else {
+    //     divButtonFirstLoadEl.style.display = 'none' 
+    //     divButtonSecondLoadEl.style.display = 'inline-flex'
+    // }
 }
 
 function hideAllButton() {
-    var divButtonFirstLoadEl = document.getElementById('button_first_load')
+    //var divButtonFirstLoadEl = document.getElementById('button_first_load')
     var divButtonSecondLoadEl = document.getElementById('button_ajax_load')
 
-    divButtonFirstLoadEl.style.display = 'none' 
+    //divButtonFirstLoadEl.style.display = 'none' 
     divButtonSecondLoadEl.style.display = 'none'
 }
 
@@ -263,7 +267,7 @@ function getRangeMonthFixOrder(idMonth, monthIdTo) {
 
 function showTable(month) {
     //showHideButton()
-
+    showHideButtonFirstLoad()
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#master-fixorder-table').DataTable({
         "oLanguage": {

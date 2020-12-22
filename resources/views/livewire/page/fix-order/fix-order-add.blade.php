@@ -48,20 +48,20 @@
                                         </thead>
 
                                         <tbody>
-                                            @foreach($detailData[$id]['selected_colour'] as $keySub => $dataSub)
+                                            @foreach($detailData[$idKey]['selected_colour'] as $keySub => $dataSub)
                                             <tr align="center" wire:key="detail-{{ $keySub }}">
                                                 <td>{{ $loop->iteration }} </td>
                                                 <td>
                                                     <select class="form-control"
-                                                        wire:model.lazy="detailData.{{$id}}.selected_colour.{{$keySub}}.id_colour">
+                                                        wire:model.lazy="detailData.{{$idKey}}.selected_colour.{{$keySub}}.id_colour">
                                                         <option value="" selected>- Choose Colour -</option>
 
-                                                        @foreach($detailData[$id]['data_colour'] as $model)
+                                                        @foreach($detailData[$idKey]['data_colour'] as $model)
                                                         <option value="{{$model['fk_color']}}">{{$model['color']['nm_color_global']}}
                                                         </option>
                                                         @endforeach
                                                     </select>
-                                                    @error('detailData.{{$id}}.selected_colour.{{$keySub}}.id_colour') 
+                                                    @error('detailData.{{$idKey}}.selected_colour.{{$keySub}}.id_colour') 
                                                     <span class="error">{{ $message }}</span>
                                                     @enderror
                                                 </td>
@@ -69,8 +69,8 @@
                                                 <td>
                                                     <input type="text" class="form-control text-right" 
                                                     onkeypress="return isQtyKey(event)"
-                                                    wire:model.lazy="detailData.{{$id}}.selected_colour.{{$keySub}}.qty">
-                                                    @error('detailData.{{$id}}.selected_colour.{{$keySub}}.qty') 
+                                                    wire:model.lazy="detailData.{{$idKey}}.selected_colour.{{$keySub}}.qty">
+                                                    @error('detailData.{{$idKey}}.selected_colour.{{$keySub}}.qty') 
                                                     <span class="error">{{ $message }}</span>
                                                     @enderror
                                                 </td>
@@ -78,7 +78,7 @@
                                                     <a href="#sub_detail">
                                                         <i class="fas fa-trash-alt fa-2x text-danger"
                                                             onclick="return confirm('Are you sure you want to Delete this?') || event.stopImmediatePropagation()"
-                                                            wire:click.prevent="deleteSubDetail({{$id}}, {{$keySub}})">
+                                                            wire:click.prevent="deleteSubDetail({{$idKey}}, {{$keySub}})">
                                                         </i>
                                                     </a>
                                                 </td>
@@ -88,7 +88,7 @@
                                                 <td colspan="2" align="right">Total Qty : </td>
                                                 <td colspan="1">
                                                     <input type="text" class="form-control text-center"
-                                                        id="total_qty" wire:model.lazy="detailData.{{$id}}.total_qty" readonly>
+                                                        id="total_qty" wire:model.lazy="detailData.{{$idKey}}.total_qty" readonly>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -177,6 +177,8 @@
         if(url.includes('additional-order') || url.includes('approval-bm') || url.includes('approved-bm')
          || url.includes('submit-atpm') || url.includes('allocated-atpm')) {
             showTable(getInitData().table)
+
+            updateCheck('')
          }
         
     });
