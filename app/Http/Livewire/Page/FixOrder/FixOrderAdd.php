@@ -40,7 +40,7 @@ class FixOrderAdd extends Component
         'detailData.*.year_production' => 'required',
         'detailData.*.total_qty' => 'required|min:1|max:99999',
         'detailData.*.selected_colour.*.id_colour' => 'required',
-        'detailData.*.selected_colour.*.qty' => 'required',
+        'detailData.*.selected_colour.*.qty' => 'required|numeric|min:1',
     ];
 
     protected $messages = [
@@ -53,6 +53,8 @@ class FixOrderAdd extends Component
         'detailData.*.year_production.required' => 'Please Choose Year Production!',
         'detailData.*.selected_colour.*.id_colour.required' => 'Please Choose Colour!',
         'detailData.*.selected_colour.*.qty.required' => 'Please Fill Quantity!',
+        'detailData.*.selected_colour.*.qty.min' => 'Please Fill Quantity with Minimal :min!',
+        'detailData.*.selected_colour.*.qty.number' => 'Please Fill Quantity with Number!',
     ];
     
     public function mount($idMonth)

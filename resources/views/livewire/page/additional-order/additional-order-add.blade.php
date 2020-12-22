@@ -7,7 +7,7 @@
                 @if(session()->has('action_message'))
                 {!! session('action_message') !!}
                 @endif
-
+                
                 <form id="form-add" class="section" wire:submit.prevent="addProcess">
                     <div class="info">
                         <h5 class="mb-4">{{ $pageTitle }}</h5>
