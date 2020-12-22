@@ -87,20 +87,10 @@ class MasterFixOrderRepository extends BaseRepository
 
     public function updateDealerOrder($dataMaster, $dataDetail, $idMonth)
     {
-        $idDealer = session()->get('user')['id_dealer'];
-        $where = array(
-            'status' => '1',
-            'id_dealer' => $idDealer,
-            'id_month' => $idMonth
-        );
-
-        $countOrder = $this->model->where($where)->where('status', '1')->count();
-
-        if($countOrder == 0) {
-            $insert = DB::transaction(function () use($dataMaster, $dataDetail) {
-                $insertMaster = DB::table('tbl_master_fix_order_unit')->insertGetId($dataMaster);
+        $insert = DB::transaction(function () use($dataMaster, $dataDetail) {
+        $insertMaster = DB::table('tbl_master_fix_order_unit')->insertGetId($dataMaster);
     
-                foreach($dataDetail as $detail) {
+        foreach($dataDetail as $detail) {
                     $dataInsertDetail = array(
                         'id_master_fix_order_unit' => $insertMaster,
                         'id_model' => $detail['id_model'],
@@ -128,9 +118,5 @@ class MasterFixOrderRepository extends BaseRepository
             }, 5);
     
             return $insert;
-        } else {
-            return true;
-        }
-
     }
 }

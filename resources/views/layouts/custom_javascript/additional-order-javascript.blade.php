@@ -494,7 +494,7 @@
                     success: function (response) {
                         if (response.status == 'success') {
                             Swal.fire("Success!", "", "success")
-                            showTable(getInitData().table)
+                            showTableTab(getInitData().table)
                         } else {
                             Swal.fire("Failed", "", "error")
                         }
