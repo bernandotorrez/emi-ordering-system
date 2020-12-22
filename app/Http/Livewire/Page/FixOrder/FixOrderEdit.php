@@ -163,6 +163,7 @@ class FixOrderEdit extends Component
     {
         array_push($this->deleteIdDetail, $idDetail);
         unset($this->detailData[$key]);
+        $this->idKey = '';
         $this->sumTotalQty();
         $this->sumGrandTotalQty();
     }
@@ -171,6 +172,7 @@ class FixOrderEdit extends Component
     {
         array_push($this->deleteIdDetailColor, $idDetailColour);
         unset($this->detailData[$key]['selected_colour'][$keySub]);
+        $this->idKey = '';
         $this->sumTotalQty();
         $this->sumGrandTotalQty();
     }
