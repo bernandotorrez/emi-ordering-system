@@ -26,7 +26,7 @@ class FixOrderEdit extends Component
     public $pageTitle = 'Fix Order - Edit';
     public array $detailData = [];
     public $grandTotalQty = 0;
-    public $idKey = 0;
+    public $idKey = '';
     public $modelName = '';
     public array $deleteIdDetailColor = [];
     public array $deleteIdDetail = [];
@@ -163,12 +163,16 @@ class FixOrderEdit extends Component
     {
         array_push($this->deleteIdDetail, $idDetail);
         unset($this->detailData[$key]);
+        $this->sumTotalQty();
+        $this->sumGrandTotalQty();
     }
 
     public function deleteSubDetail($key, $keySub, $idDetailColour)
     {
         array_push($this->deleteIdDetailColor, $idDetailColour);
         unset($this->detailData[$key]['selected_colour'][$keySub]);
+        $this->sumTotalQty();
+        $this->sumGrandTotalQty();
     }
 
     public function updated($propertyName)
@@ -181,13 +185,16 @@ class FixOrderEdit extends Component
     private function sumTotalQty()
     {
         $totalQty = 0;
-        foreach($this->detailData[$this->idKey]['selected_colour'] as $keySelected => $selectedColour)
-        {
-                $totalQty += $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] 
-                ? $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] : 0;
+        if($this->idKey !== '') {
+            foreach($this->detailData[$this->idKey]['selected_colour'] as $keySelected => $selectedColour)
+            {
+                    $totalQty += $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] 
+                    ? $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] : 0;
+            }
+    
+            $this->detailData[$this->idKey]['total_qty'] = $totalQty;
         }
-   
-        $this->detailData[$this->idKey]['total_qty'] = $totalQty;
+        
     }
 
     private function sumGrandTotalQty()

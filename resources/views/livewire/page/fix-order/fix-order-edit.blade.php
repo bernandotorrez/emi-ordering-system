@@ -7,7 +7,7 @@
                 @if(session()->has('action_message'))
                 {!! session('action_message') !!}
                 @endif
-                @dump($detailData)
+                
                 <!-- Modal -->
                 <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -48,6 +48,7 @@
                                         </thead>
 
                                         <tbody>
+                                            @if($idKey !== '')
                                             @foreach($detailData[$idKey]['selected_colour'] as $keySub => $dataSub)
                                             <tr align="center" wire:key="detail-{{ $keySub }}">
                                                 <td>{{ $loop->iteration }} </td>
@@ -84,6 +85,7 @@
                                                 </td>
                                             </tr>
                                             @endforeach
+                                            @endif
                                             <tr>
                                                 <td colspan="2" align="right">Total Qty : </td>
                                                 <td colspan="1">
