@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\Page\FixOrder;
 
+use App\Repository\Api\ApiColorRepository;
 use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\DetailColourFixOrderRepository;
 use App\Repository\Eloquent\DetailFixOrderRepository;
 use App\Repository\Eloquent\MasterFixOrderRepository;
+use App\Repository\Eloquent\RangeMonthFixOrderRepository;
 use App\Traits\WithDeleteCache;
 use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
@@ -29,6 +31,7 @@ class FixOrderEdit extends Component
     public $idFixOrder = '';
 
     public array $bind = [
+        'id_master_fix_order_unit' => '',
         'order_number_dealer' => ''
     ];
 
@@ -66,6 +69,7 @@ class FixOrderEdit extends Component
 
         $masterFixOrder = $masterFixOrderRepository->getById($id);
         $this->bind['order_number_dealer'] = $masterFixOrder->no_order_dealer;
+        $this->bind['id_master_fix_order_unit'] = $masterFixOrder->id_master_fix_order_unit;
         $this->grandTotalQty = $masterFixOrder->grand_total_qty;
 
         $detailFixOrder = $detailFixOrderRepository->getByIdMaster($id);
@@ -225,7 +229,7 @@ class FixOrderEdit extends Component
         
     }
 
-    public function addForm($key, ApiModelColorRepository $apiModelColorRepository)
+    public function addForm($key)
     {
         //$this->resetForm();
         $this->idKey = $key;
@@ -246,5 +250,86 @@ class FixOrderEdit extends Component
             'dataModel' => ($dataModel['count'] > 0) ? $dataModel['data'] : [],
         ])
         ->layout('layouts.app', ['title' => $this->pageTitle]);
+    }
+
+    public function editProcess(
+        MasterFixOrderRepository $masterFixOrderRepository,
+        ApiModelRepository $apiModelRepository,
+        ApiTypeModelRepository $apiTypeModelRepository,
+        ApiColorRepository $apiColorRepository,
+        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository
+    ) {
+        $this->validate();
+
+        $monthIdTo = $rangeMonthFixOrderRepository->getMonthIdToByIdMonth(date('m'));
+
+        $dataMaster = array(
+            'id_master_fix_order_unit' => $this->bind['id_master_fix_order_unit'],
+            'no_order_atpm' => '',
+            'no_order_dealer' => $this->bind['order_number_dealer'],
+            'date_save_order' => Carbon::now(),
+            'id_dealer' => session()->get('user')['id_dealer'],
+            'id_user' => session()->get('user')['id_user'],
+            'user_order' => session()->get('user')['nama_user'],
+            'id_month' => $this->idMonth,
+            'year_order' => Carbon::now()->year,
+            'grand_total_qty' => $this->grandTotalQty,
+            'status' => '1'
+        );
+
+        $this->updateModelTypeColour($apiModelRepository, $apiTypeModelRepository, $apiColorRepository);
+
+        $where = array('no_order_dealer' => $this->bind['order_number_dealer']);
+
+        $count = $masterFixOrderRepository->findDuplicate($where);
+
+        if($count > 0) {
+            session()->flash('action_message', 
+            '<div class="alert alert-warning" role="alert">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
+        } else {
+            $update = $masterFixOrderRepository->updateDealerOrder($dataMaster, $this->detailData, $this->idMonth);
+
+            if($update) {
+                $this->deleteCache();
+                session()->flash('action_message', '<div class="alert alert-primary" role="alert">Insert Data Success!</div>');
+                return redirect()->to(route('fix-order.index'));
+            } else {
+                session()->flash('action_message', '<div class="alert alert-danger" role="alert">Insert Data Failed!</div>');
+            }
+        }
+
+    }
+
+    private function updateModelTypeColour($apiModelRepository, $apiTypeModelRepository, $apiColorRepository)
+    {
+        foreach($this->detailData as $key => $detailData) {
+            // Model Name
+            $cacheModel = 'data-model-getById-'.$this->detailData[$key]['id_model'];
+            $dataModel = Cache::remember($cacheModel, 10, function () use($apiModelRepository, $key) {
+                return $apiModelRepository->getById($this->detailData[$key]['id_model']);
+            });
+
+            $this->detailData[$key]['model_name'] = $dataModel['data']['nm_model'];
+
+            // Type Model Name
+            $cacheType = 'data-type-model-getById-'.$this->detailData[$key]['id_type'];
+            $dataModel = Cache::remember($cacheType, 10, function () use($apiTypeModelRepository, $key) {
+                return $apiTypeModelRepository->getById($this->detailData[$key]['id_type']);
+            });
+
+            $this->detailData[$key]['type_name'] = $dataModel['data']['nm_type'];
+
+
+            foreach($this->detailData[$key]['selected_colour'] as $keySelectedColor => $dataSelectedColor) {
+                // Model Colour
+                $cacheModelColor = 'data-model-color-getById-'.$this->detailData[$key]['selected_colour'][$keySelectedColor]['id_colour'];
+                $dataModel = Cache::remember($cacheModelColor, 10, function () use($apiColorRepository, $key, $keySelectedColor) {
+                    return $apiColorRepository->getById($this->detailData[$key]['selected_colour'][$keySelectedColor]['id_colour']);
+                });
+  
+                $this->detailData[$key]['selected_colour'][$keySelectedColor]['colour_name'] = $dataModel['data']['nm_color_global'];
+            } 
+            
+        }
     }
 }

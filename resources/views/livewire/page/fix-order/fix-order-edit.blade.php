@@ -107,7 +107,7 @@
                 </div>
                 <!-- Modal -->
 
-                <form id="form-add" class="section" wire:submit.prevent="addProcess">
+                <form id="form-add" class="section" wire:submit.prevent="editProcess">
                     <div class="info">
                         <h5 class="mb-4">{{ $pageTitle }}</h5>
                         <div class="row">
@@ -243,7 +243,7 @@
                         </table>
                     </div>
                     <div class="col-md-11 text-left">
-                        <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
+                        <button type="submit" class="btn btn-success mt-3 mr-2">Update</button>
                         <button class="btn btn-warning mt-3" 
                             wire:click.prevent="goTo('{{route('fix-order.index')}}')">Back</a>
                         
