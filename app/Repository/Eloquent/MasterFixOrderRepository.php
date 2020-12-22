@@ -39,6 +39,17 @@ class MasterFixOrderRepository extends BaseRepository
         ->get();
     }
 
+    public function getByIdDealerAndMonthAllocationAtpm($idDealer, $month)
+    {
+
+        return $this->model->where('status', '1')
+        ->where('id_month', $month)
+        ->where('flag_send_approval_dealer', '1')
+        ->where('flag_approval_dealer', '1')
+        ->where('flag_submit_to_atpm', '1')
+        ->get();
+    }
+
     public function createDealerOrder($dataMaster, $dataDetail, $idMonth)
     {
         $idDealer = session()->get('user')['id_dealer'];

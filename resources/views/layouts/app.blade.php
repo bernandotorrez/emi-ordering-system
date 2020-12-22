@@ -176,6 +176,8 @@
         @include('layouts.custom_javascript.fix-order-javascript')
     @elseif(Request::is('sales/dealer/fix-order-bm'))
         @include('layouts.custom_javascript.fix-order-javascript-principle')
+    @elseif(Request::is('sales/atpm/fix-order-atpm'))
+        @include('layouts.custom_javascript.fix-order-javascript-atpm')
     @endif
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 

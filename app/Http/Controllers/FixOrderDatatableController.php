@@ -107,6 +107,53 @@ class FixOrderDatatableController extends Controller
         ->make(true);
     }
 
+     // In ATPM
+     public function FixOrderJsonAllocationAtpm(
+        Request $request, 
+        MasterFixOrderRepository $masterFixOrderRepository,
+        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository
+    ) {
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+        $month = $request->get('month');
+        $monthIdTo = $rangeMonthFixOrderRepository->getMonthIdToByIdMonth(date('m'));
+        $cache_name = 'datatable-FixOrderJsonAllocationAtpm-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month;
+        $datas = Cache::remember($cache_name, 10, 
+        function () use($masterFixOrderRepository, $idUser, $idDealer, $cache_name, $month, $monthIdTo){
+            CacheModel::firstOrCreate(['cache_name' => $cache_name, 'id_user' => $idUser]);
+            return $masterFixOrderRepository->getByIdDealerAndMonthAllocationAtpm($idDealer, $month ? $month : $monthIdTo->month_id_to);
+        });
+
+        return Datatables::of($datas)
+        ->addColumn('action', function($data) {
+            if($data->flag_allocation == '1') {
+                return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" checked class="new-control-input child-chk select-customers-info" id="customer-all-info" disabled>
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>';
+            } else {
+                return '<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input child-chk checkId" 
+                onclick="updateCheck('.$data->id_master_fix_order_unit.', '.$data->flag_approval_dealer.')" 
+                id="'.$data->id_master_fix_order_unit.'" 
+                data-approved="'.$data->flag_approval_dealer.'"
+                value="'.$data->id_master_fix_order_unit.'">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>
+                ';
+            }
+        })
+        ->addColumn('status_progress', function($data) {
+            $statusProgress = $this->checkStatusProgress($data);
+
+            return $statusProgress;
+        })
+        ->addColumn('details_url', function($data) {
+            return url('datatable/detailFixOrderJson/' . $data->id_master_fix_order_unit);
+        })
+        ->make(true);
+    }
+
     public function detailFixOrderJson($id, DetailFixOrderRepository $detailFixOrderRepository)
     {
         $cache_name = 'datatable-detail-fixOrderJson-id-'.$id;
@@ -150,7 +197,7 @@ class FixOrderDatatableController extends Controller
             $statusProgress = 'Approved';
         } else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '0') {
-            $statusProgress = 'Submited';
+            $statusProgress = 'Submitted';
         }  else if($flag_send_approval_dealer == '1' && $flag_approval_dealer == '1' 
         && $flag_submit_to_atpm == '1' && $flag_allocation == '1') {
             $statusProgress = 'Allocated';

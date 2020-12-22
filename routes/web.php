@@ -16,6 +16,7 @@ use App\Http\Livewire\Page\AllocatedAtpm\AllocatedAtpmIndex;
 use App\Http\Livewire\Page\ApprovalBM\ApprovalBMIndex;
 use App\Http\Livewire\Page\ApprovedBM\ApprovedBMIndex;
 use App\Http\Livewire\Page\ChildMenu\ChildMenuIndex;
+use App\Http\Livewire\Page\FixOrder\FixOrderAtpm;
 use App\Http\Livewire\Page\FixOrder\FixOrderEdit;
 use App\Http\Livewire\Page\FixOrder\FixOrderIndex;
 use App\Http\Livewire\Page\FixOrder\FixOrderPrinciple;
@@ -78,6 +79,7 @@ Route::middleware(['user.session', 'bm.session'])->group(function() {
 Route::middleware(['user.session', 'atpm.session'])->group(function() {
     Route::get('/sales/atpm/submit-atpm', SubmitAtpmIndex::class)->name('submit-atpm.index');
     Route::get('/sales/atpm/allocated-atpm', AllocatedAtpmIndex::class)->name('allocated-atpm.index');
+    Route::get('/sales/atpm/fix-order-atpm', FixOrderAtpm::class)->name('fix-order.atpm');
 });
 
 // Datatable Json
@@ -96,6 +98,7 @@ Route::middleware('user.session')->prefix('datatable')->group(function() {
     Route::get('FixOrderJsonApprovalBM', [FixOrderDatatableController::class, 'FixOrderJsonApprovalBM']);
     Route::get('detailFixOrderJson/{id}', [FixOrderDatatableController::class, 'detailFixOrderJson']);
     Route::get('subDetailFixOrderJson/{id}', [FixOrderDatatableController::class, 'subDetailFixOrderJson']);
+    Route::get('FixOrderJsonAllocationAtpm', [FixOrderDatatableController::class, 'FixOrderJsonAllocationAtpm']);
 });
 
 // Sweet Alert
@@ -115,6 +118,7 @@ Route::middleware('user.session')->prefix('sweetalert')->group(function() {
     Route::post('fixOrder/planningToAtpm', [FixOrderSweetAlertController::class, 'planningToAtpm']);
     Route::post('fixOrder/reviseBM', [FixOrderSweetAlertController::class, 'reviseBM']);
     Route::post('fixOrder/submitToAtpm', [FixOrderSweetAlertController::class, 'submitToAtpm']);
+    Route::post('fixOrder/allocatedAtpm', [FixOrderSweetAlertController::class, 'allocatedAtpm']);
 });
 
 // Ajax

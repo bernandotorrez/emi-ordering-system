@@ -119,7 +119,6 @@ class FixOrderSweetAlertController extends Controller
 
             $this->deleteCaches('datatable-FixOrderJsonApprovalBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
-            //TODO: $this->deleteCaches('datatable-FixOrderJsonApprovedBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
 
             //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
         } else {
@@ -157,7 +156,6 @@ class FixOrderSweetAlertController extends Controller
 
             $this->deleteCaches('datatable-FixOrderJsonApprovalBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
-            // TODO: $this->deleteCaches('datatable-FixOrderJsonApprovedBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
 
             //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
         } else {
@@ -188,6 +186,44 @@ class FixOrderSweetAlertController extends Controller
             );
 
             $this->deleteCaches('datatable-FixOrderJsonApprovalBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
+            $this->deleteCache();
+
+            //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+        } else {
+            $callback = array(
+                'status' => 'fail',
+            );
+        }
+
+        return $callback;
+    }
+
+    public function allocatedAtpm(
+        Request $request,
+        MasterFixOrderRepository $masterFixOrderRepository,
+        KodeTahunRepository $kodeTahunRepository
+    ) {
+        $id = $request->post('id');
+        $month = $request->post('id_month');
+
+        $data = array(
+            'flag_allocation' => '1',
+            'date_allocation_atpm' => Carbon::now()
+        );
+        
+        $update = DB::transaction(function () use($masterFixOrderRepository, $id, $data) {
+            return $masterFixOrderRepository->massUpdate($id, $data);
+        });
+
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
+        if($update) {
+            $callback = array(
+                'status' => 'success',
+            );
+
+            $this->deleteCaches('datatable-FixOrderJsonAllocationAtpm-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
             // TODO: $this->deleteCaches('datatable-FixOrderJsonApprovedBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
 

@@ -70,7 +70,7 @@ function updateCheck(id, approved) {
     if (planningButtonEl != null) {
         var planningButtonEditable = planningButtonEl.getAttribute('data-editableByJS')
         if (planningButtonEditable == 'true') {
-            if (count == 0) {
+            if (count == 0 || approved == '0') {
                 planningButtonEl.setAttribute('disabled', true)
             } else {
                 planningButtonEl.removeAttribute('disabled')
@@ -138,40 +138,41 @@ function showHideButtonFirstLoad() {
         var countOrder = dataRange.countOrder
 
         if(checkBeforeOrAfter) {
-            if(countOrder == 0) {
-                if(data.flag_button_revise_before == '1') {
-                    reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                    reviseButtonAjaxLoadEl.disabled = false
-                } else {
-                    reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                    reviseButtonAjaxLoadEl.disabled = true
-                }
+            if (data.flag_button_revise_before == '1') {
+                reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true')
+                reviseButtonAjaxLoadEl.disabled = true
             } else {
-                reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false')
                 reviseButtonAjaxLoadEl.disabled = true
             }
 
-            if(data.flag_button_planning_before == '1') {
-                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+            if (data.flag_button_planning_before == '1') {
+                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true')
+                planningButtonAjaxLoadEl.disabled = true
             } else {
-                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false')
+                planningButtonAjaxLoadEl.disabled = true
             }
 
             if(data.flag_button_approve_before == '1') {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                approveButtonAjaxLoadEl.disabled = true
             } else {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                approveButtonAjaxLoadEl.disabled = true
             }
 
             if(data.flag_button_submit_before == '1') {
                 submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                submitButtonAjaxLoadEl.disabled = true
             } else {
                 submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                submitButtonAjaxLoadEl.disabled = true
             }
         } else {
             if(data.flag_button_revise_after == '1') {
                 reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                reviseButtonAjaxLoadEl.disabled = false
+                reviseButtonAjaxLoadEl.disabled = true
             } else {
                 reviseButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
                 reviseButtonAjaxLoadEl.disabled = true
@@ -179,20 +180,26 @@ function showHideButtonFirstLoad() {
 
             if(data.flag_button_planning_after == '1') {
                 planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                planningButtonAjaxLoadEl.disabled = true
             } else {
                 planningButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                planningButtonAjaxLoadEl.disabled = true
             }
 
             if(data.flag_button_approve_after == '1') {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                approveButtonAjaxLoadEl.disabled = true
             } else {
                 approveButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                approveButtonAjaxLoadEl.disabled = true
             }
 
             if(data.flag_button_submit_after == '1') {
                 submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                submitButtonAjaxLoadEl.disabled = true
             } else {
                 submitButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                submitButtonAjaxLoadEl.disabled = true
             }
         }
         
@@ -533,7 +540,7 @@ function showTable(month) {
             {
                 data: 'no_order_atpm',
                 name: 'no_order_atpm',
-                title: 'No Order ATPM'
+                title: 'Order Sequence'
             },
             {
                 data: 'date_send_approval',
@@ -645,7 +652,7 @@ function showTableTab(month) {
             {
                 data: 'no_order_atpm',
                 name: 'no_order_atpm',
-                title: 'No Order ATPM'
+                title: 'Order Sequence'
             },
             {
                 data: 'date_send_approval',
@@ -750,7 +757,7 @@ function showTableReadOnly(month) {
             {
                 data: 'no_order_atpm',
                 name: 'no_order_atpm',
-                title: 'No Order ATPM'
+                title: 'Order Sequence'
             },
             {
                 data: 'date_send_approval',

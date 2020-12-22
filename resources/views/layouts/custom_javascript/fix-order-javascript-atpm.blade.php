@@ -19,7 +19,7 @@
 document.addEventListener('livewire:load', function () {
     var month = document.getElementById('id_month').value
     var url = window.location.href
-    if (url.includes('fix-order')) {
+    if (url.includes('fix-order-atpm')) {
         showTable(month)
 
         updateCheck('')
@@ -30,18 +30,6 @@ Livewire.on('triggerGoTo', function(url) {
     var month = document.getElementById('id_month').value
     window.location.href = url+'/'+month
 })
-
-function showHideAddButton(month) {
-    var currentDate = "{{date('d-m-Y')}}"
-    var addButtonEl = document.getElementById('addButton')
-    var currentMonth = currentDate.split('-')[1]
-
-    if (month == currentMonth - 1) {
-        addButtonEl.style.display = 'inline-flex'
-    } else {
-        addButtonEl.style.display = 'none'
-    }
-}
 
 function changeMonthIdTo(monthIdTo) {
     var monthIdToTab = document.getElementById('month_id_to_tab')
@@ -64,42 +52,27 @@ function allChecked(status) {
 }
 
 function disableButton() {
-    var editButtonEl = document.getElementById('editButtonAjaxLoad')
-    var sendButtonEl = document.getElementById('sendApprovalButtonAjaxLoad')
+    var allocateButtonEl = document.getElementById('allocateButtonAjaxLoad')
 
-    editButtonEl.setAttribute('disabled', true)
-    sendButtonEl.setAttribute('disabled', true)
+    allocateButtonEl.setAttribute('disabled', true)
 }
 
-function updateCheck(id) {
+function updateCheck(id, approved) {
     var count = document.querySelectorAll('.checkId:checked').length
 
-    var editButtonEl = document.getElementById('editButtonAjaxLoad')
-    if (editButtonEl != null) {
-        var editButtonEditable = editButtonEl.getAttribute('data-editableByJS')
-        if (editButtonEditable == 'true') {
-            if (count == 0 || count > 1) {
-                editButtonEl.setAttribute('disabled', true)
+    var allocateButtonAjaxLoadEl = document.getElementById('allocateButtonAjaxLoad')
+    if (allocateButtonAjaxLoadEl != null) {
+        var allocateButtonEditable = allocateButtonAjaxLoadEl.getAttribute('data-editableByJS')
+        if (allocateButtonEditable == 'true') {
+            if (count == 0 || approved == '0') {
+                allocateButtonAjaxLoadEl.setAttribute('disabled', true)
             } else {
-                editButtonEl.removeAttribute('disabled')
-                editButtonEl.value = "{!! route('fix-order.edit') !!}/" + id
-            }
-        }
-
-    }
-
-    var sendButtonEl = document.getElementById('sendApprovalButtonAjaxLoad')
-    if (sendButtonEl != null) {
-        var sendButtonEditable = editButtonEl.getAttribute('data-editableByJS')
-        if (sendButtonEditable == 'true') {
-            if (count == 0) {
-                sendButtonEl.setAttribute('disabled', true)
-            } else {
-                sendButtonEl.removeAttribute('disabled')
+                allocateButtonAjaxLoadEl.removeAttribute('disabled')
             }
         }
     }
 }
+
 
 function showHideButtonFirstLoad() {
     //var divButtonFirstLoadEl = document.getElementById('button_first_load')
@@ -108,9 +81,7 @@ function showHideButtonFirstLoad() {
     var monthIdTo = document.getElementById('month_id_to').value
     var currentMonth = "{{date('m')}}"
 
-    var addButtonAjaxLoadEl = document.getElementById('addButtonAjaxLoad')
-    var editButtonAjaxLoadEl = document.getElementById('editButtonAjaxLoad')
-    var sendApprovalButtonAjaxLoadEl = document.getElementById('sendApprovalButtonAjaxLoad')
+    var allocateButtonAjaxLoadEl = document.getElementById('allocateButtonAjaxLoad')
 
     divButtonSecondLoadEl.style.display = 'inline-flex'
 
@@ -121,57 +92,21 @@ function showHideButtonFirstLoad() {
         var countOrder = dataRange.countOrder
 
         if(checkBeforeOrAfter) {
-            if(countOrder == 0) {
-                if(data.flag_button_add_before == '1') {
-                    addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                    addButtonAjaxLoadEl.disabled = false
-                } else {
-                    addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                    addButtonAjaxLoadEl.disabled = true
-                }
-            } else {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                addButtonAjaxLoadEl.disabled = true
-            }
 
-            if(data.flag_button_amend_before == '1') {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                editButtonAjaxLoadEl.disabled = true
+            if(data.flag_button_submit_before == '1') {
+                allocateButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                allocateButtonAjaxLoadEl.disabled = true
             } else {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                editButtonAjaxLoadEl.disabled = true
-            }
-
-            if(data.flag_button_send_approval_before == '1') {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                sendApprovalButtonAjaxLoadEl.disabled = true
-            } else {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                sendApprovalButtonAjaxLoadEl.disabled = true
+                allocateButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                allocateButtonAjaxLoadEl.disabled = true
             }
         } else {
-            if(data.flag_button_add_after == '1') {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                addButtonAjaxLoadEl.disabled = false
+            if(data.flag_button_submit_after == '1') {
+                allocateButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
+                allocateButtonAjaxLoadEl.disabled = true
             } else {
-                addButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                addButtonAjaxLoadEl.disabled = true
-            }
-
-            if(data.flag_button_amend_after == '1') {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                editButtonAjaxLoadEl.disabled = true
-            } else {
-                editButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                editButtonAjaxLoadEl.disabled = true
-            }
-
-            if(data.flag_button_send_approval_after == '1') {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'true') 
-                sendApprovalButtonAjaxLoadEl.disabled = true
-            } else {
-                sendApprovalButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
-                sendApprovalButtonAjaxLoadEl.disabled = true
+                allocateButtonAjaxLoadEl.setAttribute('data-editableByJS', 'false') 
+                allocateButtonAjaxLoadEl.disabled = true
             }
         }
         
@@ -194,7 +129,7 @@ function hideAllButton() {
     divButtonSecondLoadEl.style.display = 'none'
 }
 
-function sendApproval() {
+function sendAllocatedAtpm() {
     var month = document.getElementById('id_month').value
 
     var arrayChecked = document.querySelectorAll('.checkId:checked');
@@ -204,7 +139,7 @@ function sendApproval() {
         arrayId.push(check.value)
     })
 
-    var url = "{{url('sweetalert/fixOrder/sendToApproval')}}"
+    var url = "{{url('sweetalert/fixOrder/allocatedAtpm')}}"
     var data = {
         _token: $('meta[name="csrf-token"]').attr('content'),
         id: arrayId,
@@ -212,7 +147,7 @@ function sendApproval() {
     }
 
     Swal.fire({
-        title: 'Send Approval?',
+        title: 'Allocated?',
         text: "Please ensure and then confirm!",
         type: "info",
         icon: 'question',
@@ -286,7 +221,7 @@ function showTable(month) {
     showHideButtonFirstLoad()
     disableButton()
     var template = Handlebars.compile($("#details-template").html());
-    var table = $('#master-fixorder-table').DataTable({
+    var table = $('#master-fixorder-atpm-table').DataTable({
         "oLanguage": {
             "oPaginate": {
                 "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -301,7 +236,7 @@ function showTable(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax: "{{url('datatable/fixOrderJson')}}",
+        ajax: "{{url('datatable/FixOrderJsonAllocationAtpm')}}",
         columnDefs: [{
             "visible": false,
             "targets": 2
@@ -336,9 +271,9 @@ function showTable(month) {
                 title: 'Order Sequence'
             },
             {
-                data: 'date_save_order',
-                name: 'date_save_order',
-                title: 'Date Save Order'
+                data: 'date_submit_atpm_order',
+                name: 'date_submit_atpm_order',
+                title: 'Date Submit to ATPM'
             },
             {
                 data: 'user_order',
@@ -369,8 +304,8 @@ function showTable(month) {
     });
 
     // Add event listener for opening and closing details
-    $('#master-fixorder-table tbody').off('click', 'td.details-control');
-    $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
+    $('#master-fixorder-atpm-table tbody').off('click', 'td.details-control');
+    $('#master-fixorder-atpm-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var tableId = 'detail-' + row.data().id_master_fix_order_unit;
@@ -394,11 +329,11 @@ function showTableTab(month) {
     //showHideButton()
     showHideButtonFirstLoad()
     disableButton()
-    $('#master-fixorder-table').DataTable().destroy();
-    $('#master-fixorder-table').html('');
+    $('#master-fixorder-atpm-table').DataTable().destroy();
+    $('#master-fixorder-atpm-table').html('');
 
     var template = Handlebars.compile($("#details-template").html());
-    var table = $('#master-fixorder-table').DataTable({
+    var table = $('#master-fixorder-atpm-table').DataTable({
         "oLanguage": {
             "oPaginate": {
                 "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -413,7 +348,7 @@ function showTableTab(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax: month ? "{{url('datatable/fixOrderJson?month=')}}" + month : "{{url('datatable/fixOrderJson')}}",
+        ajax: month ? "{{url('datatable/FixOrderJsonAllocationAtpm?month=')}}" + month : "{{url('datatable/FixOrderJsonAllocationAtpm')}}",
         columnDefs: [{
             "visible": false,
             "targets": 2
@@ -448,9 +383,9 @@ function showTableTab(month) {
                 title: 'Order Sequence'
             },
             {
-                data: 'date_save_order',
-                name: 'date_save_order',
-                title: 'Date Save Order'
+                data: 'date_submit_atpm_order',
+                name: 'date_submit_atpm_order',
+                title: 'Date Submit to ATPM'
             },
             {
                 data: 'user_order',
@@ -481,8 +416,8 @@ function showTableTab(month) {
     });
 
     // Add event listener for opening and closing details
-    $('#master-fixorder-table tbody').off('click', 'td.details-control');
-    $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
+    $('#master-fixorder-atpm-table tbody').off('click', 'td.details-control');
+    $('#master-fixorder-atpm-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var tableId = 'detail-' + row.data().id_master_fix_order_unit;
@@ -506,11 +441,11 @@ function showTableReadOnly(month) {
     //showHideButton()
     hideAllButton()
     disableButton()
-    $('#master-fixorder-table').DataTable().destroy();
-    $('#master-fixorder-table').html('');
+    $('#master-fixorder-atpm-table').DataTable().destroy();
+    $('#master-fixorder-atpm-table').html('');
 
     var template = Handlebars.compile($("#details-template").html());
-    var table = $('#master-fixorder-table').DataTable({
+    var table = $('#master-fixorder-atpm-table').DataTable({
         "oLanguage": {
             "oPaginate": {
                 "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -525,7 +460,7 @@ function showTableReadOnly(month) {
         processing: true,
         serverSide: true,
         destroy: true,
-        ajax:  "{{url('datatable/fixOrderJson?month=')}}" + month,
+        ajax:  "{{url('datatable/FixOrderJsonAllocationAtpm?month=')}}" + month,
         columnDefs: [{
             "visible": false,
             "targets": 1
@@ -553,9 +488,9 @@ function showTableReadOnly(month) {
                 title: 'Order Sequence'
             },
             {
-                data: 'date_save_order',
-                name: 'date_save_order',
-                title: 'Date Save Order'
+                data: 'date_submit_atpm_order',
+                name: 'date_submit_atpm_order',
+                title: 'Date Submit to ATPM'
             },
             {
                 data: 'user_order',
@@ -586,8 +521,8 @@ function showTableReadOnly(month) {
     });
 
     // Add event listener for opening and closing details
-    $('#master-fixorder-table tbody').off('click', 'td.details-control');
-    $('#master-fixorder-table tbody').on('click', 'td.details-control', function () {
+    $('#master-fixorder-atpm-table tbody').off('click', 'td.details-control');
+    $('#master-fixorder-atpm-table tbody').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
         var row = table.row(tr);
         var tableId = 'detail-' + row.data().id_master_fix_order_unit;
