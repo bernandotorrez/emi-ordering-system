@@ -218,7 +218,7 @@ function getRangeMonthFixOrder(idMonth, monthIdTo) {
 
 function showTable(month) {
     //showHideButton()
-    showHideButtonFirstLoad()
+    //showHideButtonFirstLoad()
     disableButton()
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#master-fixorder-atpm-table').DataTable({
@@ -327,7 +327,7 @@ function showTable(month) {
 
 function showTableTab(month) {
     //showHideButton()
-    showHideButtonFirstLoad()
+    //showHideButtonFirstLoad()
     disableButton()
     $('#master-fixorder-atpm-table').DataTable().destroy();
     $('#master-fixorder-atpm-table').html('');

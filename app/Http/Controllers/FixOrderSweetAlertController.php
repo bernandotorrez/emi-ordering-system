@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Allocated;
+use App\Mail\Approved;
+use App\Mail\Revised;
 use App\Mail\SendEmailToDealerPrinciple;
+use App\Mail\Submitted;
+use App\Mail\WaitingApproval;
+use App\Repository\Api\ApiDealerUserRepository;
 use App\Repository\Eloquent\KodeTahunRepository;
 use App\Repository\Eloquent\MasterFixOrderRepository;
 use App\Traits\WithDeleteCache;
@@ -18,7 +24,8 @@ class FixOrderSweetAlertController extends Controller
 
     public function sendToApproval(
         Request $request,
-        MasterFixOrderRepository $masterFixOrderRepository
+        MasterFixOrderRepository $masterFixOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $month = $request->post('id_month');
@@ -43,7 +50,7 @@ class FixOrderSweetAlertController extends Controller
             $this->deleteCaches('datatable-fixOrderJson-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
 
-            Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new WaitingApproval($id, 'F'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -55,7 +62,8 @@ class FixOrderSweetAlertController extends Controller
 
     public function approvalBM(
         Request $request,
-        MasterFixOrderRepository $masterFixOrderRepository
+        MasterFixOrderRepository $masterFixOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $month = $request->post('id_month');
@@ -80,7 +88,7 @@ class FixOrderSweetAlertController extends Controller
             $this->deleteCaches('datatable-FixOrderJsonApprovalBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
 
-            //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Approved($id, 'F'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -92,7 +100,8 @@ class FixOrderSweetAlertController extends Controller
 
     public function reviseBM(
         Request $request,
-        MasterFixOrderRepository $masterFixOrderRepository
+        MasterFixOrderRepository $masterFixOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $month = $request->post('id_month');
@@ -120,7 +129,7 @@ class FixOrderSweetAlertController extends Controller
             $this->deleteCaches('datatable-FixOrderJsonApprovalBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
 
-            //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Revised($id, 'F'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -170,7 +179,8 @@ class FixOrderSweetAlertController extends Controller
     public function submitToAtpm(
         Request $request,
         MasterFixOrderRepository $masterFixOrderRepository,
-        KodeTahunRepository $kodeTahunRepository
+        KodeTahunRepository $kodeTahunRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $month = $request->post('id_month');
@@ -188,7 +198,7 @@ class FixOrderSweetAlertController extends Controller
             $this->deleteCaches('datatable-FixOrderJsonApprovalBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
             $this->deleteCache();
 
-            //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Submitted($id, 'F'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -201,7 +211,8 @@ class FixOrderSweetAlertController extends Controller
     public function allocatedAtpm(
         Request $request,
         MasterFixOrderRepository $masterFixOrderRepository,
-        KodeTahunRepository $kodeTahunRepository
+        KodeTahunRepository $kodeTahunRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $month = $request->post('id_month');
@@ -227,7 +238,7 @@ class FixOrderSweetAlertController extends Controller
             $this->deleteCache();
             // TODO: $this->deleteCaches('datatable-FixOrderJsonApprovedBM-idUser-'.$idUser.'-idDealer-'.$idDealer.'-month-'.$month);
 
-            //Mail::to('Bernand.Hermawan@eurokars.co.id')->send(new SendEmailToDealerPrinciple);
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Allocated($id, 'F'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -235,6 +246,34 @@ class FixOrderSweetAlertController extends Controller
         }
 
         return $callback;
+    }
+
+    private function getEmailTo($apiDealerUserRepository)
+    {
+        $idDealer = session()->get('user')['id_dealer'];
+        $cache_name = 'api-apiDealerUserRepository->getByIdDealer-idDealer-'.$idDealer;
+        $dataDealer = Cache::remember($cache_name, 60, function () use($apiDealerUserRepository, $idDealer) {
+            return $apiDealerUserRepository->getByIdDealer($idDealer);
+        });
+
+        $email = array();
+        foreach($dataDealer['data'] as $dealer) {
+            if($dealer['fk_dealer_level'] == 'BM') {
+                array_push($email, $dealer['email']);
+            }
+        }
+
+        // TODO: return $email;
+        // 'evan.yofiyanto@Mazda.co.id'
+        return ['Bernand.Hermawan@eurokars.co.id'];
+    }
+
+    private function getEmailUser($id, $masterAdditionalOrderRepository)
+    {
+        $dataMaster = $masterAdditionalOrderRepository->getById($id);
+
+        //TODO: return $dataMaster->email;
+        return 'Bernand.Hermawan@eurokars.co.id';
     }
 
     private function deleteCaches($cacheName) {

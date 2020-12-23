@@ -183,6 +183,39 @@
         
     });
 
+    function disableButton() {
+        if (getInitData().table == 'draft') {
+            var editButtonEl = document.getElementById('editButton')
+            var sendButtonEl = document.getElementById('sendApprovalButton')
+
+            editButtonEl.setAttribute('disabled', true)
+            sendButtonEl.setAttribute('disabled', true)
+        } else if (getInitData().table == 'waiting_approval_dealer_principle') {
+            var reviseButtonEl = document.getElementById('sendReviseButton')
+            var sendButtonEl = document.getElementById('sendApprovalButton')
+
+            reviseButtonEl.setAttribute('disabled', true)
+            sendButtonEl.setAttribute('disabled', true)
+        } else if (getInitData().table == 'approval_dealer_principle') {
+            var reviseButtonEl = document.getElementById('sendReviseButton')
+            var sendButtonEl = document.getElementById('sendApprovalButton')
+
+            reviseButtonEl.setAttribute('disabled', true)
+            sendButtonEl.setAttribute('disabled', true)
+        } else if (getInitData().table == 'submitted_atpm') {
+            var cancelButtonEl = document.getElementById('sendCancelButton')
+            var sendButtonEl = document.getElementById('sendApprovalButton')
+
+            cancelButtonEl.setAttribute('disabled', true)
+            sendButtonEl.setAttribute('disabled', true)
+        } else if (getInitData().table == 'atpm_allocation') {
+            var cancelButtonEl = document.getElementById('sendCancelButton')
+
+            cancelButtonEl.setAttribute('disabled', true)
+        }
+    }
+
+
     // TODO: yang perlu di ubah
     function updateCheck(id) {
         var count = document.querySelectorAll('.checkId:checked').length
@@ -400,11 +433,16 @@
     // TODO: yang perlu diubah
     function getAction(status) {
         var url = window.location.href
+        var actionHtml = `<label class="new-control new-checkbox checkbox-outline-primary  m-auto">
+                <input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">
+                <span class="new-control-indicator"></span><span style="visibility:hidden">c</span>
+                </label>`;
         if (status == 'draft' && url.includes('additional-order')) {
+            
             var dataAction = {
                 data: 'action',
                 name: 'action',
-                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                title: actionHtml,
                 searchable: false,
                 orderable: false
             }
@@ -412,7 +450,7 @@
             var dataAction = {
                 data: 'action',
                 name: 'action',
-                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                title: actionHtml,
                 searchable: false,
                 orderable: false
             }
@@ -420,7 +458,7 @@
             var dataAction = {
                 data: 'action',
                 name: 'action',
-                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                title: actionHtml,
                 searchable: false,
                 orderable: false
             }
@@ -428,7 +466,7 @@
             var dataAction = {
                 data: 'action',
                 name: 'action',
-                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                title: actionHtml,
                 searchable: false,
                 orderable: false
             }
@@ -436,7 +474,7 @@
             var dataAction = {
                 data: 'action',
                 name: 'action',
-                title: '<input type="checkbox" class="new-control-input" onclick="allChecked(this.checked)">',
+                title: actionHtml,
                 searchable: false,
                 orderable: false
             }
@@ -644,6 +682,7 @@
 
     function showTable(status) {
         showHideButton(status)
+        disableButton()
         var template = Handlebars.compile($("#details-template").html());
         var table = $('#master-additional-table').DataTable({
             "oLanguage": {
@@ -769,6 +808,7 @@
 
     function showTableTab(status) {
         showHideButton(status)
+        disableButton()
         $('#master-additional-table').DataTable().destroy();
         $('#master-additional-table').html('');
 
@@ -856,6 +896,7 @@
 
     function showTableCancel(status, id) {
         showHideButton(status)
+        disableButton()
         $('#master-additional-table').DataTable().destroy();
         $('#master-additional-table').html('');
         var ajaxUrl = getUrlAjax(status) + '/' + id

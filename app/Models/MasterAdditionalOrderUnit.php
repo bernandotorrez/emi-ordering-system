@@ -30,33 +30,21 @@ class MasterAdditionalOrderUnit extends Model
         'total_qty',
     ];
     protected $guarded = ['id_master_additional_order_unit'];
+    protected $casts = [
+        'date_save_order' => 'datetime:d-M-Y H:i:s',
+        'date_send_approval' => 'datetime:d-M-Y H:i:s',
+        'date_approval' => 'datetime:d-M-Y H:i:s',
+        'date_revise' => 'datetime:d-M-Y H:i:s',
+        'date_submit_atpm_order' => 'datetime:d-M-Y H:i:s',
+        'date_cancel' => 'datetime:d-M-Y H:i:s',
+        'date_allocation_atpm' => 'datetime:d-M-Y H:i:s',
+        'created_at' => 'datetime:d-M-Y H:i:s',
+        'updated_at' => 'datetime:d-M-Y H:i:s',
+    ];
 
     public function getSearchableColumn()
     {
         return $this->searchableColumn;
-    }
-
-    // this is a Accessor (change field to show)
-    public function getDateReviseAttribute($value)
-    {
-        if($value) {
-            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d M Y H:i:s');
-        }
-    }
-
-    public function getDateSaveOrderAttribute($value)
-    {
-        if($value) {
-            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d M Y H:i:s');
-        }
-    }
-
-    public function getDateCancelAttribute($value)
-    {
-        if($value) {
-            return Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d M Y H:i:s');
-        }
-        
     }
 
     public function detailAdditionalOrderUnit()

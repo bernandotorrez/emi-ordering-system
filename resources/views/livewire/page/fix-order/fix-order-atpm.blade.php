@@ -56,7 +56,7 @@
                         <button class="btn btn-success mr-2" data-editableByJS="false" onclick="sendApproval()"
                             id="approveButtonAjaxLoad" disabled>Approve</button> -->
                         
-                        <button class="btn btn-primary mr-2" data-editableByJS="false" onclick="sendAllocatedAtpm()"
+                        <button class="btn btn-primary mr-2" data-editableByJS="true" onclick="sendAllocatedAtpm()"
                             id="allocateButtonAjaxLoad" disabled>Allocate</button>
                     </div>
 
