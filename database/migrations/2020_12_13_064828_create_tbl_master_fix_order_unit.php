@@ -25,6 +25,7 @@ class CreateTblMasterFixOrderUnit extends Migration
                 $table->dateTime('date_submit_atpm_order')->nullable();
                 $table->dateTime('date_cancel')->nullable();
                 $table->dateTime('date_allocation_atpm')->nullable();
+                $table->dateTime('date_planning')->nullable();
                 $table->bigInteger('id_dealer');
                 $table->bigInteger('id_user');
                 $table->string('user_order', 50);
@@ -35,6 +36,7 @@ class CreateTblMasterFixOrderUnit extends Migration
                 $table->tinyInteger('flag_approval_dealer')->default(0);
                 $table->tinyInteger('flag_submit_to_atpm')->default(0);
                 $table->tinyInteger('flag_allocation')->default(0);
+                $table->tinyInteger('flag_planning')->default(0);
                 $table->bigInteger('id_cancel_status')->default(0);
                 $table->text('remark_revise')->nullable();
                 $table->text('remark_cancel')->nullable();

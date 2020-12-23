@@ -8,18 +8,13 @@
                 {!! session('action_message') !!}
                 @endif
 
-                <?php
-                $date_start = date('Y-m-d',strtotime(date('Y-m-d') . "+1 days"));
-                $checkAddButtonCurrentMonth = eval("return ((string) date('Y-m-d') $dataLockDate->operator_start '$dataLockDate->date_input_lock_start')
-                    && ((string) date('Y-m-d') $dataLockDate->operator_end '$dataLockDate->date_input_lock_end');");
-
-                ?>
-
                 <h6>Fix Order ( {{date('d M Y')}} )</h6>
 
                 <div class="widget-content widget-content-area animated-underline-content">
 
-                    <input type="hidden" class="form-control" id="id_month" value="{{date('m')}}">
+                    <input type="hidden" class="form-control" id="id_month" value="{{$rangeMonth[0]}}">
+                    <input type="hidden" class="form-control" id="month_id_to" value="{{$dataRangeMonth[0]->month_id_to}}">
+                    <input type="hidden" class="form-control" id="checkBeforeOrAfter" value="{{$checkBeforeOrAfter}}">
                  
                     <ul class="nav nav-tabs  mb-3" id="animateLine" role="tablist">
                     
@@ -28,23 +23,23 @@
                         @if(in_array($masterMonth->id_month, $rangeMonth))
                         <li class="nav-item" 
                             style="background-color: var(--green); color: #fff"
-                            onclick="changeMonth({{$key+1}})">
-                            <a class="nav-link {{(date('m')-1 == $key) ? 'active' : ''}}"
+                            onclick="changeMonth({{$masterMonth->id_month}});">
+                            <a class="nav-link {{($rangeMonth[0] == $key+1) ? 'active' : ''}}"
                                 id="animated-underline-home-tab" data-toggle="tab" href="#animated-underline-home"
                                 role="tab" aria-controls="animated-underline-home"
-                                aria-selected="{{(date('m')-1 == $key) ? 'true' : 'false'}}">
+                                aria-selected="{{($rangeMonth[0] == $key+1) ? 'true' : 'false'}}">
                                 <i class="far fa-calendar-alt"></i>
-                                {{$masterMonth->month}}
+                                {{Str::substr($masterMonth->month, 0, 3)}}
                             </a>
                         </li>
                         @else
-                        <li class="nav-item" style="background-color: var(--red); color: #fff">
-                            <a class="nav-link disabled"
+                        <li class="nav-item" style="background-color: var(--red); color: #fff"
+                            onclick="showTableReadOnly({{$masterMonth->id_month}});">
+                            <a class="nav-link"
                                 id="animated-underline-home-tab" data-toggle="tab" href="#animated-underline-home"
-                                role="tab" aria-controls="animated-underline-home"
-                                aria-disabled="true">
+                                role="tab" aria-controls="animated-underline-home">
                                 <i class="far fa-calendar-alt"></i>
-                                {{$masterMonth->month}}
+                                {{Str::substr($masterMonth->month, 0, 3)}}
                             </a>
                         </li>
                         @endif
@@ -52,18 +47,18 @@
                         @endforeach
                     </ul>
 
-                        @if($checkAddButtonCurrentMonth)
-                        <button class="btn btn-primary mr-2" id="addButton"
-                            wire:click.prevent="goTo('{{route('fix-order.add')}}')">Add</button>
-                        @else
-                        <button class="btn btn-primary mr-2" id="addButton" disabled>Add</button>
-                        @endif
+                    <div id="button_ajax_load">
+                        <button class="btn btn-primary mr-2" id="addButtonAjaxLoad"
+                                data-editableByJS="false"
+                                wire:click.prevent="$emit('triggerGoTo', '{{route('fix-order.add')}}')">Add</button>
 
-                        <button class="btn btn-success mr-2" id="editButton"
-                            wire:click.prevent="goTo('{{route('fix-order.add')}}')">Amend</button>
+                        <button class="btn btn-success mr-2" id="editButtonAjaxLoad"
+                            wire:click.prevent="goTo($event.target.value)" 
+                            data-editableByJS="true" disabled>Amend</button>
 
-                        <button class="btn btn-primary mr-2" id="sendApprovalButton"
-                            wire:click.prevent="goTo('{{route('fix-order.add')}}')">Send Approval</button>
+                        <button class="btn btn-primary mr-2" id="sendApprovalButtonAjaxLoad"
+                                data-editableByJS="false" onclick="sendApproval()" disabled>Send Approval</button>
+                    </div>
 
                         <div class="table-responsive mt-4">
                             <table class="table table-striped table-bordered table-hover" id="master-fixorder-table">

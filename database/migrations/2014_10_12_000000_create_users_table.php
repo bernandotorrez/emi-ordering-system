@@ -10,6 +10,7 @@ use App\Models\User;
 class CreateUsersTable extends Migration
 {
     use WithWrsApi;
+    protected $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiJ0YW1wYW4iLCJzdGF0dXNfYXRwbSI6ImF0cG0ifSwiaWF0IjoxNjA4NjUwNzQzLCJleHAiOjE2MDg2NjE1NDN9.56eyeeG3hbFuyIhLPop4CCBFt4uI43HrCRa3U-vw1ms';
     /**
      * Run the migrations.
      *
@@ -44,7 +45,11 @@ class CreateUsersTable extends Migration
 
     public function insertAtpm()
     {
-        $data = Http::get($this->wrsApi.'/atpm-user');
+        $data = $data = Http::withHeaders([
+            'X-Auth-Token' => $this->token
+        ])
+        ->get($this->wrsApi.'/atpm-user')
+        ->json();
 
         foreach($data['data'] as $atpm)
         {
@@ -66,8 +71,12 @@ class CreateUsersTable extends Migration
 
     public function insertDealer()
     {
-        $data = Http::get($this->wrsApi.'/dealer-user');
-
+        $data = Http::withHeaders([
+            'X-Auth-Token' => $this->token
+        ])
+        ->get($this->wrsApi.'/dealer-user')
+        ->json();
+        
         foreach($data['data'] as $dealer)
         {
             $checkDuplicate = User::firstWhere('kd_user_wrs', $dealer['kd_dealer_user']);

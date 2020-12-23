@@ -8,6 +8,7 @@ use App\Repository\Api\ApiModelColorRepository;
 use App\Repository\Api\ApiModelRepository;
 use App\Repository\Api\ApiTypeModelRepository;
 use App\Repository\Eloquent\MasterFixOrderRepository;
+use App\Repository\Eloquent\RangeMonthFixOrderRepository;
 use App\Traits\WithDeleteCache;
 use App\Traits\WithGoTo;
 use App\Traits\WithWrsApi;
@@ -24,8 +25,9 @@ class FixOrderAdd extends Component
     public $pageTitle = 'Fix Order - Add';
     public array $detailData = [];
     public $grandTotalQty = 0;
-    public $id = 0;
+    public $idKey = 0;
     public $modelName = '';
+    public $idMonth = '';
     
     public array $bind = [
         'order_number_dealer' => ''
@@ -38,7 +40,7 @@ class FixOrderAdd extends Component
         'detailData.*.year_production' => 'required',
         'detailData.*.total_qty' => 'required|min:1|max:99999',
         'detailData.*.selected_colour.*.id_colour' => 'required',
-        'detailData.*.selected_colour.*.qty' => 'required',
+        'detailData.*.selected_colour.*.qty' => 'required|numeric|min:1',
     ];
 
     protected $messages = [
@@ -51,10 +53,13 @@ class FixOrderAdd extends Component
         'detailData.*.year_production.required' => 'Please Choose Year Production!',
         'detailData.*.selected_colour.*.id_colour.required' => 'Please Choose Colour!',
         'detailData.*.selected_colour.*.qty.required' => 'Please Fill Quantity!',
+        'detailData.*.selected_colour.*.qty.min' => 'Please Fill Quantity with Minimal :min!',
+        'detailData.*.selected_colour.*.qty.number' => 'Please Fill Quantity with Number!',
     ];
     
-    public function mount()
+    public function mount($idMonth)
     {
+        $this->idMonth = $idMonth;
         $detailData = array(
             'id_model' => '',
             'model_name' => '',
@@ -109,7 +114,7 @@ class FixOrderAdd extends Component
             'qty' => 0,
         );
 
-        array_push($this->detailData[$this->id]['selected_colour'], $subDetailData);
+        array_push($this->detailData[$this->idKey]['selected_colour'], $subDetailData);
     }
 
     public function deleteDetail($key)
@@ -132,13 +137,13 @@ class FixOrderAdd extends Component
     private function sumTotalQty()
     {
         $totalQty = 0;
-        foreach($this->detailData[$this->id]['selected_colour'] as $keySelected => $selectedColour)
+        foreach($this->detailData[$this->idKey]['selected_colour'] as $keySelected => $selectedColour)
         {
-                $totalQty += $this->detailData[$this->id]['selected_colour'][$keySelected]['qty'] 
-                ? $this->detailData[$this->id]['selected_colour'][$keySelected]['qty'] : 0;
+                $totalQty += $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] 
+                ? $this->detailData[$this->idKey]['selected_colour'][$keySelected]['qty'] : 0;
         }
    
-        $this->detailData[$this->id]['total_qty'] = $totalQty;
+        $this->detailData[$this->idKey]['total_qty'] = $totalQty;
     }
 
     private function sumGrandTotalQty()
@@ -155,7 +160,7 @@ class FixOrderAdd extends Component
     public function addForm($key, ApiModelColorRepository $apiModelColorRepository)
     {
         //$this->resetForm();
-        $this->id = $key;
+        $this->idKey = $key;
         $this->emit('openModal');
     }
 
@@ -188,8 +193,9 @@ class FixOrderAdd extends Component
         
     }
 
-    public function render(ApiModelRepository $apiModelRepository)
-    {
+    public function render(
+        ApiModelRepository $apiModelRepository
+    ) {
         $dealerName = session()->get('dealer')['nm_dealer'] ? session()->get('dealer')['nm_dealer'] : 'Admin';
         
         $dataModel = Cache::remember('data-model', 30, function () use($apiModelRepository) {
@@ -207,9 +213,12 @@ class FixOrderAdd extends Component
         MasterFixOrderRepository $masterFixOrderRepository,
         ApiModelRepository $apiModelRepository,
         ApiTypeModelRepository $apiTypeModelRepository,
-        ApiColorRepository $apiColorRepository
+        ApiColorRepository $apiColorRepository,
+        RangeMonthFixOrderRepository $rangeMonthFixOrderRepository
     ) {
         $this->validate();
+
+        $monthIdTo = $rangeMonthFixOrderRepository->getMonthIdToByIdMonth(date('m'));
 
         $dataMaster = array(
             'no_order_atpm' => '',
@@ -218,7 +227,7 @@ class FixOrderAdd extends Component
             'id_dealer' => session()->get('user')['id_dealer'],
             'id_user' => session()->get('user')['id_user'],
             'user_order' => session()->get('user')['nama_user'],
-            'id_month' => '12',
+            'id_month' => $this->idMonth,
             'year_order' => Carbon::now()->year,
             'grand_total_qty' => $this->grandTotalQty,
             'status' => '1'
@@ -234,7 +243,7 @@ class FixOrderAdd extends Component
             session()->flash('action_message', 
             '<div class="alert alert-warning" role="alert">No Order Dealer : <strong>'.$this->bind['order_number_dealer'].'</strong> is Exists!</div>');
         } else {
-            $insert = $masterFixOrderRepository->createDealerOrder($dataMaster, $this->detailData);
+            $insert = $masterFixOrderRepository->createDealerOrder($dataMaster, $this->detailData, $this->idMonth);
 
             if($insert) {
                 $this->deleteCache();

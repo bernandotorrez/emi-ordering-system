@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Allocated;
+use App\Mail\Approved;
+use App\Mail\Canceled;
+use App\Mail\Revised;
+use App\Mail\Submitted;
+use App\Mail\WaitingApproval;
+use App\Repository\Api\ApiDealerUserRepository;
 use App\Repository\Eloquent\KodeTahunRepository;
 use App\Repository\Eloquent\MasterAdditionalOrderRepository;
 use App\Traits\WithDeleteCache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
-class SweetAlertController extends Controller
+class AdditionalOrderSweetAlertController extends Controller
 {
     use WithDeleteCache;
 
@@ -24,7 +33,8 @@ class SweetAlertController extends Controller
 
     public function sendToApproval(
         Request $request,
-        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
 
@@ -37,12 +47,17 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('send_to_approval');
+            $this->deleteCaches('datatable-additionalOrderJsonDraft-idUser-'.$idUser.'-idDealer-'.$idDealer);
+
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new WaitingApproval($id, 'A'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -54,7 +69,8 @@ class SweetAlertController extends Controller
 
     public function approvedBM(
         Request $request,
-        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
 
@@ -67,12 +83,17 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('waiting_approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonWaitingApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
+
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Approved($id, 'A'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -85,18 +106,24 @@ class SweetAlertController extends Controller
     public function submitToAtpm(
         Request $request,
         MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
-        KodeTahunRepository $kodeTahunRepository
+        KodeTahunRepository $kodeTahunRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         
         $update = $masterAdditionalOrderRepository->updateSubmitAtpm($id, $kodeTahunRepository);
+
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
 
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
+
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Submitted($id, 'A'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -108,7 +135,8 @@ class SweetAlertController extends Controller
 
     public function reviseBMDealer(
         Request $request,
-        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $remark_revise = $request->post('remark_revise');
@@ -124,12 +152,18 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCache('approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
+
+            
+            Mail::to($this->getEmailUser($id, $masterAdditionalOrderRepository))->send(new Revised($id, 'A'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -141,7 +175,8 @@ class SweetAlertController extends Controller
 
     public function cancelBMDealer(
         Request $request,
-        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
         $remark_cancel = $request->post('remark_cancel');
@@ -157,13 +192,18 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('approval_dealer_principle');
+            $this->deleteCaches('datatable-additionalOrderJsonApprovalDealerPrinciple-idUser-'.$idUser.'-idDealer-'.$idDealer);
             $this->deleteCache();
+
+            Mail::to($this->getEmailUser($id, $masterAdditionalOrderRepository))->send(new Canceled($id, 'A', 'BM'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -175,7 +215,8 @@ class SweetAlertController extends Controller
 
     public function submittedAtpm(
         Request $request,
-        MasterAdditionalOrderRepository $masterAdditionalOrderRepository
+        MasterAdditionalOrderRepository $masterAdditionalOrderRepository,
+        ApiDealerUserRepository $apiDealerUserRepository
     ) {
         $id = $request->post('id');
 
@@ -188,12 +229,17 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('submitted_atpm');
+            $this->deleteCaches('datatable-additionalOrderJsonSubmittedATPM-idUser-'.$idUser.'-idDealer-'.$idDealer);
+
+            Mail::to($this->getEmailTo($apiDealerUserRepository))->send(new Allocated($id, 'A'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -221,13 +267,18 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('submitted_atpm');
+            $this->deleteCaches('datatable-additionalOrderJsonSubmittedATPM-idUser-'.$idUser.'-idDealer-'.$idDealer);
             $this->deleteCache();
+
+            Mail::to($this->getEmailUser($id, $masterAdditionalOrderRepository))->send(new Canceled($id, 'A', 'ATPM'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -255,13 +306,18 @@ class SweetAlertController extends Controller
             return $masterAdditionalOrderRepository->massUpdate($id, $data);
         });
 
+        $idUser = session()->get('user')['id_user'];
+        $idDealer = session()->get('user')['id_dealer'];
+
         if($update) {
             $callback = array(
                 'status' => 'success',
             );
 
-            $this->deleteCaches('atpm_allocation');
+            $this->deleteCaches('datatable-additionalOrderJsonATPMAllocation-idUser-'.$idUser.'-idDealer-'.$idDealer);
             $this->deleteCache();
+
+            Mail::to($this->getEmailUser($id, $masterAdditionalOrderRepository))->send(new Canceled($id, 'A', 'BM'));
         } else {
             $callback = array(
                 'status' => 'fail',
@@ -271,8 +327,44 @@ class SweetAlertController extends Controller
         return $callback;
     }
 
-    private function deleteCaches($status) {
+    private function getEmailTo($apiDealerUserRepository)
+    {
+        $idDealer = session()->get('user')['id_dealer'];
+        $cache_name = 'api-apiDealerUserRepository->getByIdDealer-idDealer-'.$idDealer;
+        $dataDealer = Cache::remember($cache_name, 60, function () use($apiDealerUserRepository, $idDealer) {
+            return $apiDealerUserRepository->getByIdDealer($idDealer);
+        });
+
+        $email = array();
+        foreach($dataDealer['data'] as $dealer) {
+            if($dealer['fk_dealer_level'] == 'BM') {
+                array_push($email, $dealer['email']);
+            }
+        }
+
+        if (App::environment(['local', 'staging'])) {
+            return ['Bernand.Hermawan@eurokars.co.id'];
+        } else {
+            return $email;
+        }
+
+        // TODO: return $email;
+        // 'evan.yofiyanto@Mazda.co.id'
+        
+    }
+
+    private function getEmailUser($id, $masterAdditionalOrderRepository)
+    {
+        $dataMaster = $masterAdditionalOrderRepository->getById($id);
+        if (App::environment(['local', 'staging'])) {
+            return ['Bernand.Hermawan@eurokars.co.id'];
+        } else {
+            return $dataMaster->email;
+        }
+    }
+
+    private function deleteCaches($cacheName) {
         $idUser = session()->get('user')['id_user'];
-        Cache::forget($this->cache[$status].$idUser);
+        Cache::forget($cacheName);
     }
 }

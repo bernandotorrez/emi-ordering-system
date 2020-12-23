@@ -33,9 +33,9 @@ class MasterAdditionalOrderRepository extends BaseRepository
         return $insert;
     }
 
-    public function updateDealerOrder($idMaster, $dataMaster, $dataDetail)
+    public function updateDealerOrder($idMaster, $dataMaster, $dataDetail, $deleteIdDetail)
     {
-        $update = DB::transaction(function () use($idMaster, $dataMaster, $dataDetail) {
+        $update = DB::transaction(function () use($idMaster, $dataMaster, $dataDetail, $deleteIdDetail) {
             $updateMaster = MasterAdditionalOrderUnit::where($this->primaryKey, $idMaster)
             ->update($dataMaster);
             if($updateMaster) {
@@ -58,6 +58,13 @@ class MasterAdditionalOrderRepository extends BaseRepository
                         $dataDetail[$key]['id_detail_additional_order_unit'])
                         ->update($updateData);
                     }
+                }
+
+                // Delete From Edit Page
+                foreach($deleteIdDetail as $idDetail) {
+                    $deleteDetailData = DetailAdditionalOrderUnit::where('id_detail_additional_order_unit', $idDetail)
+                    ->update(['status' => '0']);
+
                 }
             }
 

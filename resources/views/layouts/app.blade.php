@@ -25,6 +25,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/datatables.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/table/datatable/dt-global_style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/theme-checkbox-radio.css')}}">
     <style>
     td.details-control {
         background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
@@ -165,6 +166,7 @@
             return true;
         }
     </script>
+
     <!-- Additional Order Javascript -->
     @if(Request::is('sales/dealer/additional-order') || Request::is('sales/dealer/approval-bm')
     || Request::is('sales/dealer/approved-bm') || Request::is('sales/atpm/submit-atpm') 
@@ -172,6 +174,10 @@
         @include('layouts.custom_javascript.additional-order-javascript')
     @elseif(Request::is('sales/dealer/fix-order'))
         @include('layouts.custom_javascript.fix-order-javascript')
+    @elseif(Request::is('sales/dealer/fix-order-bm'))
+        @include('layouts.custom_javascript.fix-order-javascript-principle')
+    @elseif(Request::is('sales/atpm/fix-order-atpm'))
+        @include('layouts.custom_javascript.fix-order-javascript-atpm')
     @endif
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 

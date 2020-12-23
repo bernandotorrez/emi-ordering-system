@@ -143,7 +143,7 @@
                                         @enderror
                                     </td>
 
-                                    <td><button class="btn btn-danger" wire:click.prevent="deleteDetail({{$key}})"
+                                    <td><button class="btn btn-danger" wire:click.prevent="deleteDetail({{$key}}, '{{$data['id_detail_additional_order_unit']}}')"
                                             @if(count($detailData)==1) disabled @endif>-</button></td>
                                 </tr>
                                 @endforeach
@@ -158,7 +158,7 @@
                         </table>
                     </div>
                     <div class="col-md-11 text-left">
-                        <button type="submit" class="btn btn-primary mt-3 mr-2">Save to Draft</button>
+                        <button type="submit" class="btn btn-success mt-3 mr-2">Update</button>
                         <button class="btn btn-warning mt-3" 
                             wire:click.prevent="goTo('{{route('additional-order.index')}}')">Back</a>
                         
