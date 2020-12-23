@@ -14,6 +14,7 @@ use App\Repository\Eloquent\MasterFixOrderRepository;
 use App\Traits\WithDeleteCache;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -263,17 +264,25 @@ class FixOrderSweetAlertController extends Controller
             }
         }
 
+        if (App::environment(['local', 'staging'])) {
+            return ['Bernand.Hermawan@eurokars.co.id'];
+        } else {
+            return $email;
+        }
+
         // TODO: return $email;
         // 'evan.yofiyanto@Mazda.co.id'
-        return ['Bernand.Hermawan@eurokars.co.id'];
+        
     }
 
     private function getEmailUser($id, $masterAdditionalOrderRepository)
     {
         $dataMaster = $masterAdditionalOrderRepository->getById($id);
-
-        //TODO: return $dataMaster->email;
-        return 'Bernand.Hermawan@eurokars.co.id';
+        if (App::environment(['local', 'staging'])) {
+            return ['Bernand.Hermawan@eurokars.co.id'];
+        } else {
+            return $dataMaster->email;
+        }
     }
 
     private function deleteCaches($cacheName) {
