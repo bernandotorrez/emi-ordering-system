@@ -46,7 +46,7 @@
 
     @stack('css')
 
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     @if(Request::is('login') || Request::is('logout') || Request::is('register'))
     <link href="{{ asset('assets/css/authentication/form-2.css') }}" rel="stylesheet" type="text/css" />
@@ -93,7 +93,7 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @livewireScripts
     <script src="{{ asset('assets/js/turbolink/livewire-turbolinks.js') }}" data-turbolinks-eval="false"></script>
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('plugins/highlight/highlight.pack.js') }}"></script>
     <script src="{{ asset('plugins/table/datatable/datatables.js')}}"></script>
