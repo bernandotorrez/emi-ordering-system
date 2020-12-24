@@ -10,7 +10,7 @@ use App\Models\User;
 class CreateUsersTable extends Migration
 {
     use WithWrsApi;
-    protected $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiJ0YW1wYW4iLCJzdGF0dXNfYXRwbSI6ImF0cG0ifSwiaWF0IjoxNjA4NjUwNzQzLCJleHAiOjE2MDg2NjE1NDN9.56eyeeG3hbFuyIhLPop4CCBFt4uI43HrCRa3U-vw1ms';
+    protected $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3cnMtYXBpIiwic3ViIjoid3JzLWFwaS10b2tlbiIsImRhdGEiOnsidXNlcm5hbWUiOiIxNTUubnVydWwiLCJzdGF0dXNfYXRwbSI6ImRlYWxlciJ9LCJpYXQiOjE2MDg3ODA2NTMsImV4cCI6MTYwODc5MTQ1M30.jHUqgMmJI6DW6v_Df1FNwxxXokWFMfIR3M8kTzEkFOc';
     /**
      * Run the migrations.
      *
